@@ -1,11 +1,13 @@
 import './App.css'
 import HealthStatus from './components/HealthStatus'
+import Shareholders from './components/Shareholders'
 
-function App() {
+const App = ()=> {
 
   return (
     <div>
       <HealthStatus/>
+      <Shareholders/>
     </div>
   )
 }
