@@ -2,11 +2,11 @@ import { useState, useEffect } from "react";
 import { getShareholders } from "../services/shareholdersService";
 
 const Shareholders = () =>{
-    const [status, setStatus ] = useState([]);
+    const [shareholdersList, setShareholders ] = useState([]);
 
     useEffect(() => {
         getShareholders().then(res => {
-            setStatus(res);
+            setShareholders(res);
         })
         .catch((error)=>{
             console.error(error);
@@ -15,8 +15,8 @@ const Shareholders = () =>{
 
     return(
         <div>
-            <h1>Health Check Status:</h1>
-            <p>{status}</p>
+            <h1>List of shareholders:</h1>
+            <ul>{shareholdersList. map(person => <li key={person.id}>{person.name}</li>)}</ul>
         </div>
     )
 

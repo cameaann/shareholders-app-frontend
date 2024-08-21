@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-const url = "http://localhost:8080/health";
-const shareHoldersUrl = "http://localhost:8080/shareholders";
+const devUrl = "http://localhost:8080/health";
+const shareHoldersUrl = "/shareholders";
 
 const getStatus = async () =>{
-    const res = await axios.get(url);
+    const res = await axios.get(devUrl);
     return res.data;
 }
 
