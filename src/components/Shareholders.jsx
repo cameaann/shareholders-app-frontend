@@ -16,7 +16,7 @@ const Shareholders = () =>{
     return(
         <div>
             <h1>List of shareholders:</h1>
-            <ul>{shareholdersList. map(x => <li key={x.id}>{x}</li>)}</ul>
+            <ul>{shareholdersList. map(person => <li key={person.id}>{person.name}</li>)}</ul>
         </div>
     )
 
