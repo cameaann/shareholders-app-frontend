@@ -1,13 +1,13 @@
-import './App.css'
 import HealthStatus from './components/HealthStatus'
 import Shareholders from './components/Shareholders'
+import CustomTabs from './components/CustomTabs'
+import { Box } from '@mui/joy'
 
 const App = ()=> {
 
   return (
-    <div>
-      <HealthStatus/>
-      <Shareholders/>
+    <div className='app'>
+      <CustomTabs/>
     </div>
   )
 }
