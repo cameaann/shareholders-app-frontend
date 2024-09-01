@@ -7,7 +7,7 @@ export const TextMaskAdapter = React.forwardRef(function TextMaskAdapter(props, 
     return (
       <IMaskInput
         {...other}
-        mask="(+358) 000-0000"
+        mask="(+000) 000-000000"
         definitions={{
           '#': /[1-9]/,
         }}
