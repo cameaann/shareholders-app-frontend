@@ -4,19 +4,20 @@ import { Table, IconButton, Box } from "@mui/joy";
 import { FaTrashCan } from "react-icons/fa6";
 import { FaEdit } from "react-icons/fa";
 
+const SharesTable = ({ shareholders }) => {
 
-const SharesTable = () => {
-  const rows = Array.from({ length: 10 }, (_, index) => (
-    <tr key={index}>
+  const rows = shareholders.map((person, index) => {
+    return ( 
+      <tr key={index}>
       <td>{index + 1}</td>
-      <td>Cell Content</td>
-      <td>Cell Content</td>
-      <td>Cell Content</td>
-      <td>Cell Content</td>
-      <td>Cell Content</td>
-      <td>Cell Content</td>
-      <td>Cell Content</td>
-      <td>Cell Content</td>
+      <td>{person.totalShares}</td>
+      <td>{person.name}</td>
+      <td>{person.ownershipPercentage}</td>
+      <td>{person.personalIdOrCompanyId}</td>
+      <td>{person.placeOfResidenceOrHeadquarters}</td>
+      <td>{person.address}</td>
+      <td>{person.emailAddress}</td>
+      <td>{person.phoneNumber}</td>
       <td>
         <IconButton>
           <FaEdit size={20} />
@@ -27,7 +28,9 @@ const SharesTable = () => {
         </IconButton>
       </td>
     </tr>
-  ));
+    )
+})
+
 
   return (
     <Box>
@@ -48,7 +51,7 @@ const SharesTable = () => {
               <th>Actions</th>
             </tr>
           </thead>
-          <tbody>{rows}</tbody>
+          <tbody>{shareholders.length >0 ? rows : <div></div>}</tbody>
         </Table>
       </Box>
     </Box>
