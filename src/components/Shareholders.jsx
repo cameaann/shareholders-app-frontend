@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { getShareholders } from "../services/shareholdersService";
+import SharesTable from "./SharesTable";
 
 
 const initialData = [{id:'bhsd5', name: "Alex"}, {id:'bhso9', name: "Kristofer"}, {id:'jj2o9', name: "Alexander"}];
@@ -19,8 +20,7 @@ const Shareholders = () =>{
 
     return(
         <div>
-            <h1>List of shareholders:</h1>
-            <ul>{shareholdersList.map(person => <li key={person.id}>{person.name}</li>)}</ul>
+            <SharesTable shareholders={shareholdersList}/>
         </div>
     )
 
