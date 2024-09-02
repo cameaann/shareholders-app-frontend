@@ -4,6 +4,7 @@ import SharesTable from "./SharesTable";
 import ShareNumbersTable from "./ShareNumbersTable";
 import CreateOrEditShareholderForm from "./CreateOrEditShareholderForm";
 import Shareholders from "./Shareholders";
+import ShareTransferForm from "./ShareTransferForm";
 
 const CustomTabPanels = () => {
   const tabPanelStyle = {
@@ -20,6 +21,9 @@ const CustomTabPanels = () => {
       </TabPanel>
       <TabPanel value={3} sx={tabPanelStyle}>
         <CreateOrEditShareholderForm/>
+      </TabPanel>
+      <TabPanel value={4} sx={tabPanelStyle}>
+        <ShareTransferForm/>
       </TabPanel>
     </>
   );
