@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Tabs from "@mui/joy/Tabs";
 import TabList from "@mui/joy/TabList";
 import Tab from "@mui/joy/Tab";
+import CustomTabPanels from "./CustomTabPanels";
 
 const CustomTabs = () => {
   const tabs = [
@@ -9,7 +10,7 @@ const CustomTabs = () => {
     "Osakenumerot",
     "Historia",
     "Lisää uusi omistaja",
-    "Osakkeen siirto"
+    "Osakkeen siirto",
   ];
 
   const [selectedTab, setSelectedTab] = useState(0);
@@ -23,6 +24,7 @@ const CustomTabs = () => {
       onChange={handleTabChange}
       sx={{
         backgroundColor: "white",
+        flexGrow: "1",
       }}
     >
       <TabList
@@ -30,7 +32,7 @@ const CustomTabs = () => {
           display: "flex",
           gap: "10px",
           flexDirection: "row",
-          justifyContent: "flex-end",
+          justifyContent: "flex-end"
         }}
         disableUnderline
       >
@@ -44,13 +46,16 @@ const CustomTabs = () => {
               }`,
               borderBottom: "none",
               borderRadius: "5px 5px 0 0",
-              backgroundColor: selectedTab === index ? "#FFF" : "#F2F2F2",
+              backgroundColor: "#F2F2F2",
+              transition: "transform 100ms",
+              transform: selectedTab === index ? "translateY(6%)" : ""
             }}
           >
             {value}
           </Tab>
         ))}
       </TabList>
+      <CustomTabPanels />
     </Tabs>
   );
 };
