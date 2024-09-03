@@ -135,28 +135,26 @@ const CreateOrEditShareholderForm = () => {
           />
         </FormControl>
         <FormControl sx={{ mt: 3 }}>
-            <FormLabel>Lisää osakeet (Kpl)</FormLabel>
-            <Input
-              sx={{ width: "300px" }}
-              placeholder="0"
-              value={shareQuantity.value}
-              onChange={shareQuantity.onChange}
-            />
-          </FormControl>
+          <FormLabel>Lisää osakeet (Kpl)</FormLabel>
+          <Input
+            sx={{ width: "300px" }}
+            placeholder="0"
+            value={shareQuantity.value}
+            onChange={shareQuantity.onChange}
+          />
+        </FormControl>
       </Stack>
 
       <Stack sx={{ mt: 7 }}>
         <Stack flexDirection="row" sx={{ gap: 2 }} justifyContent="center">
-         
           <Button
-            sx={{ backgroundColor: "#317A26", width: "300px",  mt: 1 }}
+            sx={{ backgroundColor: "#317A26", width: "300px", mt: 1 }}
             onClick={handleSubmit}
           >
             Submit
           </Button>
           <Typography sx={{ width: "300px" }}></Typography>
         </Stack>
-
       </Stack>
     </Stack>
   );
