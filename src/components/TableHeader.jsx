@@ -41,8 +41,9 @@ const TableHeader = () => {
         <Box
           sx={{
             marginLeft: "20px",
-            paddingRight: "20px",
-            borderRight: "solid #d9d9dc 1px",
+            // commented out coz selected text is removed for now
+            // paddingRight: "20px",
+            // borderRight: "solid #d9d9dc 1px",
           }}
         >
           <Input
@@ -52,7 +53,7 @@ const TableHeader = () => {
           ></Input>
         </Box>
 
-        <span style={{ color: "#175ae4", marginLeft: "20px" }}>0 Selected</span>
+        {/* <span style={{ color: "#175ae4", marginLeft: "20px" }}>0 Selected</span> COMMENTED OUT FOR NOW*/}
       </Box>
       <Box
         sx={{
