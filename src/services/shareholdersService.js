@@ -29,8 +29,7 @@ const saveShareholder = async (formData) => {
     console.log(formData.shares.quantity);
     payload.shares = [
         {
-          alkaen: formData.shares.start,
-          paattyen: formData.shares.end
+          quantity: formData.quantity
         },
       ]
   }

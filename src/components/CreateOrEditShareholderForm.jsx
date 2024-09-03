@@ -19,17 +19,7 @@ const CreateOrEditShareholderForm = () => {
   const bankAccountNumberProps = useFormInput();
   const cityProps = useFormInput();
   const addressProps = useFormInput();
-  const shareStartProps = useFormInput(0);
-  const shareEndProps = useFormInput(0);
-  const [quantity, setQuantity] = useState(0);
-
-  useEffect(() => {
-    if (shareStartProps.value && shareStartProps.value < shareEndProps.value) {
-      let shareCount =
-        parseInt(shareEndProps.value) - parseInt(shareStartProps.value) + 1;
-      setQuantity(shareCount);
-    }
-  }, [shareStartProps.value, shareEndProps.value]);
+  const shareQuantity = useFormInput(0);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -43,9 +33,7 @@ const CreateOrEditShareholderForm = () => {
       city: cityProps.value,
       address: addressProps.value,
       shares: {
-        start: shareStartProps.value,
-        end: shareEndProps.value,
-        quantity: quantity,
+        quantity: shareQuantity.value,
       },
     };
     const isSuccess = saveShareholder(formData);
@@ -62,9 +50,7 @@ const CreateOrEditShareholderForm = () => {
     bankAccountNumberProps.reset();
     cityProps.reset();
     addressProps.reset();
-    shareStartProps.reset();
-    shareEndProps.reset();
-    setQuantity(0);
+    shareQuantity.reset();
   }
 
   return (
@@ -120,18 +106,6 @@ const CreateOrEditShareholderForm = () => {
       </Stack>
       <Stack flexDirection="row" sx={{ gap: 2 }} justifyContent="center">
         <FormControl sx={{ mt: 3 }}>
-          <FormLabel>Tili numero</FormLabel>
-          <Input
-            value={bankAccountNumberProps.value}
-            onChange={bankAccountNumberProps.onChange}
-            placeholder="Tili numero"
-            sx={{ width: "300px" }}
-          />
-        </FormControl>
-        <Typography sx={{ width: "300px" }}></Typography>
-      </Stack>
-      <Stack flexDirection="row" sx={{ gap: 2 }} justifyContent="center">
-        <FormControl sx={{ mt: 3 }}>
           <FormLabel>Kotipaikka</FormLabel>
           <Input
             sx={{ width: "300px" }}
@@ -150,48 +124,39 @@ const CreateOrEditShareholderForm = () => {
           />
         </FormControl>
       </Stack>
+      <Stack flexDirection="row" sx={{ gap: 2 }} justifyContent="center">
+        <FormControl sx={{ mt: 3 }}>
+          <FormLabel>Tili numero</FormLabel>
+          <Input
+            value={bankAccountNumberProps.value}
+            onChange={bankAccountNumberProps.onChange}
+            placeholder="Tili numero"
+            sx={{ width: "300px" }}
+          />
+        </FormControl>
+        <FormControl sx={{ mt: 3 }}>
+            <FormLabel>Lisää osakeet (Kpl)</FormLabel>
+            <Input
+              sx={{ width: "300px" }}
+              placeholder="0"
+              value={shareQuantity.value}
+              onChange={shareQuantity.onChange}
+            />
+          </FormControl>
+      </Stack>
 
       <Stack sx={{ mt: 7 }}>
-        <Typography
-          sx={{ fontSize: 22, fontWeight: "bold" }}
-          alignSelf="center"
-        >
-          Lisää osake
-        </Typography>
         <Stack flexDirection="row" sx={{ gap: 2 }} justifyContent="center">
-          <FormControl sx={{ mt: 3 }}>
-            <FormLabel>Alkaen</FormLabel>
-            <Input
-              sx={{ width: "300px" }}
-              placeholder="0"
-              value={shareStartProps.value}
-              onChange={shareStartProps.onChange}
-            />
-          </FormControl>
-          <FormControl sx={{ mt: 3 }}>
-            <FormLabel>Päätyen</FormLabel>
-            <Input
-              value={shareEndProps.value}
-              onChange={shareEndProps.onChange}
-              placeholder="0"
-              sx={{ width: "300px" }}
-            />
-          </FormControl>
-        </Stack>
-
-        <Stack
-          flexDirection="row"
-          sx={{ gap: 3, pt: 4 }}
-          justifyContent="center"
-        >
-          <Typography sx={{ width: "300px" }}>Kpl: {quantity} </Typography>
+         
           <Button
-            sx={{ backgroundColor: "#317A26", width: "300px" }}
+            sx={{ backgroundColor: "#317A26", width: "300px",  mt: 1 }}
             onClick={handleSubmit}
           >
             Submit
           </Button>
+          <Typography sx={{ width: "300px" }}></Typography>
         </Stack>
+
       </Stack>
     </Stack>
   );
