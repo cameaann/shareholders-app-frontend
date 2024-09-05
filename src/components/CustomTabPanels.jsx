@@ -1,7 +1,4 @@
-import React from "react";
 import TabPanel from "@mui/joy/TabPanel";
-import SharesTable from "./SharesTable";
-import ShareNumbersTable from "./ShareNumbersTable";
 import CreateOrEditShareholderForm from "./CreateOrEditShareholderForm";
 import Shareholders from "./Shareholders";
 import ShareTransferForm from "./ShareTransferForm";
