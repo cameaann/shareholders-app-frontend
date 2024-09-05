@@ -1,4 +1,3 @@
-import React from "react";
 import TableHeader from "./TableHeader";
 import { Table, Box, Typography } from "@mui/joy";
 
@@ -7,7 +6,7 @@ const ShareNumbersTable = ({ sharenumbers }) => {
     let total = 0;
 
     sharenumbers.forEach((e) => {
-      total += e.to - e.from + 1;
+      total += e.endNumber - e.startNumber + 1;
     });
 
     return total;
@@ -40,13 +39,13 @@ const ShareNumbersTable = ({ sharenumbers }) => {
             </tr>
           </thead>
           <tbody>
-            {sharenumbers.map((v, i) => (
+            {sharenumbers.map((share, i) => (
               <tr key={i}>
-                <td>{v.from}</td>
-                <td>{v.to}</td>
-                <td>{v.to - v.from + 1}</td>
-                <td>{v.holder}</td>
-                <td>{v.to - v.from + 1}</td>
+                <td>{share.startNumber}</td>
+                <td>{share.endNumber}</td>
+                <td>{share.quantity}</td>
+                <td>{share.shareholderId}</td>
+                <td>{share.endNumber-share.startNumber + 1}</td>
               </tr>
             ))}
           </tbody>
