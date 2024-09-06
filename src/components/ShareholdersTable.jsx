@@ -48,9 +48,9 @@ const ShareholdersTable = ({ shareholders }) => {
               <th>Hetu / Y-tunn.</th>
               <th>Kotipaikka</th>
               <th>Postiosoite</th>
-              <th>Sähköposti osoite</th>
-              <th>Puhelin numero</th>
-              <th>Actions</th>
+              <th>Sähköposti</th>
+              <th>Puhelinnumero</th>
+              <th>Toiminnot</th>
             </tr>
           </thead>
           <tbody>{shareholders.length > 0 ? rows : <div></div>}</tbody>
