@@ -25,6 +25,7 @@ const CustomTabs = () => {
       sx={{
         backgroundColor: "white",
         flexGrow: "1",
+        padding: 2,
       }}
     >
       <TabList

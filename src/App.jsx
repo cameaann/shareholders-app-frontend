@@ -1,18 +1,36 @@
-import CustomTabs from './components/CustomTabs'
-import { Box } from '@mui/joy'
+import React, { useState } from "react";
+import CustomTabs from "./components/CustomTabs";
+import { Box } from "@mui/joy";
+import MobileContent from "./components/MobileContent";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import MobileNavbar from "./components/MobileNavbar";
 
-const App = ()=> {
+const App = () => {
+  const isSmallScreen = useMediaQuery("(max-width: 870px)");
+
+  const [selectedContent, setSelectedContent] = useState("Osakasluettelo");
+
+  const handleMenuSelect = (menuItem) => setSelectedContent(menuItem)
+
   return (
-    <Box sx={{
-      padding: "1rem",
-      height: "100vh",
-      display: "flex",
-      flexDirection: "column",
-      overflowY: "auto"
-    }}>
-      <CustomTabs/>
+    <Box
+      sx={{
+        height: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        overflowY: "auto",
+      }}
+    >
+      {!isSmallScreen ? (
+        <CustomTabs />
+      ) : (
+        <>
+          <MobileNavbar onMenuSelect={handleMenuSelect} />
+          <MobileContent selectedContent={selectedContent} />
+        </>
+      )}
     </Box>
-  )
-}
+  );
+};
 
-export default App
+export default App;
