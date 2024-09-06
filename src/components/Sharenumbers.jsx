@@ -1,23 +1,45 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import ShareNumbersTable from "./ShareNumbersTable";
+import { getShares } from "../services/sharesService";
 
 const initialData = [
-    {
-      from: 1,
-      to: 4,
-      holder: 1
-    },
-    {
-      from: 53,
-      to: 632,
-      holder: 2
-    }
+  {
+    id: 1,
+    quantity: 1000,
+    startNumber: 1,
+    endNumber: 1000,
+    shareholderId: 1,
+  },
+  {
+    id: 2,
+    quantity: 1000,
+    startNumber: 1001,
+    endNumber: 2000,
+    shareholderId: 2,
+  },
 ];
 
 const Sharenumbers = () => {
-  const [shareNumbers, setshareNumbers] = useState(initialData);
+  const [shareNumbers, setShareNumbers] = useState(initialData);
 
-  return <div><ShareNumbersTable sharenumbers={shareNumbers}/></div>;
+  useEffect(() => {
+    getShares()
+      .then((res) => {
+        if (Array.isArray(res)) {
+          setShareNumbers(res);
+          console.log(shareNumbers);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
+  return (
+    <div>
+      <ShareNumbersTable sharenumbers={shareNumbers} />
+    </div>
+  );
 };
 
 export default Sharenumbers;

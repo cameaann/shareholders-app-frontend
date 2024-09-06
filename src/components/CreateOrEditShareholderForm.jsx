@@ -9,7 +9,6 @@ import {
 import { useFormInput } from "../hooks/useFormInput";
 import { TextMaskAdapter } from "./TextMaskAdapter";
 import { saveShareholder } from "../services/shareholdersService";
-import { useState, useEffect } from "react";
 
 const CreateOrEditShareholderForm = () => {
   const nameProps = useFormInput();

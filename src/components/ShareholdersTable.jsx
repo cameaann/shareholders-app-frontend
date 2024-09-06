@@ -1,4 +1,3 @@
-import React from "react";
 import TableHeader from "./TableHeader";
 import { Table, IconButton, Box } from "@mui/joy";
 import { FaTrashCan } from "react-icons/fa6";
@@ -9,7 +8,7 @@ const handleEditOnClick = () => {
   alert("Edit button clicked");
 };
 
-const SharesTable = ({ shareholders }) => {
+const ShareholdersTable = ({ shareholders }) => {
   const rows = shareholders.map((person, index) => {
     return (
       <tr key={index}>
@@ -61,4 +60,4 @@ const SharesTable = ({ shareholders }) => {
   );
 };
 
-export default SharesTable;
+export default ShareholdersTable;

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { getShareholders } from "../services/shareholdersService";
-import SharesTable from "./SharesTable";
+import ShareholdersTable from "./ShareholdersTable";
 
 const initialData = [
   { id: "bhsd5", name: "Alex" },
@@ -24,7 +24,7 @@ const Shareholders = () => {
 
   return (
     <div>
-      <SharesTable shareholders={shareholdersList} />
+      <ShareholdersTable shareholders={shareholdersList} />
     </div>
   );
 };
