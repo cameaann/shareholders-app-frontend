@@ -5,6 +5,7 @@ import {
   List,
   ListItem,
   ListItemButton,
+  ModalClose,
 } from "@mui/joy";
 import React, { useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
@@ -39,6 +40,7 @@ const MobileNavbar = ({ onMenuSelect }) => {
       </IconButton>
 
       <Drawer anchor="right" open={menuOpen} onClose={toggleMenu}>
+        <ModalClose/>
         <Box
           sx={{
             padding: 2,
