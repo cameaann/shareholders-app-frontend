@@ -1,3 +1,4 @@
+import { TableCell, TableHead, TableRow } from "@mui/material";
 import TableHeader from "./TableHeader";
 import { Table, Box, Typography } from "@mui/joy";
 
@@ -16,37 +17,37 @@ const ShareNumbersTable = ({ sharenumbers }) => {
     <Box>
       <TableHeader />
       <Box>
-        <Table aria-label="share numbers table" hoverRow variant="plain">
-          <thead>
-            <tr>
-              <th>
+        <Table aria-label="share numbers table" hoverRow variant="plain"  sx={{ mt:4 }}>
+          <TableHead>
+            <TableRow>
+              <TableCell>
                 <span>Osakenumerot</span>
                 <br />
                 <Typography fontSize="smaller">Alkaen</Typography>
-              </th>
-              <th>
+              </TableCell>
+              <TableCell>
                 <span>Osakenumerot</span>
                 <br />
                 <Typography fontSize="smaller">Päättyen</Typography>
-              </th>
-              <th>Kpl</th>
-              <th>Omistaja</th>
-              <th>
+              </TableCell>
+              <TableCell>Kpl</TableCell>
+              <TableCell>Omistaja</TableCell>
+              <TableCell>
                 <span>Tarkistuslaskenta</span>
                 <br />
                 <Typography fontSize="smaller">Osakaiden määrä</Typography>
-              </th>
-            </tr>
-          </thead>
+              </TableCell>
+            </TableRow>
+          </TableHead>
           <tbody>
             {sharenumbers.map((share, i) => (
-              <tr key={i}>
-                <td>{share.startNumber}</td>
-                <td>{share.endNumber}</td>
-                <td>{share.quantity}</td>
-                <td>{share.shareholderId}</td>
-                <td>{share.endNumber-share.startNumber + 1}</td>
-              </tr>
+              <TableRow key={i}>
+                <TableCell>{share.startNumber}</TableCell>
+                <TableCell>{share.endNumber}</TableCell>
+                <TableCell>{share.quantity}</TableCell>
+                <TableCell>{share.shareholderId}</TableCell>
+                <TableCell>{share.endNumber-share.startNumber + 1}</TableCell>
+              </TableRow>
             ))}
           </tbody>
         </Table>
