@@ -7,13 +7,23 @@ import {
   Button,
   Select,
   Option,
+  Checkbox,
 } from "@mui/joy";
 // import { useFormInput } from "../hooks/useFormInput";
 import { useState, useEffect } from "react";
 import { getShareholders } from "../services/shareholdersService";
+import { FormGroup } from "@mui/material";
+import { useFormInput } from "../hooks/useFormInput";
+import { makeTransfer } from "../services/sharesService";
 
 const ShareTransferForm = () => {
   const [shareholdersList, setShareholders] = useState();
+  const [checked, setChecked] = useState(false);
+  const sellerProps = useFormInput(null);
+  const buyerProps = useFormInput(null);
+  const kplProps = useFormInput(0);
+  const priceProps = useFormInput(0);
+  const saantoDayProps = useFormInput("");
 
   useEffect(() => {
     getShareholders()
@@ -26,7 +36,6 @@ const ShareTransferForm = () => {
         console.error(error);
       });
   }, []);
-  console.log(shareholdersList);
 
   const renderShareholders = () => {
     return shareholdersList.map((person) => (
@@ -35,6 +44,43 @@ const ShareTransferForm = () => {
       </Option>
     ));
   };
+
+  const formData = {
+    fromShareholderId: sellerProps.value,
+    toShareholderId: buyerProps.value,
+    quantity: kplProps.value,
+    saantoDay: saantoDayProps.value,
+    transferTax: checked,
+  };
+
+  const handleChange = (event) => {
+    setChecked(event.target.checked);
+  };
+
+  const handleSelectChange =(shareholder)=> (e, newVal) => {
+    if (shareholder === 'seller') {
+      sellerProps.onChange({ target: { value: newVal } });  // Update seller
+    } else if (shareholder === 'buyer') {
+      buyerProps.onChange({ target: { value: newVal } });  // Update buyer
+    }
+  };
+
+  const handleSubmit = () => {
+    console.log(formData);
+    const isSuccess = makeTransfer(formData);
+    if (isSuccess) {
+      resetForm();
+    }
+  };
+
+  function resetForm() {
+    setChecked(false);
+    sellerProps.reset();
+    buyerProps.reset();
+    kplProps.reset();
+    priceProps.reset();
+    saantoDayProps.reset();
+  }
 
   return (
     <Stack
@@ -48,7 +94,12 @@ const ShareTransferForm = () => {
       <Stack flexDirection="row" sx={{ gap: 2 }} justifyContent="center">
         <FormControl sx={{ mt: 4 }}>
           <FormLabel>Luovuttaja / Myyjä</FormLabel>
-          <Select sx={{ width: "300px" }} placeholder="Omistaja">
+          <Select
+            sx={{ width: "300px" }}
+            placeholder="Omistaja"
+            name="seller"
+            onChange={handleSelectChange("seller")}
+          >
             {shareholdersList ? (
               renderShareholders()
             ) : (
@@ -57,19 +108,13 @@ const ShareTransferForm = () => {
           </Select>
         </FormControl>
         <FormControl sx={{ mt: 4 }}>
-          <FormLabel>Saantopäivä</FormLabel>
-          <Input
-            type="date"
-            sx={{ width: "300px" }}
-            //   value={}
-            //   onChange={}
-          />
-        </FormControl>
-      </Stack>
-      <Stack flexDirection="row" sx={{ gap: 2 }} justifyContent="center">
-        <FormControl sx={{ mt: 3 }}>
           <FormLabel>Saaja / Ostaja</FormLabel>
-          <Select sx={{ width: "300px" }} placeholder="Omistaja">
+          <Select
+            sx={{ width: "300px" }}
+            placeholder="Omistaja"
+            name="buyer"
+            onChange={handleSelectChange("buyer")}
+          >
             {shareholdersList ? (
               renderShareholders()
             ) : (
@@ -77,60 +122,57 @@ const ShareTransferForm = () => {
             )}
           </Select>
         </FormControl>
-        <FormControl sx={{ mt: 3 }}>
-          <FormLabel>MaksuPvm</FormLabel>
-          <Input
-            type="date"
-            sx={{ width: "300px" }}
-            placeholder="MaksuPvm"
-            //   value={}
-            //   onChange={}
-          />
-        </FormControl>
       </Stack>
       <Stack flexDirection="row" sx={{ gap: 2 }} justifyContent="center">
         <FormControl sx={{ mt: 3 }}>
           <FormLabel>Kpl</FormLabel>
           <Input
-            //   value={}
-            //   onChange={}
+            value={kplProps.value}
+            onChange={kplProps.onChange}
             placeholder=""
             sx={{ width: "300px" }}
           />
         </FormControl>
         <FormControl sx={{ mt: 3 }}>
-          <FormLabel>Varainsiirtovero</FormLabel>
+          <FormLabel>Hinta per osake</FormLabel>
           <Input
-            //   value={}
-            //   onChange={}
-            placeholder="Varainsiirtovero"
             sx={{ width: "300px" }}
+            placeholder="Hinta per osake"
+            value={priceProps.value}
+            onChange={priceProps.onChange}
           />
         </FormControl>
       </Stack>
       <Stack flexDirection="row" sx={{ gap: 2 }} justifyContent="center">
         <FormControl sx={{ mt: 3 }}>
-          <FormLabel>Hinta per osake</FormLabel>
+          <FormLabel>Saantopäivä</FormLabel>
           <Input
+            type="date"
             sx={{ width: "300px" }}
-            placeholder="Hinta per osake"
-            //   value={}
-            //   onChange={}
+            value={saantoDayProps.value}
+            onChange={saantoDayProps.onChange}
           />
         </FormControl>
-        <Typography sx={{ width: "300px" }}></Typography>
+        <FormGroup sx={{ mt: 7, width: "300px" }}>
+          <Checkbox
+            label="Varainsiirtovero"
+            onChange={handleChange}
+            value={checked}
+          />
+        </FormGroup>
       </Stack>
-
       <Stack sx={{ mt: 7 }}>
         <Stack
           flexDirection="row"
           sx={{ gap: 3, pt: 4 }}
           justifyContent="center"
         >
-          <Typography sx={{ width: "300px" }}>Total:</Typography>
+          <Typography sx={{ width: "300px" }}>
+            Total:{priceProps.value * kplProps.value}
+          </Typography>
           <Button
             sx={{ backgroundColor: "#317A26", width: "300px" }}
-            //   onClick={handleSubmit}
+            onClick={handleSubmit}
           >
             Submit
           </Button>
