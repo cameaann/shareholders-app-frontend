@@ -14,5 +14,5 @@ export function useFormInput(initialValue='') {
     reset
   };
 
-  return {...inputProps, value};
+  return {...inputProps};
 }

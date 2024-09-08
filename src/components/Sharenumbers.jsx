@@ -27,7 +27,6 @@ const Sharenumbers = () => {
       .then((res) => {
         if (Array.isArray(res)) {
           setShareNumbers(res);
-          console.log(shareNumbers);
         }
       })
       .catch((error) => {
