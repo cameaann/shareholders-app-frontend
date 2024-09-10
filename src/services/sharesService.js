@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const sharesUrl = "http://localhost:8080/api/shares";
+const transfeUrl = "http://localhost:8080/api/shares/transfer";
 
 const getShares = async () => {
   const res = await axios.get(sharesUrl);
@@ -12,12 +13,13 @@ const makeTransfer = async (formData) => {
     fromShareholderId: formData.fromShareholderId,
     toShareholderId: formData.toShareholderId,
     quantity: formData.quantity,
-    // saantoDay: formData.saantoDay,
-    // transferTax: formData.transferTax,
+    pricePerShare: formData.pricePerShare,
+    transferDate: formData.saantoDay,
+    transferTax: formData.transferTax,
   };
 
   try {
-    const response = await axios.post(`${sharesUrl}/transfer`, payload, {
+    const response = await axios.post(transfeUrl, payload, {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),
     });

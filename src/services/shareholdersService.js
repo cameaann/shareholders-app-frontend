@@ -27,11 +27,7 @@ const saveShareholder = async (formData) => {
 
   if(formData.shares.quantity > 0){
     console.log(formData.shares.quantity);
-    payload.shares = [
-        {
-          quantity: formData.quantity
-        },
-      ]
+    payload.quantity = parseInt(formData.quantity);
   }
   console.log(JSON.stringify(payload));
   try {

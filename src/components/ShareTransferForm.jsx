@@ -45,14 +45,6 @@ const ShareTransferForm = () => {
     ));
   };
 
-  const formData = {
-    fromShareholderId: sellerProps.value,
-    toShareholderId: buyerProps.value,
-    quantity: kplProps.value,
-    saantoDay: saantoDayProps.value,
-    transferTax: checked,
-  };
-
   const handleChange = (event) => {
     setChecked(event.target.checked);
   };
@@ -60,13 +52,25 @@ const ShareTransferForm = () => {
   const handleSelectChange =(shareholder)=> (e, newVal) => {
     if (shareholder === 'seller') {
       sellerProps.onChange({ target: { value: newVal } });  // Update seller
+
     } else if (shareholder === 'buyer') {
       buyerProps.onChange({ target: { value: newVal } });  // Update buyer
+
     }
   };
 
-  const handleSubmit = () => {
-    console.log(formData);
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    const formData = {
+      fromShareholderId: sellerProps.value,
+      toShareholderId: buyerProps.value,
+      quantity: kplProps.value,
+      pricePerShare: priceProps.value,
+      saantoDay: saantoDayProps.value,
+      transferTax: checked,
+    };
+ 
     const isSuccess = makeTransfer(formData);
     if (isSuccess) {
       resetForm();
@@ -157,7 +161,7 @@ const ShareTransferForm = () => {
           <Checkbox
             label="Varainsiirtovero"
             onChange={handleChange}
-            value={checked}
+            checked={checked}
           />
         </FormGroup>
       </Stack>
