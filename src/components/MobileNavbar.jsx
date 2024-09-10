@@ -23,10 +23,14 @@ const MobileNavbar = ({ onMenuSelect }) => {
   return (
     <Box
       sx={{
-        padding: 2,
+        paddingInline: 2,
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
+        position: "fixed",
+        zIndex: 60,
+        width: "100%",
+        background: "white",
       }}
     >
       <img
@@ -44,6 +48,7 @@ const MobileNavbar = ({ onMenuSelect }) => {
         <Box
           sx={{
             padding: 2,
+            mt: 2,
           }}
         >
           <List>
