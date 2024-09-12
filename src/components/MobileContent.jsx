@@ -1,10 +1,12 @@
 import { Box, Typography } from "@mui/joy";
 import React from "react";
 import MobileShareholders from "./MobileShareholders";
+import MobileShareNumbers from "./MobileShareNumbers";
 
 const MobileContent = ({ selectedContent }) => {
   const content = {
     Osakasluettelo: <MobileShareholders />,
+    Osakenumerot: <MobileShareNumbers />,
   };
 
   return (
