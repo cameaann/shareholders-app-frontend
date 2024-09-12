@@ -25,7 +25,7 @@ const ShareholdersTable = ({ shareholders }) => {
           <IconButton onClick={handleEditOnClick}>
             <FaEdit size={20} />
           </IconButton>
-{/* 
+          {/* 
           <IconButton>
             <FaTrashCan size={20} />
           </IconButton> */}
@@ -38,19 +38,24 @@ const ShareholdersTable = ({ shareholders }) => {
     <Box>
       <TableHeader />
       <Box>
-        <Table aria-label="shares table" hoverRow variant="plain" sx={{ mt:4 }}>
+        <Table
+          aria-label="shares table"
+          hoverRow
+          variant="plain"
+          sx={{ mt: 4 }}
+        >
           <TableHead>
             <TableRow>
-              <TableCell sx={{ width: '60px'  }}>Osakas</TableCell>
+              <TableCell sx={{ width: "60px" }}>Osakas</TableCell>
               <TableCell>Määrä</TableCell>
               <TableCell>Nimi</TableCell>
               <TableCell>Omistus %</TableCell>
               <TableCell>Hetu / Y-tunn.</TableCell>
               <TableCell>Kotipaikka</TableCell>
               <TableCell>Postiosoite</TableCell>
-              <TableCell sx={{ width: '200px' }}>Sähköposti</TableCell>
-              <TableCell sx={{ width: '150px' }}>Puhelinnumero</TableCell>
-              <TableCell sx={{ width: '50px' }}>Toiminnot</TableCell>
+              <TableCell sx={{ width: "200px" }}>Sähköposti</TableCell>
+              <TableCell sx={{ width: "150px" }}>Puhelinnumero</TableCell>
+              <TableCell sx={{ width: "50px" }}>Toiminnot</TableCell>
             </TableRow>
           </TableHead>
           <tbody>{shareholders.length > 0 ? rows : <div></div>}</tbody>
