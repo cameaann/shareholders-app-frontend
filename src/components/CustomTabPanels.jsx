@@ -1,6 +1,7 @@
 import TabPanel from "@mui/joy/TabPanel";
 import CreateOrEditShareholderForm from "./CreateOrEditShareholderForm";
 import Shareholders from "./Shareholders";
+import History from "./History";
 import ShareTransferForm from "./ShareTransferForm";
 import Sharenumbers from "./Sharenumbers";
 
@@ -18,7 +19,7 @@ const CustomTabPanels = () => {
         <Sharenumbers />
       </TabPanel>
       <TabPanel value={2} sx={tabPanelStyle}>
-        History
+        <History />
       </TabPanel>
       <TabPanel value={3} sx={tabPanelStyle}>
         <CreateOrEditShareholderForm />
