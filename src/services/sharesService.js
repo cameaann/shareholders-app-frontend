@@ -2,11 +2,17 @@ import axios from "axios";
 
 const sharesUrl = "http://localhost:8080/api/shares";
 const transfeUrl = "http://localhost:8080/api/shares/transfer";
+const metaUrl = "http://localhost:8080/api/metadata";
 
 const getShares = async () => {
   const res = await axios.get(sharesUrl);
   return res.data;
 };
+
+const getTotalSharesQuantity = async () => {
+  const res = await axios.get(metaUrl);
+  return res.data;
+}
 
 const makeTransfer = async (formData) => {
   const payload = {
@@ -39,4 +45,4 @@ const makeTransfer = async (formData) => {
 
 };
 
-export { getShares, makeTransfer };
+export { getShares, makeTransfer, getTotalSharesQuantity };
