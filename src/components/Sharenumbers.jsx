@@ -19,7 +19,7 @@ const initialData = [
   },
 ];
 
-const Sharenumbers = () => {
+const Sharenumbers = ({sharesTotalQuantity}) => {
   const [shareNumbers, setShareNumbers] = useState(initialData);
 
   useEffect(() => {
@@ -36,7 +36,7 @@ const Sharenumbers = () => {
 
   return (
     <div>
-      <ShareNumbersTable sharenumbers={shareNumbers} />
+      <ShareNumbersTable sharenumbers={shareNumbers}  sharesTotalQuantity={sharesTotalQuantity}/>
     </div>
   );
 };
