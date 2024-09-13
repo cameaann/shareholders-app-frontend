@@ -2,7 +2,7 @@ import { TableCell, TableHead, TableRow } from "@mui/material";
 import TableHeader from "./TableHeader";
 import { Table, Box, Typography } from "@mui/joy";
 
-const ShareNumbersTable = ({ sharenumbers }) => {
+const ShareNumbersTable = ({ sharenumbers, sharesTotalQuantity }) => {
   const getTotalAmount = () => {
     let total = 0;
 
@@ -12,6 +12,8 @@ const ShareNumbersTable = ({ sharenumbers }) => {
 
     return total;
   };
+
+  sharesTotalQuantity = sharesTotalQuantity - getTotalAmount();
 
   return (
     <Box>
@@ -69,7 +71,7 @@ const ShareNumbersTable = ({ sharenumbers }) => {
           <Typography sx={{ gridColumn: "1 / 3", fontWeight: "bold" }}>
             Tarkistussumma
           </Typography>
-          <Typography sx={{ gridColumn: "3 / 4" }}>0</Typography>
+          <Typography sx={{ gridColumn: "3 / 4" }}>{sharesTotalQuantity}</Typography>
         </Box>
       </Box>
     </Box>

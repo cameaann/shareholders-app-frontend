@@ -1,13 +1,26 @@
 import { Box, Typography } from "@mui/joy";
-import React from "react";
 import MobileShareholders from "./MobileShareholders";
 import MobileShareNumbers from "./MobileShareNumbers";
+import { useState, useEffect } from "react";
+import { getTotalSharesQuantity } from "../services/sharesService";
 
 const MobileContent = ({ selectedContent }) => {
+  const [sharesTotalQuantity, setSharesTotalQuantity] = useState();
   const content = {
     Osakasluettelo: <MobileShareholders />,
-    Osakenumerot: <MobileShareNumbers />,
+    Osakenumerot: <MobileShareNumbers sharesTotalQuantity = {sharesTotalQuantity} />,
   };
+ 
+
+  useEffect(() => {
+    getTotalSharesQuantity()
+    .then((res) => {
+        setSharesTotalQuantity(res.totalShares);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+  }, []);
 
   return (
     <Box>

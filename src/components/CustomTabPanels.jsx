@@ -4,11 +4,25 @@ import Shareholders from "./Shareholders";
 import History from "./History";
 import ShareTransferForm from "./ShareTransferForm";
 import Sharenumbers from "./Sharenumbers";
+import { useState, useEffect } from "react";
+import { getTotalSharesQuantity } from "../services/sharesService";
 
 const CustomTabPanels = () => {
   const tabPanelStyle = {
     border: "solid #ED6930 2px",
   };
+
+  const [sharesTotalQuantity, setSharesTotalQuantity] = useState();
+
+  useEffect(() => {
+    getTotalSharesQuantity()
+    .then((res) => {
+        setSharesTotalQuantity(res.totalShares);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+  }, []);
 
   return (
     <>
@@ -16,7 +30,7 @@ const CustomTabPanels = () => {
         <Shareholders />
       </TabPanel>
       <TabPanel value={1} sx={tabPanelStyle}>
-        <Sharenumbers />
+        <Sharenumbers sharesTotalQuantity = { sharesTotalQuantity} />
       </TabPanel>
       <TabPanel value={2} sx={tabPanelStyle}>
         <History />
