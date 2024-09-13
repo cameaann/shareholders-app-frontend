@@ -5,7 +5,7 @@ import {
   FormLabel,
   Input,
   Button,
-  FormHelperText
+  FormHelperText,
 } from "@mui/joy";
 import { useFormInput } from "../hooks/useFormInput";
 import { TextMaskAdapter } from "./TextMaskAdapter";
@@ -24,6 +24,7 @@ const CreateOrEditShareholderForm = () => {
   const shareQuantity = useFormInput(0);
 
   const [errors, setErrors] = useState({});
+  const [touched, setTouched] = useState({});
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
 
   useEffect(() => {
@@ -36,17 +37,38 @@ const CreateOrEditShareholderForm = () => {
       bankAccountNumberProps.value,
       cityProps.value,
       addressProps.value,
-      shareQuantity.value,
     ].some((field) => !field);
-    
+
     setIsSubmitDisabled(formHasErrors || isFormIncomplete);
-  }, [errors, nameProps.value, emailProps.value, phoneNumberProps.value, personalIdProps.value, bankAccountNumberProps.value, cityProps.value, addressProps.value, shareQuantity.value]);
+  }, [
+    errors,
+    nameProps.value,
+    emailProps.value,
+    phoneNumberProps.value,
+    personalIdProps.value,
+    bankAccountNumberProps.value,
+    cityProps.value,
+    addressProps.value,
+  ]);
 
-
-  const handleBlur = (props, field) => (event) => {
-    setErrors(validateField(field, event.target.value));
+  const handleValidation = (field, value) => {
+    setErrors(validateField(field, value));
   };
 
+  const handleChange = (props, field) => (event) => {
+    props.onChange(event); // Update the value using custom hook
+    handleValidation(field, event.target.value); // Validate the input field
+    if (touched[field]) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [field]: validateField(field, event.target.value),
+      }));
+    }
+  };
+
+  const handleBlur = (props, field) => (event) => {
+    handleValidation(field, event.target.value )
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -76,6 +98,8 @@ const CreateOrEditShareholderForm = () => {
     cityProps.reset();
     addressProps.reset();
     shareQuantity.reset();
+    setErrors({});
+    setTouched({});
   }
 
   return (
@@ -88,90 +112,101 @@ const CreateOrEditShareholderForm = () => {
         Lisää uusi omistaja
       </Typography>
       <Stack flexDirection="row" sx={{ gap: 2 }} justifyContent="center">
-        <FormControl sx={{ mt: 4 }} error ={!!errors.name}>
+        <FormControl sx={{ mt: 4 }} error={!!errors.name}>
           <FormLabel>Nimi</FormLabel>
           <Input
             sx={{ width: "300px" }}
             placeholder="Nimi"
             value={nameProps.value}
-            onChange={nameProps.onChange}
+            onChange={handleChange(nameProps, "name")}
             onBlur={handleBlur(nameProps, "name")}
           />
-           {!!errors.name && <FormHelperText>{errors.name}</FormHelperText>}
+          {!!errors.name && <FormHelperText>{errors.name}</FormHelperText>}
         </FormControl>
-        <FormControl sx={{ mt: 4 }} error ={!!errors.personalId}>
+        <FormControl sx={{ mt: 4 }} error={!!errors.personalId}>
           <FormLabel>Hetu/Y-tunnus</FormLabel>
           <Input
             sx={{ width: "300px" }}
             placeholder="Y-tunnus"
             value={personalIdProps.value}
-            onChange={personalIdProps.onChange}
+            onChange={handleChange(personalIdProps, "personalId")}
             onBlur={handleBlur(personalIdProps, "personalId")}
           />
-           {!!errors.personalId && <FormHelperText>{errors.personalId}</FormHelperText>}
+          {!!errors.personalId && (
+            <FormHelperText>{errors.personalId}</FormHelperText>
+          )}
         </FormControl>
       </Stack>
       <Stack flexDirection="row" sx={{ gap: 2 }} justifyContent="center">
-        <FormControl sx={{ mt: 3 }} error ={!!errors.phoneNumber}>
+        <FormControl sx={{ mt: 3 }} error={!!errors.phoneNumber}>
           <FormLabel>Puhelin numero</FormLabel>
           <Input
             value={phoneNumberProps.value}
-            onChange={phoneNumberProps.onChange}
+            onChange={(event) => {
+              phoneNumberProps.onChange(event);
+              handleChange("phoneNumber", event.target.value);
+            }}
             name="phoneNumber"
             placeholder="Placeholder"
             sx={{ width: "300px" }}
             slotProps={{ input: { component: TextMaskAdapter } }}
             onBlur={handleBlur(phoneNumberProps, "phoneNumber")}
           />
-           {!!errors.phoneNumber && <FormHelperText>{errors.phoneNumber}</FormHelperText>}
+          {!!errors.phoneNumber && typeof errors.phoneNumber === "string" && (
+            <FormHelperText>{errors.phoneNumber}</FormHelperText>
+          )}
         </FormControl>
-        <FormControl sx={{ mt: 3 }} error ={!!errors.email}>
+        <FormControl sx={{ mt: 3 }} error={!!errors.email}>
           <FormLabel>Sähköposti osoite</FormLabel>
           <Input
             sx={{ width: "300px" }}
             placeholder="Sähköposti osoite"
             value={emailProps.value}
-            onChange={emailProps.onChange}
+            onChange={handleChange(emailProps, "email")}
             onBlur={handleBlur(emailProps, "email")}
           />
-            {!!errors.email && <FormHelperText>{errors.email}</FormHelperText>}
+          {!!errors.email && <FormHelperText>{errors.email}</FormHelperText>}
         </FormControl>
       </Stack>
       <Stack flexDirection="row" sx={{ gap: 2 }} justifyContent="center">
-        <FormControl sx={{ mt: 3 }} error ={!!errors.city}>
+        <FormControl sx={{ mt: 3 }} error={!!errors.city}>
           <FormLabel>Kotipaikka</FormLabel>
           <Input
             sx={{ width: "300px" }}
             placeholder="Kotipaikka"
             value={cityProps.value}
-            onChange={cityProps.onChange}
+            onChange={handleChange(cityProps, "city")}
             onBlur={handleBlur(cityProps, "city")}
           />
-            {!!errors.city && <FormHelperText>{errors.city}</FormHelperText>}
+          {!!errors.city && <FormHelperText>{errors.city}</FormHelperText>}
         </FormControl>
-        <FormControl sx={{ mt: 3 }} error ={!!errors.address}>
+        <FormControl sx={{ mt: 3 }} error={!!errors.address}>
           <FormLabel>Postiosoite</FormLabel>
           <Input
             value={addressProps.value}
-            onChange={addressProps.onChange}
+            onChange={handleChange(addressProps, "address")}
             placeholder="Postiosoite"
             sx={{ width: "300px" }}
             onBlur={handleBlur(addressProps, "address")}
           />
-           {!!errors.address && <FormHelperText>{errors.address}</FormHelperText>}
+          {!!errors.address && (
+            <FormHelperText>{errors.address}</FormHelperText>
+          )}
         </FormControl>
       </Stack>
       <Stack flexDirection="row" sx={{ gap: 2 }} justifyContent="center">
-        <FormControl sx={{ mt: 3 }} error ={!!errors.bankAccountNumber}>
+        <FormControl sx={{ mt: 3 }} error={!!errors.bankAccountNumber}>
           <FormLabel>Tili numero</FormLabel>
           <Input
             value={bankAccountNumberProps.value}
-            onChange={bankAccountNumberProps.onChange}
+            onChange={handleChange(bankAccountNumberProps, "bankAccountNumber")}
             placeholder="Tili numero"
             sx={{ width: "300px" }}
             onBlur={handleBlur(bankAccountNumberProps, "bankAccountNumber")}
           />
-           {!!errors.bankAccountNumber&& <FormHelperText>{errors.bankAccountNumber}</FormHelperText>}
+          {!!errors.bankAccountNumber && (
+            <FormHelperText>{errors.bankAccountNumber}</FormHelperText>
+          )}
         </FormControl>
         <FormControl sx={{ mt: 3 }}>
           <FormLabel>Lisää osakeet (Kpl)</FormLabel>
@@ -189,6 +224,7 @@ const CreateOrEditShareholderForm = () => {
           <Button
             sx={{ backgroundColor: "#317A26", width: "300px", mt: 1 }}
             onClick={handleSubmit}
+            disabled={isSubmitDisabled}
           >
             Submit
           </Button>

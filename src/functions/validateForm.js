@@ -2,7 +2,7 @@ export const validateField = (name, value) => {
     let error = "";
     switch (name) {
       case "name":
-        error = value.trim() ? "" : "Name is required";
+        error = value.trim() ? "" : "Nimi on pakollinen";
         break;
       case "email":
         error =
