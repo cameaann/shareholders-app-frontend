@@ -25,16 +25,12 @@ const saveShareholder = async (formData) => {
       phoneNumber: formData.phoneNumber,
       bankAccountNumber: formData.bankAccountNumber,
     },
-    shares: [
-      {
-        quantity: formData.quantity
-      }
-    ]
+    shares: formData.quantity
   };
 
   if(formData.quantity > 0){
     console.log(formData.quantity);
-    payload.shares.quantity = parseInt(formData.quantity);
+    payload.shares = parseInt(formData.quantity);
   }
   console.log(JSON.stringify(payload));
   try {
@@ -44,9 +40,9 @@ const saveShareholder = async (formData) => {
     });
 
     if (response.status === 200) {
-      alert("Shareholder saved successfully!");
+      // alert("Shareholder saved successfully!");
       return true;
-      // Optionally, clear form here
+
     } else {
       alert("Failed to save shareholder");
     }
