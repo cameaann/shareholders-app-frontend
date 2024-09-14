@@ -14,7 +14,6 @@ const ShareholdersTable = ({ shareholders }) => {
 
   useEffect(() => {
     let sum = shareholders.reduce((acc, person) => {
-      console.log("Person's total shares", person.totalShares);
       return acc + person.totalShares;
     }, 0); 
     setTotalShares(sum);

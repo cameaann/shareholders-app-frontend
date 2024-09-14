@@ -28,7 +28,6 @@ const CustomTabPanels = () => {
     getTotalSharesQuantity()
     .then((res) => {
         setSharesTotalQuantity(res.totalShares);
-      console.log(sharesTotalQuantity);
     })
     .catch(() => {
       setSharesTotalQuantity(0);
