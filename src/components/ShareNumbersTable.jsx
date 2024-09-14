@@ -13,7 +13,9 @@ const ShareNumbersTable = ({ sharenumbers, sharesTotalQuantity }) => {
     return total;
   };
 
-  sharesTotalQuantity = sharesTotalQuantity - getTotalAmount();
+  if(sharesTotalQuantity>0){
+    sharesTotalQuantity = sharesTotalQuantity - getTotalAmount();
+  }
 
   return (
     <Box>
