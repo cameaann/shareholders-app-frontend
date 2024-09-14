@@ -13,7 +13,10 @@ import { saveShareholder } from "../services/shareholdersService";
 import { useEffect, useState } from "react";
 import { validateField } from "../functions/validateForm";
 
-const CreateOrEditShareholderForm = ({ sharesTotalQuantity, onAddingMainShareholder}) => {
+const CreateOrEditShareholderForm = ({
+  sharesTotalQuantity,
+  onAddingMainShareholder,
+}) => {
   const nameProps = useFormInput();
   const emailProps = useFormInput();
   const phoneNumberProps = useFormInput("(100) 000-0000");
@@ -24,8 +27,8 @@ const CreateOrEditShareholderForm = ({ sharesTotalQuantity, onAddingMainSharehol
   const shareQuantity = useFormInput(0);
 
   const [errors, setErrors] = useState({});
+  const [touched, setTouched] = useState({});
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
-  const [isDataSending, setDataSending] = useState(false);
 
   useEffect(() => {
     const formHasErrors = Object.values(errors).some((error) => error);
@@ -37,7 +40,6 @@ const CreateOrEditShareholderForm = ({ sharesTotalQuantity, onAddingMainSharehol
       bankAccountNumberProps.value,
       cityProps.value,
       addressProps.value,
-      shareQuantity.value,
     ].some((field) => !field);
 
     setIsSubmitDisabled(formHasErrors || isFormIncomplete);
@@ -50,23 +52,29 @@ const CreateOrEditShareholderForm = ({ sharesTotalQuantity, onAddingMainSharehol
     bankAccountNumberProps.value,
     cityProps.value,
     addressProps.value,
-    shareQuantity.value,
   ]);
-  let count = 0;
 
-  useEffect(() => {
-    console.log(isDataSending);
-  }, [isDataSending]);
+  const handleValidation = (field, value) => {
+    setErrors(validateField(field, value));
+  };
 
-  console.log("count", count);
+  const handleChange = (props, field) => (event) => {
+    props.onChange(event); // Update the value using custom hook
+    handleValidation(field, event.target.value); // Validate the input field
+    if (touched[field]) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [field]: validateField(field, event.target.value),
+      }));
+    }
+  };
 
   const handleBlur = (props, field) => (event) => {
-    setErrors(validateField(field, event.target.value));
+    handleValidation(field, event.target.value);
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    setDataSending(true);
     const formData = {
       name: nameProps.value,
       phoneNumber: phoneNumberProps.value,
@@ -77,16 +85,14 @@ const CreateOrEditShareholderForm = ({ sharesTotalQuantity, onAddingMainSharehol
       address: addressProps.value,
       quantity: shareQuantity.value,
     };
-    saveShareholder(formData).then(res => {
-      if(res){
-        setDataSending(false);
+    saveShareholder(formData).then((res) => {
+      if (res) {
         resetForm();
-        onAddingMainShareholder(res)
-      }
-      else{
+        onAddingMainShareholder(res);
+      } else {
         console.log("Failed");
       }
-    })
+    });
   };
 
   function resetForm() {
@@ -98,6 +104,8 @@ const CreateOrEditShareholderForm = ({ sharesTotalQuantity, onAddingMainSharehol
     cityProps.reset();
     addressProps.reset();
     shareQuantity.reset();
+    setErrors({});
+    setTouched({});
   }
 
   return (
@@ -116,7 +124,7 @@ const CreateOrEditShareholderForm = ({ sharesTotalQuantity, onAddingMainSharehol
             sx={{ width: "300px" }}
             placeholder="Nimi"
             value={nameProps.value}
-            onChange={nameProps.onChange}
+            onChange={handleChange(nameProps, "name")}
             onBlur={handleBlur(nameProps, "name")}
           />
           {!!errors.name && <FormHelperText>{errors.name}</FormHelperText>}
@@ -127,7 +135,7 @@ const CreateOrEditShareholderForm = ({ sharesTotalQuantity, onAddingMainSharehol
             sx={{ width: "300px" }}
             placeholder="Y-tunnus"
             value={personalIdProps.value}
-            onChange={personalIdProps.onChange}
+            onChange={handleChange(personalIdProps, "personalId")}
             onBlur={handleBlur(personalIdProps, "personalId")}
           />
           {!!errors.personalId && (
@@ -140,14 +148,18 @@ const CreateOrEditShareholderForm = ({ sharesTotalQuantity, onAddingMainSharehol
           <FormLabel>Puhelin numero</FormLabel>
           <Input
             value={phoneNumberProps.value}
-            onChange={phoneNumberProps.onChange}
+            onChange={(event) => {
+              phoneNumberProps.onChange(event);
+              handleChange("phoneNumber", event.target.value);
+            }}
             name="phoneNumber"
             placeholder="Placeholder"
             sx={{ width: "300px" }}
             slotProps={{ input: { component: TextMaskAdapter } }}
             onBlur={handleBlur(phoneNumberProps, "phoneNumber")}
           />
-          {!!errors.phoneNumber && (
+
+          {!!errors.phoneNumber && typeof errors.phoneNumber === "string" && (
             <FormHelperText>{errors.phoneNumber}</FormHelperText>
           )}
         </FormControl>
@@ -157,7 +169,7 @@ const CreateOrEditShareholderForm = ({ sharesTotalQuantity, onAddingMainSharehol
             sx={{ width: "300px" }}
             placeholder="Sähköposti osoite"
             value={emailProps.value}
-            onChange={emailProps.onChange}
+            onChange={handleChange(emailProps, "email")}
             onBlur={handleBlur(emailProps, "email")}
           />
           {!!errors.email && <FormHelperText>{errors.email}</FormHelperText>}
@@ -170,7 +182,7 @@ const CreateOrEditShareholderForm = ({ sharesTotalQuantity, onAddingMainSharehol
             sx={{ width: "300px" }}
             placeholder="Kotipaikka"
             value={cityProps.value}
-            onChange={cityProps.onChange}
+            onChange={handleChange(cityProps, "city")}
             onBlur={handleBlur(cityProps, "city")}
           />
           {!!errors.city && <FormHelperText>{errors.city}</FormHelperText>}
@@ -179,7 +191,7 @@ const CreateOrEditShareholderForm = ({ sharesTotalQuantity, onAddingMainSharehol
           <FormLabel>Postiosoite</FormLabel>
           <Input
             value={addressProps.value}
-            onChange={addressProps.onChange}
+            onChange={handleChange(addressProps, "address")}
             placeholder="Postiosoite"
             sx={{ width: "300px" }}
             onBlur={handleBlur(addressProps, "address")}
@@ -194,7 +206,7 @@ const CreateOrEditShareholderForm = ({ sharesTotalQuantity, onAddingMainSharehol
           <FormLabel>Tili numero</FormLabel>
           <Input
             value={bankAccountNumberProps.value}
-            onChange={bankAccountNumberProps.onChange}
+            onChange={handleChange(bankAccountNumberProps, "bankAccountNumber")}
             placeholder="Tili numero"
             sx={{ width: "300px" }}
             onBlur={handleBlur(bankAccountNumberProps, "bankAccountNumber")}
@@ -203,7 +215,7 @@ const CreateOrEditShareholderForm = ({ sharesTotalQuantity, onAddingMainSharehol
             <FormHelperText>{errors.bankAccountNumber}</FormHelperText>
           )}
         </FormControl>
-        {sharesTotalQuantity> 0 ? (
+        {sharesTotalQuantity > 0 ? (
           <Typography sx={{ width: "300px" }}></Typography>
         ) : (
           <FormControl sx={{ mt: 3 }}>
@@ -223,6 +235,7 @@ const CreateOrEditShareholderForm = ({ sharesTotalQuantity, onAddingMainSharehol
           <Button
             sx={{ backgroundColor: "#317A26", width: "300px", mt: 1 }}
             onClick={handleSubmit}
+            disabled={isSubmitDisabled}
           >
             Submit
           </Button>
