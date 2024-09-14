@@ -60,16 +60,17 @@ const CreateOrEditShareholderForm = ({
 
   const handleChange = (props, field) => (event) => {
     props.onChange(event); // Update the value using custom hook
-    handleValidation(field, event.target.value); // Validate the input field
+   
     if (touched[field]) {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        [field]: validateField(field, event.target.value),
-      }));
+      handleValidation(field, event.target.value);
     }
   };
 
   const handleBlur = (props, field) => (event) => {
+    setTouched((prevTouched) => ({
+      ...prevTouched,
+      [field]: true,
+    }));
     handleValidation(field, event.target.value);
   };
 

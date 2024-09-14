@@ -41,9 +41,6 @@ export const validateField = (name, value) => {
             ? "Anna kelvollinen postiosoite"
             : "";
         break;
-      case "shareQuantity":
-        error = !value || isNaN(value) ? "Anna kelvollinen osakemäärä" : "";
-        break;
       default:
         break;
     }
