@@ -5,7 +5,7 @@ import {
   FormLabel,
   Input,
   Button,
-  FormHelperText
+  FormHelperText,
 } from "@mui/joy";
 import { useFormInput } from "../hooks/useFormInput";
 import { TextMaskAdapter } from "./TextMaskAdapter";
@@ -13,7 +13,7 @@ import { saveShareholder } from "../services/shareholdersService";
 import { useEffect, useState } from "react";
 import { validateField } from "../functions/validateForm";
 
-const CreateOrEditShareholderForm = () => {
+const CreateOrEditShareholderForm = ({ sharesTotalQuantity, onAddingMainShareholder}) => {
   const nameProps = useFormInput();
   const emailProps = useFormInput();
   const phoneNumberProps = useFormInput("(100) 000-0000");
@@ -25,6 +25,7 @@ const CreateOrEditShareholderForm = () => {
 
   const [errors, setErrors] = useState({});
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
+  const [isDataSending, setDataSending] = useState(false);
 
   useEffect(() => {
     const formHasErrors = Object.values(errors).some((error) => error);
@@ -38,19 +39,34 @@ const CreateOrEditShareholderForm = () => {
       addressProps.value,
       shareQuantity.value,
     ].some((field) => !field);
-    
-    setIsSubmitDisabled(formHasErrors || isFormIncomplete);
-  }, [errors, nameProps.value, emailProps.value, phoneNumberProps.value, personalIdProps.value, bankAccountNumberProps.value, cityProps.value, addressProps.value, shareQuantity.value]);
 
+    setIsSubmitDisabled(formHasErrors || isFormIncomplete);
+  }, [
+    errors,
+    nameProps.value,
+    emailProps.value,
+    phoneNumberProps.value,
+    personalIdProps.value,
+    bankAccountNumberProps.value,
+    cityProps.value,
+    addressProps.value,
+    shareQuantity.value,
+  ]);
+  let count = 0;
+
+  useEffect(() => {
+    console.log(isDataSending);
+  }, [isDataSending]);
+
+  console.log("count", count);
 
   const handleBlur = (props, field) => (event) => {
     setErrors(validateField(field, event.target.value));
   };
 
-
   const handleSubmit = (event) => {
     event.preventDefault();
-
+    setDataSending(true);
     const formData = {
       name: nameProps.value,
       phoneNumber: phoneNumberProps.value,
@@ -61,10 +77,16 @@ const CreateOrEditShareholderForm = () => {
       address: addressProps.value,
       quantity: shareQuantity.value,
     };
-    const isSuccess = saveShareholder(formData);
-    if (isSuccess) {
-      resetForm();
-    }
+    saveShareholder(formData).then(res => {
+      if(res){
+        setDataSending(false);
+        resetForm();
+        onAddingMainShareholder(res)
+      }
+      else{
+        console.log("Failed");
+      }
+    })
   };
 
   function resetForm() {
@@ -88,7 +110,7 @@ const CreateOrEditShareholderForm = () => {
         Lisää uusi omistaja
       </Typography>
       <Stack flexDirection="row" sx={{ gap: 2 }} justifyContent="center">
-        <FormControl sx={{ mt: 4 }} error ={!!errors.name}>
+        <FormControl sx={{ mt: 4 }} error={!!errors.name}>
           <FormLabel>Nimi</FormLabel>
           <Input
             sx={{ width: "300px" }}
@@ -97,9 +119,9 @@ const CreateOrEditShareholderForm = () => {
             onChange={nameProps.onChange}
             onBlur={handleBlur(nameProps, "name")}
           />
-           {!!errors.name && <FormHelperText>{errors.name}</FormHelperText>}
+          {!!errors.name && <FormHelperText>{errors.name}</FormHelperText>}
         </FormControl>
-        <FormControl sx={{ mt: 4 }} error ={!!errors.personalId}>
+        <FormControl sx={{ mt: 4 }} error={!!errors.personalId}>
           <FormLabel>Hetu/Y-tunnus</FormLabel>
           <Input
             sx={{ width: "300px" }}
@@ -108,11 +130,13 @@ const CreateOrEditShareholderForm = () => {
             onChange={personalIdProps.onChange}
             onBlur={handleBlur(personalIdProps, "personalId")}
           />
-           {!!errors.personalId && <FormHelperText>{errors.personalId}</FormHelperText>}
+          {!!errors.personalId && (
+            <FormHelperText>{errors.personalId}</FormHelperText>
+          )}
         </FormControl>
       </Stack>
       <Stack flexDirection="row" sx={{ gap: 2 }} justifyContent="center">
-        <FormControl sx={{ mt: 3 }} error ={!!errors.phoneNumber}>
+        <FormControl sx={{ mt: 3 }} error={!!errors.phoneNumber}>
           <FormLabel>Puhelin numero</FormLabel>
           <Input
             value={phoneNumberProps.value}
@@ -123,9 +147,11 @@ const CreateOrEditShareholderForm = () => {
             slotProps={{ input: { component: TextMaskAdapter } }}
             onBlur={handleBlur(phoneNumberProps, "phoneNumber")}
           />
-           {!!errors.phoneNumber && <FormHelperText>{errors.phoneNumber}</FormHelperText>}
+          {!!errors.phoneNumber && (
+            <FormHelperText>{errors.phoneNumber}</FormHelperText>
+          )}
         </FormControl>
-        <FormControl sx={{ mt: 3 }} error ={!!errors.email}>
+        <FormControl sx={{ mt: 3 }} error={!!errors.email}>
           <FormLabel>Sähköposti osoite</FormLabel>
           <Input
             sx={{ width: "300px" }}
@@ -134,11 +160,11 @@ const CreateOrEditShareholderForm = () => {
             onChange={emailProps.onChange}
             onBlur={handleBlur(emailProps, "email")}
           />
-            {!!errors.email && <FormHelperText>{errors.email}</FormHelperText>}
+          {!!errors.email && <FormHelperText>{errors.email}</FormHelperText>}
         </FormControl>
       </Stack>
       <Stack flexDirection="row" sx={{ gap: 2 }} justifyContent="center">
-        <FormControl sx={{ mt: 3 }} error ={!!errors.city}>
+        <FormControl sx={{ mt: 3 }} error={!!errors.city}>
           <FormLabel>Kotipaikka</FormLabel>
           <Input
             sx={{ width: "300px" }}
@@ -147,9 +173,9 @@ const CreateOrEditShareholderForm = () => {
             onChange={cityProps.onChange}
             onBlur={handleBlur(cityProps, "city")}
           />
-            {!!errors.city && <FormHelperText>{errors.city}</FormHelperText>}
+          {!!errors.city && <FormHelperText>{errors.city}</FormHelperText>}
         </FormControl>
-        <FormControl sx={{ mt: 3 }} error ={!!errors.address}>
+        <FormControl sx={{ mt: 3 }} error={!!errors.address}>
           <FormLabel>Postiosoite</FormLabel>
           <Input
             value={addressProps.value}
@@ -158,11 +184,13 @@ const CreateOrEditShareholderForm = () => {
             sx={{ width: "300px" }}
             onBlur={handleBlur(addressProps, "address")}
           />
-           {!!errors.address && <FormHelperText>{errors.address}</FormHelperText>}
+          {!!errors.address && (
+            <FormHelperText>{errors.address}</FormHelperText>
+          )}
         </FormControl>
       </Stack>
       <Stack flexDirection="row" sx={{ gap: 2 }} justifyContent="center">
-        <FormControl sx={{ mt: 3 }} error ={!!errors.bankAccountNumber}>
+        <FormControl sx={{ mt: 3 }} error={!!errors.bankAccountNumber}>
           <FormLabel>Tili numero</FormLabel>
           <Input
             value={bankAccountNumberProps.value}
@@ -171,17 +199,23 @@ const CreateOrEditShareholderForm = () => {
             sx={{ width: "300px" }}
             onBlur={handleBlur(bankAccountNumberProps, "bankAccountNumber")}
           />
-           {!!errors.bankAccountNumber&& <FormHelperText>{errors.bankAccountNumber}</FormHelperText>}
+          {!!errors.bankAccountNumber && (
+            <FormHelperText>{errors.bankAccountNumber}</FormHelperText>
+          )}
         </FormControl>
-        <FormControl sx={{ mt: 3 }}>
-          <FormLabel>Lisää osakeet (Kpl)</FormLabel>
-          <Input
-            sx={{ width: "300px" }}
-            placeholder="0"
-            value={shareQuantity.value}
-            onChange={shareQuantity.onChange}
-          />
-        </FormControl>
+        {sharesTotalQuantity> 0 ? (
+          <Typography sx={{ width: "300px" }}></Typography>
+        ) : (
+          <FormControl sx={{ mt: 3 }}>
+            <FormLabel>Lisää osakeet (Kpl)</FormLabel>
+            <Input
+              sx={{ width: "300px" }}
+              placeholder="0"
+              value={shareQuantity.value}
+              onChange={shareQuantity.onChange}
+            />
+          </FormControl>
+        )}
       </Stack>
 
       <Stack sx={{ mt: 7 }}>
