@@ -2,6 +2,7 @@ import TableHeader from "./TableHeader";
 import { Table, IconButton, Box } from "@mui/joy";
 import { FaEdit } from "react-icons/fa";
 import { TableCell, TableRow, TableHead } from "@mui/material";
+import { useState, useEffect } from "react";
 
 const handleEditOnClick = () => {
   // we need endpoint for changing the data?
@@ -9,13 +10,28 @@ const handleEditOnClick = () => {
 };
 
 const ShareholdersTable = ({ shareholders }) => {
+  const [totalShares, setTotalShares] = useState(0);
+
+  useEffect(() => {
+    let sum = shareholders.reduce((acc, person) => {
+      console.log("Person's total shares", person.totalShares);
+      return acc + person.totalShares;
+    }, 0); 
+    setTotalShares(sum);
+  }, [totalShares, shareholders]);
+
   const rows = shareholders.map((person, index) => {
+    let ownship = 0;
+    if (totalShares) {
+      ownship = `${((person.totalShares / totalShares) * 100).toFixed(4)}%`;
+    }
+
     return (
       <TableRow key={index}>
         <TableCell>{index + 1}</TableCell>
         <TableCell>{person.totalShares}</TableCell>
         <TableCell>{person.name}</TableCell>
-        <TableCell>{person.ownershipPercentage}</TableCell>
+        <TableCell>{ownship}</TableCell>
         <TableCell>{person.personalIdOrCompanyId}</TableCell>
         <TableCell>{person.placeOfResidenceOrHeadquarters}</TableCell>
         <TableCell>{person.address}</TableCell>
