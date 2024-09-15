@@ -8,6 +8,7 @@ import {
   Select,
   Option,
   Checkbox,
+  Textarea,
 } from "@mui/joy";
 // import { useFormInput } from "../hooks/useFormInput";
 import { useState, useEffect } from "react";
@@ -24,6 +25,7 @@ const ShareTransferForm = () => {
   const kplProps = useFormInput(0);
   const priceProps = useFormInput(0);
   const saantoDayProps = useFormInput("");
+  const notesProps = useFormInput("");
 
   useEffect(() => {
     getShareholders()
@@ -49,13 +51,11 @@ const ShareTransferForm = () => {
     setChecked(event.target.checked);
   };
 
-  const handleSelectChange =(shareholder)=> (e, newVal) => {
-    if (shareholder === 'seller') {
-      sellerProps.onChange({ target: { value: newVal } });  // Update seller
-
-    } else if (shareholder === 'buyer') {
-      buyerProps.onChange({ target: { value: newVal } });  // Update buyer
-
+  const handleSelectChange = (shareholder) => (e, newVal) => {
+    if (shareholder === "seller") {
+      sellerProps.onChange({ target: { value: newVal } }); // Update seller
+    } else if (shareholder === "buyer") {
+      buyerProps.onChange({ target: { value: newVal } }); // Update buyer
     }
   };
 
@@ -68,9 +68,10 @@ const ShareTransferForm = () => {
       quantity: kplProps.value,
       pricePerShare: priceProps.value,
       saantoDay: saantoDayProps.value,
+      notes: notesProps.value,
       transferTax: checked,
     };
- 
+
     const isSuccess = makeTransfer(formData);
     if (isSuccess) {
       resetForm();
@@ -84,6 +85,7 @@ const ShareTransferForm = () => {
     kplProps.reset();
     priceProps.reset();
     saantoDayProps.reset();
+    notesProps.reset();
   }
 
   return (
@@ -148,7 +150,8 @@ const ShareTransferForm = () => {
         </FormControl>
       </Stack>
       <Stack flexDirection="row" sx={{ gap: 2 }} justifyContent="center">
-        <FormControl sx={{ mt: 3 }}>
+      <Stack>
+      <FormControl sx={{ mt: 3 }}>
           <FormLabel>Saantopäivä</FormLabel>
           <Input
             type="date"
@@ -157,13 +160,23 @@ const ShareTransferForm = () => {
             onChange={saantoDayProps.onChange}
           />
         </FormControl>
-        <FormGroup sx={{ mt: 7, width: "300px" }}>
-          <Checkbox
-            label="Varainsiirtovero"
-            onChange={handleChange}
-            checked={checked}
+        <FormGroup sx={{ width: "300px", mt: 5 }}>
+            <Checkbox
+              label="Varainsiirtovero"
+              onChange={handleChange}
+              checked={checked}
+            />
+          </FormGroup>
+      </Stack>
+        <FormControl sx={{ mt: 3 }}>
+          <FormLabel>Huomautus</FormLabel>
+          <Textarea
+            minRows={4}
+            sx={{ width: "300px" }}
+            value={notesProps.value}
+            onChange={notesProps.onChange}
           />
-        </FormGroup>
+        </FormControl>
       </Stack>
       <Stack sx={{ mt: 7 }}>
         <Stack
