@@ -1,6 +1,7 @@
 import { Box } from "@mui/joy";
 import { useState, useEffect } from "react";
 import HistoryTable from "./HistoryTable";
+import { getHistoryTransferNotes } from "../services/historyTransferService";
 
 
 const initialData = [
@@ -17,12 +18,21 @@ const initialData = [
     }
 ];
 
-const Shareholders = () => {
-  const [historyList, sethistoryList] = useState(initialData);
+const History = () => {
 
-  useEffect(() => {
-    // TODO
-  }, []);
+const [historyList, setHistoryList] = useState(initialData);
+
+useEffect(() => {
+  getHistoryTransferNotes()
+    .then((res) => {
+      if (Array.isArray(res)) {
+        setHistoryList(res);
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}, []);
 
   return (
     <Box>
@@ -31,4 +41,4 @@ const Shareholders = () => {
   );
 };
 
-export default Shareholders;
+export default History;
