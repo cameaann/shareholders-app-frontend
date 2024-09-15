@@ -15,14 +15,24 @@ const CustomTabPanels = () => {
   const [sharesTotalQuantity, setSharesTotalQuantity] = useState();
 
   useEffect(() => {
+   getTotalShares()
+  });
+
+  const handleAddingMainShareholder = (res) =>{
+    if(res){
+      getTotalShares();
+    }
+  }
+
+  async function getTotalShares (){
     getTotalSharesQuantity()
     .then((res) => {
         setSharesTotalQuantity(res.totalShares);
     })
-    .catch((error) => {
-      console.error(error);
+    .catch(() => {
+      setSharesTotalQuantity(0);
     });
-  }, []);
+  }
 
   return (
     <>
@@ -36,7 +46,7 @@ const CustomTabPanels = () => {
         <History />
       </TabPanel>
       <TabPanel value={3} sx={tabPanelStyle}>
-        <CreateOrEditShareholderForm />
+        <CreateOrEditShareholderForm sharesTotalQuantity = { sharesTotalQuantity} onAddingMainShareholder={handleAddingMainShareholder}/>
       </TabPanel>
       <TabPanel value={4} sx={tabPanelStyle}>
         <ShareTransferForm />

@@ -11,6 +11,15 @@ const initialData = [
 
 const MobileShareholders = () => {
   const [shareholdersList, setShareholders] = useState(initialData);
+  const [totalShares, setTotalShares] = useState(0);
+
+  useEffect(() => {
+    let sum = shareholdersList.reduce((acc, person) => {
+      console.log("Person's total shares", person.totalShares);
+      return acc + person.totalShares;
+    }, 0);
+    setTotalShares(sum);
+  }, [totalShares, shareholdersList]);
 
   useEffect(() => {
     getShareholders()
@@ -31,9 +40,15 @@ const MobileShareholders = () => {
         gap: 2,
       }}
     >
-      {shareholdersList.map((shareholder, index) => (
-        <ShareholdersCard key={index} shareholder={shareholder} />
-      ))}
+      {shareholdersList.map((shareholder, index) => {
+        let ownship = 0;
+        if (totalShares) {
+          ownship = `${((shareholder.totalShares / totalShares) * 100).toFixed(
+            4
+          )}%`;
+        }
+        return <ShareholdersCard key={index} shareholder={shareholder} ownship={ownship} />;
+      })}
     </Box>
   );
 };

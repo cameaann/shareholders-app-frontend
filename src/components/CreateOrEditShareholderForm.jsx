@@ -13,7 +13,10 @@ import { saveShareholder } from "../services/shareholdersService";
 import { useEffect, useState } from "react";
 import { validateField } from "../functions/validateForm";
 
-const CreateOrEditShareholderForm = () => {
+const CreateOrEditShareholderForm = ({
+  sharesTotalQuantity,
+  onAddingMainShareholder,
+}) => {
   const nameProps = useFormInput();
   const emailProps = useFormInput();
   const phoneNumberProps = useFormInput("(100) 000-0000");
@@ -57,22 +60,22 @@ const CreateOrEditShareholderForm = () => {
 
   const handleChange = (props, field) => (event) => {
     props.onChange(event); // Update the value using custom hook
-    handleValidation(field, event.target.value); // Validate the input field
+   
     if (touched[field]) {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        [field]: validateField(field, event.target.value),
-      }));
+      handleValidation(field, event.target.value);
     }
   };
 
   const handleBlur = (props, field) => (event) => {
-    handleValidation(field, event.target.value )
+    setTouched((prevTouched) => ({
+      ...prevTouched,
+      [field]: true,
+    }));
+    handleValidation(field, event.target.value);
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
     const formData = {
       name: nameProps.value,
       phoneNumber: phoneNumberProps.value,
@@ -83,10 +86,14 @@ const CreateOrEditShareholderForm = () => {
       address: addressProps.value,
       quantity: shareQuantity.value,
     };
-    const isSuccess = saveShareholder(formData);
-    if (isSuccess) {
-      resetForm();
-    }
+    saveShareholder(formData).then((res) => {
+      if (res) {
+        resetForm();
+        onAddingMainShareholder(res);
+      } else {
+        console.log("Failed");
+      }
+    });
   };
 
   function resetForm() {
@@ -152,6 +159,7 @@ const CreateOrEditShareholderForm = () => {
             slotProps={{ input: { component: TextMaskAdapter } }}
             onBlur={handleBlur(phoneNumberProps, "phoneNumber")}
           />
+
           {!!errors.phoneNumber && typeof errors.phoneNumber === "string" && (
             <FormHelperText>{errors.phoneNumber}</FormHelperText>
           )}
@@ -208,15 +216,19 @@ const CreateOrEditShareholderForm = () => {
             <FormHelperText>{errors.bankAccountNumber}</FormHelperText>
           )}
         </FormControl>
-        <FormControl sx={{ mt: 3 }}>
-          <FormLabel>Lisää osakeet (Kpl)</FormLabel>
-          <Input
-            sx={{ width: "300px" }}
-            placeholder="0"
-            value={shareQuantity.value}
-            onChange={shareQuantity.onChange}
-          />
-        </FormControl>
+        {sharesTotalQuantity > 0 ? (
+          <Typography sx={{ width: "300px" }}></Typography>
+        ) : (
+          <FormControl sx={{ mt: 3 }}>
+            <FormLabel>Lisää osakeet (Kpl)</FormLabel>
+            <Input
+              sx={{ width: "300px" }}
+              placeholder="0"
+              value={shareQuantity.value}
+              onChange={shareQuantity.onChange}
+            />
+          </FormControl>
+        )}
       </Stack>
 
       <Stack sx={{ mt: 7 }}>

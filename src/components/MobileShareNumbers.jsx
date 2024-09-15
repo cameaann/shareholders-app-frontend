@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/joy";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import ShareNumbersCard from "./ShareNumbersCard";
 import { getShares } from "../services/sharesService";
 
@@ -31,7 +31,9 @@ const MobileShareNumbers = ({ sharesTotalQuantity}) => {
     return total;
   };
 
-  sharesTotalQuantity = sharesTotalQuantity - getTotalAmount();
+  if(sharesTotalQuantity>0){
+    sharesTotalQuantity = sharesTotalQuantity - getTotalAmount();
+  }
 
   useEffect(() => {
     getShares()

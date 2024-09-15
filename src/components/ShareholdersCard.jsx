@@ -8,7 +8,7 @@ import {
 } from "@mui/joy";
 import { FaEdit } from "react-icons/fa";
 
-const ShareholdersCard = ({ shareholder }) => {
+const ShareholdersCard = ({ shareholder, ownship }) => {
   return (
     <Card>
       <CardContent orientation="vertical">
@@ -20,7 +20,7 @@ const ShareholdersCard = ({ shareholder }) => {
         </Typography>
         <Typography mb={1}>
           <strong>Omistus %: </strong>
-          {shareholder.ownershipPercentage ?? "Omistus %"}
+          {ownship ?? "Omistus %"}
         </Typography>
         <Typography mb={1}>
           <strong>Hetu / Y-tunnus: </strong>
