@@ -22,6 +22,7 @@ const makeTransfer = async (formData) => {
     pricePerShare: formData.pricePerShare,
     transferDate: formData.saantoDay,
     transferTax: formData.transferTax,
+    additionalNotes: formData.notes
   };
 
   try {
