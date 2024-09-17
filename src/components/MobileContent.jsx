@@ -8,18 +8,19 @@ const MobileContent = ({ selectedContent }) => {
   const [sharesTotalQuantity, setSharesTotalQuantity] = useState();
   const content = {
     Osakasluettelo: <MobileShareholders />,
-    Osakenumerot: <MobileShareNumbers sharesTotalQuantity = {sharesTotalQuantity} />,
+    Osakenumerot: (
+      <MobileShareNumbers sharesTotalQuantity={sharesTotalQuantity} />
+    ),
   };
- 
 
   useEffect(() => {
     getTotalSharesQuantity()
-    .then((res) => {
+      .then((res) => {
         setSharesTotalQuantity(res.totalShares);
-    })
-    .catch((error) => {
-      console.error(error);
-    });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }, []);
 
   return (
