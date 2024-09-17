@@ -5,15 +5,16 @@ import { getHistoryTransferNotes } from "../services/historyTransferService";
 
 const initialData = [
   {
-    settelmentDay: "16.5.2023",
-    paymentDate: "25.6.2023",
-    transferor: 9,
-    reciver: 1,
-    transferTax: null,
-    quantity: 35,
-    pricePerShare: 0.135,
-    eur: 4.73,
-    note: "",
+    id: 1,
+    fromShareholderId: 1,
+    toShareholderId: 2,
+    quantity: 122,
+    transferDate: "2024-09-19",
+    paymentDate: null,
+    transferTax: false,
+    pricePerShare: 1,
+    additionalNotes: "",
+    totalAmount: 122,
   },
 ];
 
@@ -36,7 +37,7 @@ const History = ({ filterId }) => {
   useEffect(() => {
     if (filterId !== undefined) {
       const filteredList = historyList.filter(
-        (item) => item.fromShareholderId === parseInt(filterId)
+        (item) => item.fromShareholderId === parseInt(filterId) || item.toShareholderId == parseInt(filterId)
       );
       setFilteredHistoryList(filteredList);
     } else {
