@@ -1,23 +1,49 @@
 import TableHeader from "./TableHeader";
-import { Table, IconButton, Box } from "@mui/joy";
-import { FaEdit } from "react-icons/fa";
+import {
+  Table,
+  IconButton,
+  Box,
+  Dropdown,
+  MenuButton,
+  MenuItem,
+  Menu,
+} from "@mui/joy";
 import { TableCell, TableRow, TableHead } from "@mui/material";
 import { useState, useEffect } from "react";
-
-const handleEditOnClick = () => {
-  // we need endpoint for changing the data?
-  alert("Edit button clicked");
-};
+import { HiDotsVertical } from "react-icons/hi";
+import HistoryModal from "./HistoryModal";
+import EditModal from "./EditModal";
+import AddSharesModal from "./AddSharesModal";
 
 const ShareholdersTable = ({ shareholders }) => {
   const [totalShares, setTotalShares] = useState(0);
+  const [selectedPerson, setSelectedPerson] = useState(null);
+
+  const [isHistoryModalOpen, setHistoryModalOpen] = useState(false);
+  const [isEditModalOpen, setEditModalOpen] = useState(false);
+  const [isAddSharesModalOpen, setAddSharesModalOpen] = useState(false);
 
   useEffect(() => {
     let sum = shareholders.reduce((acc, person) => {
       return acc + person.totalShares;
-    }, 0); 
+    }, 0);
     setTotalShares(sum);
   }, [totalShares, shareholders]);
+
+  const openHistoryModal = (person) => {
+    setSelectedPerson(person);
+    setHistoryModalOpen(true);
+  };
+
+  const openEditModal = (person) => {
+    setSelectedPerson(person);
+    setEditModalOpen(true);
+  };
+
+  const openAddSharesModal = (person) => {
+    setSelectedPerson(person);
+    setAddSharesModalOpen(true);
+  };
 
   const rows = shareholders.map((person, index) => {
     let ownship = 0;
@@ -37,13 +63,22 @@ const ShareholdersTable = ({ shareholders }) => {
         <TableCell>{person.emailAddress}</TableCell>
         <TableCell>{person.phoneNumber}</TableCell>
         <TableCell>
-          <IconButton onClick={handleEditOnClick}>
-            <FaEdit size={20} />
-          </IconButton>
-          {/* 
-          <IconButton>
-            <FaTrashCan size={20} />
-          </IconButton> */}
+          <Dropdown>
+            <MenuButton slots={{ root: IconButton }}>
+              <HiDotsVertical />
+            </MenuButton>
+            <Menu>
+              {index === 0 && (
+                <MenuItem onClick={() => openAddSharesModal(person)}>
+                  Add Shares
+                </MenuItem>
+              )}
+              <MenuItem onClick={() => openEditModal(person)}>Edit</MenuItem>
+              <MenuItem onClick={() => openHistoryModal(person)}>
+                History
+              </MenuItem>
+            </Menu>
+          </Dropdown>
         </TableCell>
       </TableRow>
     );
@@ -76,6 +111,25 @@ const ShareholdersTable = ({ shareholders }) => {
           <tbody>{shareholders.length > 0 ? rows : <div></div>}</tbody>
         </Table>
       </Box>
+      {selectedPerson && (
+        <>
+          <HistoryModal
+            isOpen={isHistoryModalOpen}
+            onClose={() => setHistoryModalOpen(false)}
+            person={selectedPerson}
+          />
+          <EditModal
+            isOpen={isEditModalOpen}
+            onClose={() => setEditModalOpen(false)}
+            person={selectedPerson}
+          />
+          <AddSharesModal
+            isOpen={isAddSharesModalOpen}
+            onClose={() => setAddSharesModalOpen(false)}
+            person={selectedPerson}
+          />
+        </>
+      )}
     </Box>
   );
 };
