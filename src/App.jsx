@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import CustomTabs from "./components/CustomTabs";
 import { Box } from "@mui/joy";
 import MobileContent from "./components/MobileContent";

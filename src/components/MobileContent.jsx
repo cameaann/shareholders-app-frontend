@@ -3,25 +3,48 @@ import MobileShareholders from "./MobileShareholders";
 import MobileShareNumbers from "./MobileShareNumbers";
 import { useState, useEffect } from "react";
 import { getTotalSharesQuantity } from "../services/sharesService";
+import CreateOrEditShareholderForm from "./CreateOrEditShareholderForm";
 
 const MobileContent = ({ selectedContent }) => {
   const [sharesTotalQuantity, setSharesTotalQuantity] = useState();
+
+  useEffect(() => {
+    getTotalShares();
+  });
+
+  const handleAddingMainShareholder = (res) => {
+    if (res) {
+      getTotalShares();
+    }
+  };
+
+  async function getTotalShares() {
+    getTotalSharesQuantity()
+      .then((res) => {
+        setSharesTotalQuantity(res.totalShares);
+      })
+      .catch(() => {
+        setSharesTotalQuantity(0);
+      });
+  }
+
+  let maskedTitle = selectedContent;
+  if (selectedContent === "Lisää uusi omistaja") {
+    maskedTitle = "AddShareholder";
+  }
+
   const content = {
     Osakasluettelo: <MobileShareholders />,
     Osakenumerot: (
       <MobileShareNumbers sharesTotalQuantity={sharesTotalQuantity} />
     ),
+    AddShareholder: (
+      <CreateOrEditShareholderForm
+        sharesTotalQuantity={sharesTotalQuantity}
+        onAddingMainShareholder={handleAddingMainShareholder}
+      />
+    ),
   };
-
-  useEffect(() => {
-    getTotalSharesQuantity()
-      .then((res) => {
-        setSharesTotalQuantity(res.totalShares);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []);
 
   return (
     <Box>
@@ -37,7 +60,7 @@ const MobileContent = ({ selectedContent }) => {
         </Typography>
       </Box>
       <Box sx={{ padding: 2 }}>
-        {content[selectedContent] || (
+        {content[maskedTitle] || (
           <Typography>{selectedContent} content</Typography>
         )}
       </Box>

@@ -7,7 +7,7 @@ import {
   ListItemButton,
   ModalClose,
 } from "@mui/joy";
-import React, { useState } from "react";
+import { useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 
 const MobileNavbar = ({ onMenuSelect }) => {
