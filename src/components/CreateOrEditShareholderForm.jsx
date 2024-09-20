@@ -116,7 +116,7 @@ const CreateOrEditShareholderForm = ({
     <Stack
       justifyContent="center"
       alignContent="center"
-      sx={{ margin: "70px auto", width: "100%" }}
+      sx={{ margin: isSmallScreen? "40px auto" : "70px auto", width: "100%" }}
     >
       {!isSmallScreen ? (
         <Typography
@@ -131,11 +131,11 @@ const CreateOrEditShareholderForm = ({
 
       <Stack
         flexDirection={isSmallScreen ? "column" : "row"}
-        sx={{ gap: 2 }}
+        sx={{ gap: isSmallScreen ? 0 : 2 }}
         justifyContent="center"
         alignItems="center"
       >
-        <FormControl sx={{ mt: 4, width: isSmallScreen ? "290px" : "300px" }} error={!!errors.name} >
+        <FormControl sx={{ mt: isSmallScreen? 1 : 4, width: isSmallScreen ? "290px" : "300px" }} error={!!errors.name} >
           <FormLabel>Nimi</FormLabel>
           <Input
             sx={{ width: isSmallScreen ? "290px" : "300px" }}
@@ -146,7 +146,7 @@ const CreateOrEditShareholderForm = ({
           />
           {!!errors.name && <FormHelperText>{errors.name}</FormHelperText>}
         </FormControl>
-        <FormControl sx={{ mt: 4, width: isSmallScreen ? "290px" : "300px" }} error={!!errors.personalId}>
+        <FormControl sx={{ mt: isSmallScreen? 3 : 4, width: isSmallScreen ? "290px" : "300px" }} error={!!errors.personalId}>
           <FormLabel>Hetu/Y-tunnus</FormLabel>
           <Input
             sx={{ width: isSmallScreen ? "290px" : "300px" }}
@@ -162,7 +162,7 @@ const CreateOrEditShareholderForm = ({
       </Stack>
       <Stack
         flexDirection={isSmallScreen ? "column" : "row"}
-        sx={{ gap: 2 }}
+        sx={{ gap: isSmallScreen ? 0 : 2 }}
         justifyContent="center"
         alignItems="center"
       >
@@ -185,7 +185,7 @@ const CreateOrEditShareholderForm = ({
             <FormHelperText>{errors.phoneNumber}</FormHelperText>
           )}
         </FormControl>
-        <FormControl sx={{ mt: 3, width: isSmallScreen ? "290px" : "300px" }} error={!!errors.email}>
+        <FormControl sx={{  mt: 3, width: isSmallScreen ? "290px" : "300px" }} error={!!errors.email}>
           <FormLabel>Sähköposti osoite</FormLabel>
           <Input
             sx={{ width: isSmallScreen ? "290px" : "300px" }}
@@ -199,11 +199,11 @@ const CreateOrEditShareholderForm = ({
       </Stack>
       <Stack
         flexDirection={isSmallScreen ? "column" : "row"}
-        sx={{ gap: 2 }}
+        sx={{ gap: isSmallScreen ? 0 : 2 }}
         justifyContent="center"
         alignItems="center"
       >
-        <FormControl sx={{ mt: 3, width: isSmallScreen ? "290px" : "300px" }} error={!!errors.city}>
+        <FormControl sx={{  mt: 3, width: isSmallScreen ? "290px" : "300px" }} error={!!errors.city}>
           <FormLabel>Kotipaikka</FormLabel>
           <Input
             sx={{ width: isSmallScreen ? "290px" : "300px" }}
@@ -214,7 +214,7 @@ const CreateOrEditShareholderForm = ({
           />
           {!!errors.city && <FormHelperText>{errors.city}</FormHelperText>}
         </FormControl>
-        <FormControl sx={{ mt: 3, width: isSmallScreen ? "290px" : "300px" }} error={!!errors.address}>
+        <FormControl sx={{  mt: 3, width: isSmallScreen ? "290px" : "300px" }} error={!!errors.address}>
           <FormLabel>Postiosoite</FormLabel>
           <Input
             value={addressProps.value}
@@ -230,11 +230,11 @@ const CreateOrEditShareholderForm = ({
       </Stack>
       <Stack
         flexDirection={isSmallScreen ? "column" : "row"}
-        sx={{ gap: 2 }}
+        sx={{ gap: isSmallScreen ? 0 : 2 }}
         justifyContent="center"
         alignItems="center"
       >
-        <FormControl sx={{ mt: 3, width: isSmallScreen ? "290px" : "300px" }} error={!!errors.bankAccountNumber}>
+        <FormControl sx={{  mt: 3, width: isSmallScreen ? "290px" : "300px" }} error={!!errors.bankAccountNumber}>
           <FormLabel>Tili numero</FormLabel>
           <Input
             value={bankAccountNumberProps.value}
@@ -264,7 +264,7 @@ const CreateOrEditShareholderForm = ({
         )}
       </Stack>
 
-      <Stack sx={{ mt: 7 }}>
+      <Stack sx={{ mt: isSmallScreen? 4 : 7 }}>
         <Stack flexDirection="row" sx={{ gap: 2 }} justifyContent="center">
           <Button
             sx={{
