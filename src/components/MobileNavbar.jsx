@@ -28,9 +28,9 @@ const MobileNavbar = ({ onMenuSelect }) => {
         justifyContent: "space-between",
         alignItems: "center",
         position: "fixed",
-        zIndex: 60,
+        zIndex: 1000,
         width: "100%",
-        background: "white",
+        backgroundColor: "white",
       }}
     >
       <img
