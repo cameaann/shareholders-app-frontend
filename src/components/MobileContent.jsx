@@ -4,6 +4,7 @@ import MobileShareNumbers from "./MobileShareNumbers";
 import { useState, useEffect } from "react";
 import { getTotalSharesQuantity } from "../services/sharesService";
 import CreateOrEditShareholderForm from "./CreateOrEditShareholderForm";
+import ShareTransferForm from "./ShareTransferForm";
 
 const MobileContent = ({ selectedContent }) => {
   const [sharesTotalQuantity, setSharesTotalQuantity] = useState();
@@ -31,6 +32,8 @@ const MobileContent = ({ selectedContent }) => {
   let maskedTitle = selectedContent;
   if (selectedContent === "Lisää uusi omistaja") {
     maskedTitle = "AddShareholder";
+  } else if (selectedContent === "Osakkeen siirto") {
+    maskedTitle = "ShareTransfer";
   }
 
   const content = {
@@ -44,6 +47,7 @@ const MobileContent = ({ selectedContent }) => {
         onAddingMainShareholder={handleAddingMainShareholder}
       />
     ),
+    ShareTransfer: <ShareTransferForm />,
   };
 
   return (
@@ -51,15 +55,19 @@ const MobileContent = ({ selectedContent }) => {
       <Box
         sx={{
           padding: 2,
-          mt: 7,
+          paddingBlockStart: 10,
           borderBottom: "solid 1px #ED6930",
+          position: "fixed",
+          zIndex: 60,
+          width: "100%",
+          backgroundColor: "white",
         }}
       >
         <Typography level="h4" sx={{ color: "#ED6930" }}>
           {selectedContent}
         </Typography>
       </Box>
-      <Box sx={{ padding: 2 }}>
+      <Box sx={{ padding: 2, pt: 10, mt: 10, }}>
         {content[maskedTitle] || (
           <Typography>{selectedContent} content</Typography>
         )}
