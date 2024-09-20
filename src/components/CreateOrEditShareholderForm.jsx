@@ -19,7 +19,6 @@ const CreateOrEditShareholderForm = ({
   onAddingMainShareholder,
 }) => {
   const isSmallScreen = useMediaQuery("(max-width: 660px)");
-  // const isMediumScreen = useMediaQuery("(max-width: 870px)");
   const nameProps = useFormInput();
   const emailProps = useFormInput();
   const phoneNumberProps = useFormInput("(100) 000-0000");
