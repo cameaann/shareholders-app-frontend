@@ -1,5 +1,6 @@
 import { useState } from "react";
 import CustomTabs from "./components/CustomTabs";
+// import Header from "./components/Header";
 import { Box } from "@mui/joy";
 import MobileContent from "./components/MobileContent";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -10,7 +11,7 @@ const App = () => {
 
   const [selectedContent, setSelectedContent] = useState("Osakasluettelo");
 
-  const handleMenuSelect = (menuItem) => setSelectedContent(menuItem)
+  const handleMenuSelect = (menuItem) => setSelectedContent(menuItem);
 
   return (
     <Box
@@ -22,7 +23,10 @@ const App = () => {
       }}
     >
       {!isSmallScreen ? (
-        <CustomTabs />
+        <>
+          {/* <Header /> */}
+          <CustomTabs />
+        </>
       ) : (
         <>
           <MobileNavbar onMenuSelect={handleMenuSelect} />
