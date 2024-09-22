@@ -5,14 +5,20 @@ import { useContext } from "react";
 import { SharesQuantityContext } from "./SharesQuantityProvider";
 import CreateOrEditShareholderForm from "./CreateOrEditShareholderForm";
 import ShareTransferForm from "./ShareTransferForm";
+import { ShareholdersContext } from "./ShareholdersProvider";
 
 const MobileContent = ({ selectedContent }) => {
   const { sharesTotalQuantity, setSharesTotalQuantity } = useContext(SharesQuantityContext);
+  const { shareholdersList, setShareholders} = useContext(ShareholdersContext);
 
   const handleAddingMainShareholder = (res) =>{
     if(res){
       setSharesTotalQuantity(res)
     }
+  }
+
+  const handleOnChange = (res) => {
+    setShareholders(res)
   }
 
   let maskedTitle = selectedContent;
@@ -23,14 +29,13 @@ const MobileContent = ({ selectedContent }) => {
   }
 
   const content = {
-    Osakasluettelo: <MobileShareholders />,
+    Osakasluettelo: <MobileShareholders shareholdersList = {shareholdersList} />,
     Osakenumerot: (
       <MobileShareNumbers sharesTotalQuantity={sharesTotalQuantity} />
     ),
     AddShareholder: (
       <CreateOrEditShareholderForm
-        sharesTotalQuantity={sharesTotalQuantity}
-        onAddingMainShareholder={handleAddingMainShareholder}
+        sharesTotalQuantity = { sharesTotalQuantity} onAddingMainShareholder={handleAddingMainShareholder} onChange = {handleOnChange}
       />
     ),
     ShareTransfer: <ShareTransferForm />,

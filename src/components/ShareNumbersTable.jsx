@@ -6,7 +6,7 @@ import { ShareholdersContext } from "./ShareholdersProvider";
 
 const ShareNumbersTable = ({ sharenumbers, sharesTotalQuantity }) => {
   let checkSum = sharesTotalQuantity;
-  const shareholdersList = useContext(ShareholdersContext);
+  const  { shareholdersList } = useContext(ShareholdersContext);
 
   const getTotalAmount = () => {
     let total = 0;

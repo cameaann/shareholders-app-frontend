@@ -27,7 +27,7 @@ const ShareholdersProvider = ({ children }) => {
     }, []);
   
     return (
-      <ShareholdersContext.Provider value={shareholdersList}>
+      <ShareholdersContext.Provider value={{shareholdersList, setShareholders}}>
         {children}
       </ShareholdersContext.Provider>
     );

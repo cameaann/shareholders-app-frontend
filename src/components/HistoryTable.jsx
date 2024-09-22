@@ -6,7 +6,7 @@ import { ShareholdersContext } from "./ShareholdersProvider";
 
 const HistoryTable = ({ historyList }) => {
   const [paymentDates, setPaymentDates] = useState({});
-  const shareholdersList = useContext(ShareholdersContext);
+  const { shareholdersList } = useContext(ShareholdersContext);
 
   const handleDateChange = (index, event) => {
     setPaymentDates({

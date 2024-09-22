@@ -111,6 +111,7 @@ const ShareTransferForm = () => {
         flexDirection={isSmallScreen ? "column" : "row"}
         sx={{ gap: isSmallScreen ? 0 : 2 }}
         justifyContent="center"
+        alignItems="center"
       >
         <FormControl
           sx={{
@@ -157,6 +158,7 @@ const ShareTransferForm = () => {
         flexDirection={isSmallScreen ? "column" : "row"}
         sx={{ gap: isSmallScreen ? 0 : 2 }}
         justifyContent="center"
+        alignItems="center"
       >
         <FormControl sx={{ mt: 3, width: isSmallScreen ? "290px" : "300px" }}>
           <FormLabel>Kpl</FormLabel>
@@ -181,6 +183,7 @@ const ShareTransferForm = () => {
         flexDirection={isSmallScreen ? "column" : "row"}
         sx={{ gap: isSmallScreen ? 0 : 2 }}
         justifyContent="center"
+        alignItems="center"
       >
         <Stack>
           <FormControl sx={{ mt: 3, width: isSmallScreen ? "290px" : "300px" }}>
@@ -220,6 +223,7 @@ const ShareTransferForm = () => {
           flexDirection={isSmallScreen ? "column" : "row"}
           sx={{ gap: isSmallScreen ? 0 : 2, pt: isSmallScreen ? 2 : 4 }}
           justifyContent="center"
+          alignItems="center"
         >
           <Typography
             sx={{
