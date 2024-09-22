@@ -5,6 +5,7 @@ import MobileContent from "./components/MobileContent";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import MobileNavbar from "./components/MobileNavbar";
 import { SharesQuantityProvider } from "./components/SharesQuantityProvider";
+import ShareholdersProvider from "./components/ShareholdersProvider";
 
 const App = () => {
   const isSmallScreen = useMediaQuery("(max-width: 870px)");
@@ -23,14 +24,16 @@ const App = () => {
       }}
     >
       <SharesQuantityProvider>
-        {!isSmallScreen ? (
-          <CustomTabs />
-        ) : (
-          <>
-            <MobileNavbar onMenuSelect={handleMenuSelect} />
-            <MobileContent selectedContent={selectedContent} />
-          </>
-        )}
+        <ShareholdersProvider>
+          {!isSmallScreen ? (
+            <CustomTabs />
+          ) : (
+            <>
+              <MobileNavbar onMenuSelect={handleMenuSelect} />
+              <MobileContent selectedContent={selectedContent} />
+            </>
+          )}
+        </ShareholdersProvider>
       </SharesQuantityProvider>
     </Box>
   );

@@ -1,16 +1,10 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import ShareholdersCard from "./ShareholdersCard";
 import { Box } from "@mui/joy";
-import { getShareholders } from "../services/shareholdersService";
-
-const initialData = [
-  { id: "bhsd5", name: "Alex" },
-  { id: "bhso9", name: "Kristofer" },
-  { id: "jj2o9", name: "Alexander" },
-];
+import { ShareholdersContext } from "./ShareholdersProvider";
 
 const MobileShareholders = () => {
-  const [shareholdersList, setShareholders] = useState(initialData);
+const shareholdersList = useContext(ShareholdersContext);
   const [totalShares, setTotalShares] = useState(0);
 
   useEffect(() => {
@@ -21,17 +15,7 @@ const MobileShareholders = () => {
     setTotalShares(sum);
   }, [totalShares, shareholdersList]);
 
-  useEffect(() => {
-    getShareholders()
-      .then((res) => {
-        if (Array.isArray(res)) {
-          setShareholders(res);
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []);
+
   return (
     <Box
       sx={{

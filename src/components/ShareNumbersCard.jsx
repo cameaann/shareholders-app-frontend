@@ -1,24 +1,29 @@
+import { useContext } from "react";
 import { Typography, Card, CardContent } from "@mui/joy";
-import React from "react";
+import { ShareholdersContext } from "./ShareholdersProvider";
 
 const ShareNumbersCard = ({ value }) => {
+  const shareholdersList = useContext(ShareholdersContext);
+
+  const shareholder = shareholdersList
+    ? shareholdersList.find((s) => s.id === value.shareholderId)
+    : { name:""};
+    
   return (
     <Card>
       <CardContent orientation="vertical">
         <Typography mb={1}>
-          <strong>Osakenumerot (Alkaen):</strong> {value.startNumber}
-        </Typography>
-        <Typography mb={1}>
-          <strong>Osakenumerot (Päättyen):</strong> {value.endNumber}
+          <strong>Osakenumerot:</strong> {value.startNumber}-{value.endNumber}
         </Typography>
         <Typography mb={1}>
           <strong>Kpl:</strong> {value.quantity}
         </Typography>
         <Typography mb={1}>
-          <strong>Omistaja:</strong> {value.shareholderId}
+          <strong>Omistaja:</strong> {shareholder.name}
         </Typography>
         <Typography mb={1}>
-          <strong>Tarkistuslaskenta (Osakaiden määrä):</strong> {value.endNumber-value.startNumber + 1}
+          <strong>Tarkistuslaskenta:</strong>{" "}
+          {value.endNumber - value.startNumber + 1}
         </Typography>
       </CardContent>
     </Card>
