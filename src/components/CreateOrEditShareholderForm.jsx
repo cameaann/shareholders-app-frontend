@@ -140,12 +140,23 @@ const CreateOrEditShareholderForm = ({
       sx={{ margin: isSmallScreen ? "40px auto" : "70px auto", width: "100%" }}
     >
       {!isSmallScreen ? (
-        <Typography
-          sx={{ fontSize: 22, fontWeight: "bold" }}
-          alignSelf="center"
-        >
-          Lisää uusi omistaja
-        </Typography>
+        <Stack justifyContent="center">
+          {isPersonEditing ? (
+            <Typography
+              sx={{ fontSize: 22, fontWeight: "bold" }}
+              alignSelf="center"
+            >
+              Muokata {person.name}
+            </Typography>
+          ) : (
+            <Typography
+              sx={{ fontSize: 22, fontWeight: "bold" }}
+              alignSelf="center"
+            >
+              Lisää uusi omistaja
+            </Typography>
+          )}
+        </Stack>
       ) : (
         ""
       )}
