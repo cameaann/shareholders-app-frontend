@@ -3,15 +3,37 @@ import MobileShareholders from "./MobileShareholders";
 import MobileShareNumbers from "./MobileShareNumbers";
 import { useContext } from "react";
 import { SharesQuantityContext } from "./SharesQuantityProvider";
+import CreateOrEditShareholderForm from "./CreateOrEditShareholderForm";
+import ShareTransferForm from "./ShareTransferForm";
 
 const MobileContent = ({ selectedContent }) => {
-  const { sharesTotalQuantity } = useContext(SharesQuantityContext);
-  console.log(sharesTotalQuantity);
+  const { sharesTotalQuantity, setSharesTotalQuantity } = useContext(SharesQuantityContext);
+
+  const handleAddingMainShareholder = (res) =>{
+    if(res){
+      setSharesTotalQuantity(res)
+    }
+  }
+
+  let maskedTitle = selectedContent;
+  if (selectedContent === "Lisää uusi omistaja") {
+    maskedTitle = "AddShareholder";
+  } else if (selectedContent === "Osakkeen siirto") {
+    maskedTitle = "ShareTransfer";
+  }
+
   const content = {
     Osakasluettelo: <MobileShareholders />,
     Osakenumerot: (
       <MobileShareNumbers sharesTotalQuantity={sharesTotalQuantity} />
     ),
+    AddShareholder: (
+      <CreateOrEditShareholderForm
+        sharesTotalQuantity={sharesTotalQuantity}
+        onAddingMainShareholder={handleAddingMainShareholder}
+      />
+    ),
+    ShareTransfer: <ShareTransferForm />,
   };
 
   return (
@@ -19,16 +41,20 @@ const MobileContent = ({ selectedContent }) => {
       <Box
         sx={{
           padding: 2,
-          mt: 7,
+          paddingBlockStart: 10,
           borderBottom: "solid 1px #ED6930",
+          position: "fixed",
+          zIndex: 60,
+          width: "100%",
+          backgroundColor: "white",
         }}
       >
         <Typography level="h4" sx={{ color: "#ED6930" }}>
           {selectedContent}
         </Typography>
       </Box>
-      <Box sx={{ padding: 2 }}>
-        {content[selectedContent] || (
+      <Box sx={{ padding: 2, pt: 10, mt: 10, }}>
+        {content[maskedTitle] || (
           <Typography>{selectedContent} content</Typography>
         )}
       </Box>
