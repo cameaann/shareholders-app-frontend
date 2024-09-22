@@ -3,6 +3,7 @@ import TableHeader from "./TableHeader";
 import { Table, Box, Typography } from "@mui/joy";
 
 const ShareNumbersTable = ({ sharenumbers, sharesTotalQuantity }) => {
+  let checkSum = sharesTotalQuantity;
   const getTotalAmount = () => {
     let total = 0;
 
@@ -13,8 +14,8 @@ const ShareNumbersTable = ({ sharenumbers, sharesTotalQuantity }) => {
     return total;
   };
 
-  if(sharesTotalQuantity>0){
-    sharesTotalQuantity = sharesTotalQuantity - getTotalAmount();
+  if(checkSum > 0){
+    checkSum = checkSum - getTotalAmount();
   }
 
   return (
@@ -73,7 +74,7 @@ const ShareNumbersTable = ({ sharenumbers, sharesTotalQuantity }) => {
           <Typography sx={{ gridColumn: "1 / 3", fontWeight: "bold" }}>
             Tarkistussumma
           </Typography>
-          <Typography sx={{ gridColumn: "3 / 4" }}>{sharesTotalQuantity}</Typography>
+          <Typography sx={{ gridColumn: "3 / 4" }}>{checkSum}</Typography>
         </Box>
       </Box>
     </Box>

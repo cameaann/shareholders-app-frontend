@@ -22,6 +22,7 @@ const initialData = [
 
 const MobileShareNumbers = ({ sharesTotalQuantity}) => {
   const [shareNumbersList, setShareNumbersList] = useState(initialData);
+  let checkSum = sharesTotalQuantity;
 
   const getTotalAmount = () => {
     let total = 0;
@@ -31,8 +32,8 @@ const MobileShareNumbers = ({ sharesTotalQuantity}) => {
     return total;
   };
 
-  if(sharesTotalQuantity>0){
-    sharesTotalQuantity = sharesTotalQuantity - getTotalAmount();
+  if(checkSum > 0){
+    checkSum = checkSum - getTotalAmount();
   }
 
   useEffect(() => {
@@ -61,7 +62,7 @@ const MobileShareNumbers = ({ sharesTotalQuantity}) => {
           <Typography fontWeight={"normal"}>{getTotalAmount()}</Typography>
         </Typography>
         <Typography fontWeight={"bold"}>
-          Tarkistussumma: <Typography fontWeight={"normal"}>{sharesTotalQuantity}</Typography>
+          Tarkistussumma: <Typography fontWeight={"normal"}>{checkSum}</Typography>
         </Typography>
       </Box>
       {shareNumbersList.map((value, index) => (
