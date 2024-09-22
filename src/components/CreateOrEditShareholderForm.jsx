@@ -12,23 +12,35 @@ import { TextMaskAdapter } from "./TextMaskAdapter";
 import { saveShareholder } from "../services/shareholdersService";
 import { useEffect, useState } from "react";
 import { validateField } from "../functions/validateForm";
+import { updateShareholder } from "../services/shareholdersService";
 
 const CreateOrEditShareholderForm = ({
   sharesTotalQuantity,
   onAddingMainShareholder,
+  person,
+  isPersonEditing
 }) => {
-  const nameProps = useFormInput();
-  const emailProps = useFormInput();
-  const phoneNumberProps = useFormInput("(100) 000-0000");
-  const personalIdProps = useFormInput();
-  const bankAccountNumberProps = useFormInput();
-  const cityProps = useFormInput();
-  const addressProps = useFormInput();
+  const nameProps = useFormInput(person ? person.name : "");
+  const emailProps = useFormInput(person ? person.emailAddress : "");
+  const phoneNumberProps = useFormInput(
+    person ? person.phoneNumber : "(100) 000-0000"
+  );
+  const personalIdProps = useFormInput(
+    person ? person.personalIdOrCompanyId : ""
+  );
+  const bankAccountNumberProps = useFormInput(
+    person ? person.bankAccountNumber : ""
+  );
+  const cityProps = useFormInput(
+    person ? person.placeOfResidenceOrHeadquarters : ""
+  );
+  const addressProps = useFormInput(person ? person.address : "");
   const shareQuantity = useFormInput(0);
 
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
+
 
   useEffect(() => {
     const formHasErrors = Object.values(errors).some((error) => error);
@@ -60,7 +72,7 @@ const CreateOrEditShareholderForm = ({
 
   const handleChange = (props, field) => (event) => {
     props.onChange(event); // Update the value using custom hook
-   
+
     if (touched[field]) {
       handleValidation(field, event.target.value);
     }
@@ -86,14 +98,25 @@ const CreateOrEditShareholderForm = ({
       address: addressProps.value,
       quantity: shareQuantity.value,
     };
-    saveShareholder(formData).then((res) => {
-      if (res) {
-        resetForm();
-        onAddingMainShareholder(res);
-      } else {
-        console.log("Failed");
-      }
-    });
+    if (isPersonEditing) {
+      console.log(person.id);
+      updateShareholder(formData, person.id).then((res) => {
+        if (res) {
+          resetForm();
+        } else {
+          console.log("Failed");
+        }
+      });
+    } else {
+      saveShareholder(formData).then((res) => {
+        if (res) {
+          resetForm();
+          onAddingMainShareholder(res);
+        } else {
+          console.log("Failed");
+        }
+      });
+    }
   };
 
   function resetForm() {
