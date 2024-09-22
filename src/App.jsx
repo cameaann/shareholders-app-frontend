@@ -4,13 +4,14 @@ import { Box } from "@mui/joy";
 import MobileContent from "./components/MobileContent";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import MobileNavbar from "./components/MobileNavbar";
+import { SharesQuantityProvider } from "./components/SharesQuantityProvider";
 
 const App = () => {
   const isSmallScreen = useMediaQuery("(max-width: 870px)");
 
   const [selectedContent, setSelectedContent] = useState("Osakasluettelo");
 
-  const handleMenuSelect = (menuItem) => setSelectedContent(menuItem)
+  const handleMenuSelect = (menuItem) => setSelectedContent(menuItem);
 
   return (
     <Box
@@ -21,14 +22,16 @@ const App = () => {
         overflowY: "auto",
       }}
     >
-      {!isSmallScreen ? (
-        <CustomTabs />
-      ) : (
-        <>
-          <MobileNavbar onMenuSelect={handleMenuSelect} />
-          <MobileContent selectedContent={selectedContent} />
-        </>
-      )}
+      <SharesQuantityProvider>
+        {!isSmallScreen ? (
+          <CustomTabs />
+        ) : (
+          <>
+            <MobileNavbar onMenuSelect={handleMenuSelect} />
+            <MobileContent selectedContent={selectedContent} />
+          </>
+        )}
+      </SharesQuantityProvider>
     </Box>
   );
 };
