@@ -25,7 +25,10 @@ const App = () => {
     >
       <ShareholdersProvider>
         {!isSmallScreen ? (
-          <CustomTabs />
+          <>
+            <Header />
+            <CustomTabs />
+          </>
         ) : (
           <>
             <MobileNavbar onMenuSelect={handleMenuSelect} />
@@ -33,7 +36,6 @@ const App = () => {
           </>
         )}
       </ShareholdersProvider>
-
     </Box>
   );
 };
