@@ -15,7 +15,7 @@ const CustomTabs = () => {
 
   const [selectedTab, setSelectedTab] = useState(0);
 
-  const handleTabChange = (event, newValue) => setSelectedTab(newValue);
+  const handleTabChange = (_event, newValue) => setSelectedTab(newValue);
 
   return (
     <Tabs
@@ -25,7 +25,7 @@ const CustomTabs = () => {
       sx={{
         backgroundColor: "white",
         flexGrow: "1",
-        padding: 2,
+        padding: "0rem 1rem 1rem 1rem",
       }}
     >
       <TabList
