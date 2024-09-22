@@ -4,34 +4,20 @@ import Shareholders from "./Shareholders";
 import History from "./History";
 import ShareTransferForm from "./ShareTransferForm";
 import Sharenumbers from "./Sharenumbers";
-import { useState, useEffect } from "react";
-import { getTotalSharesQuantity } from "../services/sharesService";
+import { useContext } from "react";
+import { SharesQuantityContext } from "./SharesQuantityProvider";
 
 const CustomTabPanels = () => {
   const tabPanelStyle = {
     border: "solid #ED6930 2px",
   };
 
-  const [sharesTotalQuantity, setSharesTotalQuantity] = useState();
-
-  useEffect(() => {
-   getTotalShares()
-  });
+  const { sharesTotalQuantity, setSharesTotalQuantity } = useContext(SharesQuantityContext);
 
   const handleAddingMainShareholder = (res) =>{
     if(res){
-      getTotalShares();
+      setSharesTotalQuantity(res)
     }
-  }
-
-  async function getTotalShares (){
-    getTotalSharesQuantity()
-    .then((res) => {
-        setSharesTotalQuantity(res.totalShares);
-    })
-    .catch(() => {
-      setSharesTotalQuantity(0);
-    });
   }
 
   return (
