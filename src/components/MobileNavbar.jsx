@@ -7,7 +7,7 @@ import {
   ListItemButton,
   ModalClose,
 } from "@mui/joy";
-import React, { useState } from "react";
+import { useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 
 const MobileNavbar = ({ onMenuSelect }) => {
@@ -28,9 +28,9 @@ const MobileNavbar = ({ onMenuSelect }) => {
         justifyContent: "space-between",
         alignItems: "center",
         position: "fixed",
-        zIndex: 60,
+        zIndex: 1000,
         width: "100%",
-        background: "white",
+        backgroundColor: "white",
       }}
     >
       <img

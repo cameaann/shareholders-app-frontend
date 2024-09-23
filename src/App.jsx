@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import CustomTabs from "./components/CustomTabs";
 import Header from "./components/Header";
 import { Box } from "@mui/joy";

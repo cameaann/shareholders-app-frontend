@@ -16,8 +16,10 @@ import { getShareholders } from "../services/shareholdersService";
 import { FormGroup } from "@mui/material";
 import { useFormInput } from "../hooks/useFormInput";
 import { makeTransfer } from "../services/sharesService";
+import { useMediaQuery } from "@mui/material";
 
 const ShareTransferForm = () => {
+  const isSmallScreen = useMediaQuery("(max-width: 660px)");
   const [shareholdersList, setShareholders] = useState();
   const [checked, setChecked] = useState(false);
   const sellerProps = useFormInput(null);
@@ -92,16 +94,33 @@ const ShareTransferForm = () => {
     <Stack
       justifyContent="center"
       alignContent="center"
-      sx={{ margin: "70px auto", width: "100%" }}
+      sx={{ margin: isSmallScreen ? "40px auto" : "70px auto", width: "100%" }}
     >
-      <Typography sx={{ fontSize: 22, fontWeight: "bold" }} alignSelf="center">
-        Siirto osake
-      </Typography>
-      <Stack flexDirection="row" sx={{ gap: 2 }} justifyContent="center">
-        <FormControl sx={{ mt: 4 }}>
+      {!isSmallScreen ? (
+        <Typography
+          sx={{ fontSize: 22, fontWeight: "bold" }}
+          alignSelf="center"
+        >
+          Siirto osake
+        </Typography>
+      ) : (
+        ""
+      )}
+
+      <Stack
+        flexDirection={isSmallScreen ? "column" : "row"}
+        sx={{ gap: isSmallScreen ? 0 : 2 }}
+        justifyContent="center"
+      >
+        <FormControl
+          sx={{
+            mt: isSmallScreen ? 1 : 4,
+            width: isSmallScreen ? "290px" : "300px",
+          }}
+        >
           <FormLabel>Luovuttaja / Myyjä</FormLabel>
           <Select
-            sx={{ width: "300px" }}
+            sx={{ width: isSmallScreen ? "290px" : "300px" }}
             placeholder="Omistaja"
             name="seller"
             onChange={handleSelectChange("seller")}
@@ -113,10 +132,15 @@ const ShareTransferForm = () => {
             )}
           </Select>
         </FormControl>
-        <FormControl sx={{ mt: 4 }}>
+        <FormControl
+          sx={{
+            mt: isSmallScreen ? 3 : 4,
+            width: isSmallScreen ? "290px" : "300px",
+          }}
+        >
           <FormLabel>Saaja / Ostaja</FormLabel>
           <Select
-            sx={{ width: "300px" }}
+            sx={{ width: isSmallScreen ? "290px" : "300px" }}
             placeholder="Omistaja"
             name="buyer"
             onChange={handleSelectChange("buyer")}
@@ -129,66 +153,87 @@ const ShareTransferForm = () => {
           </Select>
         </FormControl>
       </Stack>
-      <Stack flexDirection="row" sx={{ gap: 2 }} justifyContent="center">
-        <FormControl sx={{ mt: 3 }}>
+      <Stack
+        flexDirection={isSmallScreen ? "column" : "row"}
+        sx={{ gap: isSmallScreen ? 0 : 2 }}
+        justifyContent="center"
+      >
+        <FormControl sx={{ mt: 3, width: isSmallScreen ? "290px" : "300px" }}>
           <FormLabel>Kpl</FormLabel>
           <Input
             value={kplProps.value}
             onChange={kplProps.onChange}
             placeholder=""
-            sx={{ width: "300px" }}
+            sx={{ width: isSmallScreen ? "290px" : "300px" }}
           />
         </FormControl>
-        <FormControl sx={{ mt: 3 }}>
+        <FormControl sx={{ mt: 3, width: isSmallScreen ? "290px" : "300px" }}>
           <FormLabel>Hinta per osake</FormLabel>
           <Input
-            sx={{ width: "300px" }}
+            sx={{ width: isSmallScreen ? "290px" : "300px" }}
             placeholder="Hinta per osake"
             value={priceProps.value}
             onChange={priceProps.onChange}
           />
         </FormControl>
       </Stack>
-      <Stack flexDirection="row" sx={{ gap: 2 }} justifyContent="center">
-      <Stack>
-      <FormControl sx={{ mt: 3 }}>
-          <FormLabel>Saantopäivä</FormLabel>
-          <Input
-            type="date"
-            sx={{ width: "300px" }}
-            value={saantoDayProps.value}
-            onChange={saantoDayProps.onChange}
-          />
-        </FormControl>
-        <FormGroup sx={{ width: "300px", mt: 5 }}>
+      <Stack
+        flexDirection={isSmallScreen ? "column" : "row"}
+        sx={{ gap: isSmallScreen ? 0 : 2 }}
+        justifyContent="center"
+      >
+        <Stack>
+          <FormControl sx={{ mt: 3, width: isSmallScreen ? "290px" : "300px" }}>
+            <FormLabel>Saantopäivä</FormLabel>
+            <Input
+              type="date"
+              sx={{ width: isSmallScreen ? "290px" : "300px" }}
+              value={saantoDayProps.value}
+              onChange={saantoDayProps.onChange}
+            />
+          </FormControl>
+          <FormGroup sx={{ width: isSmallScreen ? "290px" : "300px", mt: 5 }}>
             <Checkbox
               label="Varainsiirtovero"
               onChange={handleChange}
               checked={checked}
             />
           </FormGroup>
-      </Stack>
-        <FormControl sx={{ mt: 3 }}>
+        </Stack>
+        <FormControl
+          sx={{
+            mt: isSmallScreen ? 4 : 3,
+            width: isSmallScreen ? "290px" : "300px",
+          }}
+        >
           <FormLabel>Huomautus</FormLabel>
           <Textarea
             minRows={4}
-            sx={{ width: "300px" }}
+            sx={{ width: isSmallScreen ? "290px" : "300px" }}
             value={notesProps.value}
             onChange={notesProps.onChange}
           />
         </FormControl>
       </Stack>
-      <Stack sx={{ mt: 7 }}>
+      <Stack sx={{ mt: isSmallScreen ? 2 : 7 }}>
         <Stack
-          flexDirection="row"
-          sx={{ gap: 3, pt: 4 }}
+          flexDirection={isSmallScreen ? "column" : "row"}
+          sx={{ gap: isSmallScreen ? 0 : 2, pt: isSmallScreen ? 2 : 4 }}
           justifyContent="center"
         >
-          <Typography sx={{ width: "300px" }}>
-            Total:{priceProps.value * kplProps.value}
+          <Typography
+            sx={{
+              mb: isSmallScreen ? 4 : 0,
+              width: isSmallScreen ? "290px" : "300px",
+            }}
+          >
+            Total: {priceProps.value * kplProps.value} euro
           </Typography>
           <Button
-            sx={{ backgroundColor: "#317A26", width: "300px" }}
+            sx={{
+              backgroundColor: "#317A26",
+              width: isSmallScreen ? "290px" : "300px",
+            }}
             onClick={handleSubmit}
           >
             Submit
