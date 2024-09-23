@@ -1,8 +1,12 @@
 import { TableCell, TableHead, TableRow } from "@mui/material";
 import TableHeader from "./TableHeader";
 import { Table, Box, Typography } from "@mui/joy";
+import { useContext } from "react";
+import { ShareholdersContext } from "./ShareholdersProvider";
 
 const ShareNumbersTable = ({ sharenumbers, sharesTotalQuantity }) => {
+  const shareholdersList = useContext(ShareholdersContext);
+
   const getTotalAmount = () => {
     let total = 0;
 
@@ -13,7 +17,7 @@ const ShareNumbersTable = ({ sharenumbers, sharesTotalQuantity }) => {
     return total;
   };
 
-  if(sharesTotalQuantity>0){
+  if (sharesTotalQuantity > 0) {
     sharesTotalQuantity = sharesTotalQuantity - getTotalAmount();
   }
 
@@ -21,7 +25,12 @@ const ShareNumbersTable = ({ sharenumbers, sharesTotalQuantity }) => {
     <Box>
       <TableHeader />
       <Box>
-        <Table aria-label="share numbers table" hoverRow variant="plain"  sx={{ mt:4 }}>
+        <Table
+          aria-label="share numbers table"
+          hoverRow
+          variant="plain"
+          sx={{ mt: 4 }}
+        >
           <TableHead>
             <TableRow>
               <TableCell>
@@ -44,15 +53,22 @@ const ShareNumbersTable = ({ sharenumbers, sharesTotalQuantity }) => {
             </TableRow>
           </TableHead>
           <tbody>
-            {sharenumbers.map((share, i) => (
-              <TableRow key={i}>
-                <TableCell>{share.startNumber}</TableCell>
-                <TableCell>{share.endNumber}</TableCell>
-                <TableCell>{share.quantity}</TableCell>
-                <TableCell>{share.shareholderId}</TableCell>
-                <TableCell>{share.endNumber-share.startNumber + 1}</TableCell>
-              </TableRow>
-            ))}
+            {sharenumbers.map((share, i) => {
+              const shareholder = shareholdersList
+                ? shareholdersList.find((s) => s.id === share.shareholderId)
+                : { name: "" };
+              return (
+                <TableRow key={i}>
+                  <TableCell>{share.startNumber}</TableCell>
+                  <TableCell>{share.endNumber}</TableCell>
+                  <TableCell>{share.quantity}</TableCell>
+                  <TableCell>{shareholder.name}</TableCell>
+                  <TableCell>
+                    {share.endNumber - share.startNumber + 1}
+                  </TableCell>
+                </TableRow>
+              );
+            })}
           </tbody>
         </Table>
 
@@ -73,7 +89,9 @@ const ShareNumbersTable = ({ sharenumbers, sharesTotalQuantity }) => {
           <Typography sx={{ gridColumn: "1 / 3", fontWeight: "bold" }}>
             Tarkistussumma
           </Typography>
-          <Typography sx={{ gridColumn: "3 / 4" }}>{sharesTotalQuantity}</Typography>
+          <Typography sx={{ gridColumn: "3 / 4" }}>
+            {sharesTotalQuantity}
+          </Typography>
         </Box>
       </Box>
     </Box>
