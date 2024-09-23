@@ -20,6 +20,7 @@ const CreateOrEditShareholderForm = ({
   onAddingMainShareholder,
   person,
   isPersonEditing,
+  handleShareholderChange
 }) => {
   const isSmallScreen = useMediaQuery("(max-width: 660px)");
   const nameProps = useFormInput(person ? person.name : "");
@@ -87,6 +88,7 @@ const CreateOrEditShareholderForm = ({
     handleValidation(field, event.target.value);
   };
 
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = {
@@ -103,6 +105,7 @@ const CreateOrEditShareholderForm = ({
       console.log(person.id);
       updateShareholder(formData, person.id).then((res) => {
         if (res) {
+          handleShareholderChange(res)
           resetForm();
         } else {
           console.log("Failed");

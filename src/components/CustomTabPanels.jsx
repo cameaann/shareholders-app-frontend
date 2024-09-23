@@ -23,7 +23,7 @@ const CustomTabPanels = () => {
   }
 
   const handleOnChange = (res) => {
-    setShareholders(res)
+    // setShareholders(res)
   }
 
   return (
@@ -38,7 +38,7 @@ const CustomTabPanels = () => {
         <History />
       </TabPanel>
       <TabPanel value={3} sx={tabPanelStyle}>
-        <CreateOrEditShareholderForm sharesTotalQuantity = { sharesTotalQuantity} onAddingMainShareholder={handleAddingMainShareholder} onChange = {handleOnChange}/>
+        <CreateOrEditShareholderForm sharesTotalQuantity = { sharesTotalQuantity} onAddingMainShareholder={handleAddingMainShareholder} handleShareholderChange = {handleOnChange}/>
       </TabPanel>
       <TabPanel value={4} sx={tabPanelStyle}>
         <ShareTransferForm />
