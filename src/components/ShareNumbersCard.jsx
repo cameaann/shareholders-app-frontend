@@ -7,8 +7,8 @@ const ShareNumbersCard = ({ value }) => {
 
   const shareholder = shareholdersList
     ? shareholdersList.find((s) => s.id === value.shareholderId)
-    : { name:""};
-    
+    : { name: "" };
+
   return (
     <Card>
       <CardContent orientation="vertical">
@@ -19,7 +19,7 @@ const ShareNumbersCard = ({ value }) => {
           <strong>Kpl:</strong> {value.quantity}
         </Typography>
         <Typography mb={1}>
-          <strong>Omistaja:</strong> {shareholder.name}
+          <strong>Omistaja:</strong> {shareholder ? shareholder.name : value.shareholderId}
         </Typography>
         <Typography mb={1}>
           <strong>Tarkistuslaskenta:</strong>{" "}

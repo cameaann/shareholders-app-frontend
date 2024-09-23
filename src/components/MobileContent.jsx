@@ -6,6 +6,7 @@ import { SharesQuantityContext } from "./SharesQuantityProvider";
 import CreateOrEditShareholderForm from "./CreateOrEditShareholderForm";
 import ShareTransferForm from "./ShareTransferForm";
 import { ShareholdersContext } from "./ShareholdersProvider";
+import MobileHistory from "./MobileHistory";
 
 const MobileContent = ({ selectedContent }) => {
   const { sharesTotalQuantity, setSharesTotalQuantity } = useContext(SharesQuantityContext);
@@ -39,6 +40,7 @@ const MobileContent = ({ selectedContent }) => {
       />
     ),
     ShareTransfer: <ShareTransferForm />,
+    Historia: <MobileHistory />,
   };
 
   return (

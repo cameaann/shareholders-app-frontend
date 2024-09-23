@@ -27,7 +27,10 @@ const App = () => {
       <SharesQuantityProvider>
         <ShareholdersProvider>
           {!isSmallScreen ? (
+            <>
+            <Header />
             <CustomTabs />
+          </>
           ) : (
             <>
               <MobileNavbar onMenuSelect={handleMenuSelect} />
