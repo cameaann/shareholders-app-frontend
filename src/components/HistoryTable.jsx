@@ -37,8 +37,8 @@ const HistoryTable = ({ historyList }) => {
         </FormControl>
         )}
         </TableCell>
-        <TableCell align="center">{seller.name}</TableCell>
-        <TableCell align="center">{buyer.name}</TableCell>
+        <TableCell align="center">{seller ? seller.name : note.fromShareholderId}</TableCell>
+        <TableCell align="center">{buyer ? buyer.name : note.toShareholderId }</TableCell>
         <TableCell align="center">{note.transferTax ? "+" : ""}</TableCell>
         <TableCell align="right">{note.quantity}</TableCell>
         <TableCell align="center">{note.pricePerShare}</TableCell>

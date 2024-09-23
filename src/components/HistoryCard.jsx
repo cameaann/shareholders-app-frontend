@@ -22,10 +22,10 @@ const HistoryCard = ({ item }) => {
           <strong>Maksupvm:</strong> {item.paymentDate}
         </Typography>
         <Typography>
-          <strong>Luovuttaja:</strong> {fromShareholder.name}
+          <strong>Luovuttaja:</strong> {fromShareholder ? fromShareholder.name : item.fromShareholderId}
         </Typography>
         <Typography>
-          <strong>Saaja:</strong> {toShareholder.name}
+          <strong>Saaja:</strong> {toShareholder ? toShareholder.name : item.toShareholderId}
         </Typography>
         <Typography>
           <strong>Varainsiirtovero:</strong> {item.transferTax ? "+" : "-"}
