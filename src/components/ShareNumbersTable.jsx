@@ -62,7 +62,7 @@ const ShareNumbersTable = ({ sharenumbers, sharesTotalQuantity }) => {
                   <TableCell>{share.startNumber}</TableCell>
                   <TableCell>{share.endNumber}</TableCell>
                   <TableCell>{share.quantity}</TableCell>
-                  <TableCell>{shareholder.name}</TableCell>
+                  <TableCell>{shareholder ? shareholder.name : share.id}</TableCell>
                   <TableCell>
                     {share.endNumber - share.startNumber + 1}
                   </TableCell>
