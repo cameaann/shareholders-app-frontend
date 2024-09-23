@@ -5,6 +5,8 @@ import { useState, useEffect } from "react";
 import { getTotalSharesQuantity } from "../services/sharesService";
 import CreateOrEditShareholderForm from "./CreateOrEditShareholderForm";
 import ShareTransferForm from "./ShareTransferForm";
+import MobileHistory from "./MobileHistory";
+
 
 const MobileContent = ({ selectedContent }) => {
   const [sharesTotalQuantity, setSharesTotalQuantity] = useState();
@@ -48,6 +50,7 @@ const MobileContent = ({ selectedContent }) => {
       />
     ),
     ShareTransfer: <ShareTransferForm />,
+    Historia: <MobileHistory />,
   };
 
   return (
