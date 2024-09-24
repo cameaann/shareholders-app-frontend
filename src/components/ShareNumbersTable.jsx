@@ -5,7 +5,6 @@ import { useContext } from "react";
 import { ShareholdersContext } from "./ShareholdersProvider";
 
 const ShareNumbersTable = ({ sharenumbers, sharesTotalQuantity }) => {
-  let checkSum = sharesTotalQuantity;
   const  { shareholdersList } = useContext(ShareholdersContext);
 
   const getTotalAmount = () => {
@@ -17,10 +16,6 @@ const ShareNumbersTable = ({ sharenumbers, sharesTotalQuantity }) => {
 
     return total;
   };
-
-  if (checkSum > 0) {
-    checkSum = checkSum - getTotalAmount();
-  }
 
   return (
     <Box>
@@ -90,7 +85,7 @@ const ShareNumbersTable = ({ sharenumbers, sharesTotalQuantity }) => {
           <Typography sx={{ gridColumn: "1 / 3", fontWeight: "bold" }}>
             Tarkistussumma
           </Typography>
-          <Typography sx={{ gridColumn: "3 / 4" }}>{checkSum}</Typography>
+          <Typography sx={{ gridColumn: "3 / 4" }}>{sharesTotalQuantity}</Typography>
         </Box>
       </Box>
     </Box>
