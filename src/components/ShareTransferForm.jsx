@@ -11,7 +11,7 @@ import {
   Textarea,
 } from "@mui/joy";
 import { useState, useContext } from "react";
-import { getShareholderById } from "../services/shareholdersService";
+import { getShareholders } from "../services/shareholdersService";
 import { FormGroup } from "@mui/material";
 import { useFormInput } from "../hooks/useFormInput";
 import { makeTransfer } from "../services/sharesService";
@@ -20,7 +20,7 @@ import { ShareholdersContext } from "./ShareholdersProvider";
 
 const ShareTransferForm = () => {
   const isSmallScreen = useMediaQuery("(max-width: 660px)");
-  const { shareholdersList, updateShareholder } = useContext(ShareholdersContext);
+  const { shareholdersList, setShareholders } = useContext(ShareholdersContext);
   const [checked, setChecked] = useState(false);
   const sellerProps = useFormInput(null);
   const buyerProps = useFormInput(null);
@@ -65,9 +65,8 @@ const ShareTransferForm = () => {
 
     const isSuccess = await makeTransfer(formData);
     if (isSuccess) {
-      const seller = await getShareholderById(sellerProps.value);
-      const buyer = await getShareholderById(sellerProps.value);
-      updateShareholder(seller, buyer);
+      const shareholders = await getShareholders();
+      setShareholders(shareholders);
       resetForm();
     }
   };
