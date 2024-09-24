@@ -24,15 +24,6 @@ const ShareholdersProvider = ({ children }) => {
       )
     );
   };
-  const updateShareholder = (seller, buyer) => {
-    setShareholders((prevState) =>
-      prevState.map((shareholder) =>
-        (shareholder.id === seller.id ? seller : shareholder) && 
-        (shareholder.id === buyer.id ? buyer : shareholder)
-      )
-    );
-  };
-
 
 
   useEffect(() => {
@@ -48,7 +39,7 @@ const ShareholdersProvider = ({ children }) => {
   }, []);
 
   return (
-    <ShareholdersContext.Provider value={{ shareholdersList, setShareholders, addShareholder, editShareholder, updateShareholder}}>
+    <ShareholdersContext.Provider value={{ shareholdersList, setShareholders, addShareholder, editShareholder}}>
       {children}
     </ShareholdersContext.Provider>
   );
