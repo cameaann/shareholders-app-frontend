@@ -13,6 +13,12 @@ const getShareholders = async () => {
   return res.data;
 };
 
+const getShareholderById = async (personId) => {
+  const res = await axios.get(`${shareHoldersUrl}/${personId}`);
+  return res.data;
+};
+
+
 const saveShareholder = async (formData) => {
   const payload = {
     shareholder: {
@@ -39,8 +45,9 @@ const saveShareholder = async (formData) => {
     });
 
     if (response.status === 200) {
-      // alert("Shareholder saved successfully!");
-      return true;
+      alert("Shareholder saved successfully!");
+      return response.data.id;
+
     } else {
       alert("Failed to save shareholder");
     }
@@ -62,16 +69,15 @@ const updateShareholder = async (formData, personId) => {
       bankAccountNumber: formData.bankAccountNumber,
   };
   console.log(JSON.stringify(payload));
-  console.log(`${shareHoldersUrl}/${personId}`);
-  console.log(`${shareHoldersUrl}`);
+  
   try {
     const response = await axios.put(`${shareHoldersUrl}/${personId}`, payload, {
       headers: { "Content-Type": "application/json" },
     });
 
     if (response.status === 200) {
-      // alert("Shareholder saved successfully!");
-      return true;
+      alert("Shareholder saved successfully!");
+      return response.data.id;
     } else {
       alert("Failed to save shareholder");
     }
@@ -82,4 +88,4 @@ const updateShareholder = async (formData, personId) => {
   }
 };
 
-export { getShareholders, getStatus, saveShareholder, updateShareholder };
+export { getShareholders, getShareholderById, getStatus, saveShareholder, updateShareholder };
