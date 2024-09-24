@@ -16,7 +16,6 @@ const CustomTabPanels = () => {
   const { sharesTotalQuantity, setSharesTotalQuantity } = useContext(SharesQuantityContext);
   const { shareholdersList } = useContext(ShareholdersContext);
 
-  console.log(shareholdersList);
   const handleAddingMainShareholder = (res) =>{
     if(res){
       setSharesTotalQuantity(res)

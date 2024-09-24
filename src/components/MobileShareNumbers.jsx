@@ -56,9 +56,6 @@ const MobileShareNumbers = ({ sharesTotalQuantity}) => {
           Yhteensä:{" "}
           <Typography fontWeight={"normal"}>{getTotalAmount()}</Typography>
         </Typography>
-        <Typography fontWeight={"bold"}>
-          Tarkistussumma: <Typography fontWeight={"normal"}>{sharesTotalQuantity}</Typography>
-        </Typography>
       </Box>
       {shareNumbersList.map((value, index) => (
         <ShareNumbersCard key={index} value={value} />
