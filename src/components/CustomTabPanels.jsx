@@ -14,16 +14,12 @@ const CustomTabPanels = () => {
   };
 
   const { sharesTotalQuantity, setSharesTotalQuantity } = useContext(SharesQuantityContext);
-  const { shareholdersList, setShareholders} = useContext(ShareholdersContext);
+  const { shareholdersList } = useContext(ShareholdersContext);
 
   const handleAddingMainShareholder = (res) =>{
     if(res){
       setSharesTotalQuantity(res)
     }
-  }
-
-  const handleOnChange = (res) => {
-    // setShareholders(res)
   }
 
   return (
@@ -38,7 +34,7 @@ const CustomTabPanels = () => {
         <History />
       </TabPanel>
       <TabPanel value={3} sx={tabPanelStyle}>
-        <CreateOrEditShareholderForm sharesTotalQuantity = { sharesTotalQuantity} onAddingMainShareholder={handleAddingMainShareholder} handleShareholderChange = {handleOnChange}/>
+        <CreateOrEditShareholderForm sharesTotalQuantity = { sharesTotalQuantity} onAddingMainShareholder={handleAddingMainShareholder}/>
       </TabPanel>
       <TabPanel value={4} sx={tabPanelStyle}>
         <ShareTransferForm />

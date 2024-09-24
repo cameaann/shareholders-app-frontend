@@ -10,16 +10,12 @@ import MobileHistory from "./MobileHistory";
 
 const MobileContent = ({ selectedContent }) => {
   const { sharesTotalQuantity, setSharesTotalQuantity } = useContext(SharesQuantityContext);
-  const { shareholdersList, setShareholders} = useContext(ShareholdersContext);
+  const { shareholdersList } = useContext(ShareholdersContext);
 
   const handleAddingMainShareholder = (res) =>{
     if(res){
       setSharesTotalQuantity(res)
     }
-  }
-
-  const handleOnChange = (res) => {
-    setShareholders(res)
   }
 
   let maskedTitle = selectedContent;
@@ -36,7 +32,7 @@ const MobileContent = ({ selectedContent }) => {
     ),
     AddShareholder: (
       <CreateOrEditShareholderForm
-        sharesTotalQuantity = { sharesTotalQuantity} onAddingMainShareholder={handleAddingMainShareholder} onChange = {handleOnChange}
+        sharesTotalQuantity = { sharesTotalQuantity} onAddingMainShareholder={handleAddingMainShareholder}
       />
     ),
     ShareTransfer: <ShareTransferForm />,
