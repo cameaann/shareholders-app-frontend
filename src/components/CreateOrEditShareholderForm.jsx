@@ -9,18 +9,18 @@ import {
 } from "@mui/joy";
 import { useFormInput } from "../hooks/useFormInput";
 import { TextMaskAdapter } from "./TextMaskAdapter";
-import { saveShareholder } from "../services/shareholdersService";
-import { useEffect, useState } from "react";
+import { getShareholderById, saveShareholder } from "../services/shareholdersService";
+import { useEffect, useState, useContext } from "react";
 import { validateField } from "../functions/validateForm";
 import { updateShareholder } from "../services/shareholdersService";
 import { useMediaQuery } from "@mui/material";
+import { ShareholdersContext } from "./ShareholdersProvider";
 
 const CreateOrEditShareholderForm = ({
   sharesTotalQuantity,
   onAddingMainShareholder,
   person,
-  isPersonEditing,
-  handleShareholderChange
+  isPersonEditing
 }) => {
   const isSmallScreen = useMediaQuery("(max-width: 660px)");
   const nameProps = useFormInput(person ? person.name : "");
@@ -43,6 +43,7 @@ const CreateOrEditShareholderForm = ({
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
+  const { addShareholder, editShareholder } = useContext(ShareholdersContext);
 
   useEffect(() => {
     const formHasErrors = Object.values(errors).some((error) => error);
@@ -89,7 +90,7 @@ const CreateOrEditShareholderForm = ({
   };
 
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = {
       name: nameProps.value,
@@ -103,23 +104,23 @@ const CreateOrEditShareholderForm = ({
     };
     if (isPersonEditing) {
       console.log(person.id);
-      updateShareholder(formData, person.id).then((res) => {
+      const res = await updateShareholder(formData, person.id)
         if (res) {
-          handleShareholderChange(res)
-          resetForm();
+          const shareholder = await getShareholderById(res);
+          editShareholder(shareholder)
         } else {
           console.log("Failed");
         }
-      });
     } else {
-      saveShareholder(formData).then((res) => {
-        if (res) {
-          resetForm();
-          onAddingMainShareholder(res);
-        } else {
-          console.log("Failed");
-        }
-      });
+      const res = await saveShareholder(formData)
+      if (res) {
+        resetForm();
+        if(res === 1) {onAddingMainShareholder(res)}
+        const shareholder = await getShareholderById(res);
+        addShareholder(shareholder)
+      } else {
+        console.log("Failed");
+      }
     }
   };
 
