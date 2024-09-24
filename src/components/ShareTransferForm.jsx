@@ -14,13 +14,15 @@ import { useState, useContext } from "react";
 import { getShareholders } from "../services/shareholdersService";
 import { FormGroup } from "@mui/material";
 import { useFormInput } from "../hooks/useFormInput";
-import { makeTransfer } from "../services/sharesService";
+import { getTotalSharesQuantity, makeTransfer } from "../services/sharesService";
 import { useMediaQuery } from "@mui/material";
 import { ShareholdersContext } from "./ShareholdersProvider";
+import { SharesQuantityContext } from "./SharesQuantityProvider";
 
 const ShareTransferForm = () => {
   const isSmallScreen = useMediaQuery("(max-width: 660px)");
   const { shareholdersList, setShareholders } = useContext(ShareholdersContext);
+  const { setSharesTotalQuantity } = useContext(SharesQuantityContext);
   const [checked, setChecked] = useState(false);
   const sellerProps = useFormInput(null);
   const buyerProps = useFormInput(null);
@@ -66,6 +68,8 @@ const ShareTransferForm = () => {
     const isSuccess = await makeTransfer(formData);
     if (isSuccess) {
       const shareholders = await getShareholders();
+      const totalShares = await getTotalSharesQuantity();
+      setSharesTotalQuantity(totalShares.totalShares);
       setShareholders(shareholders);
       resetForm();
     }
