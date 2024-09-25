@@ -6,7 +6,7 @@ import { ShareholdersContext } from "./ShareholdersProvider";
 
 const HistoryTable = ({ historyList }) => {
   const [paymentDates, setPaymentDates] = useState({});
-  const shareholdersList = useContext(ShareholdersContext);
+  const { shareholdersList } = useContext(ShareholdersContext);
 
   const handleDateChange = (index, event) => {
     setPaymentDates({
@@ -58,16 +58,21 @@ const HistoryTable = ({ historyList }) => {
           sx={{ mt: 4 }}
         >
           <TableHead>
-            <TableRow sx={{ textAlign: "center"}}>
+            <TableRow  sx={{
+                "& th": {
+                  color: "rgba(96, 96, 96)",
+                  textAlign:"center"
+                },
+              }}>
               <TableCell sx={{ width: "50px" }}>Nro</TableCell>
               <TableCell>Sääntöpäivä</TableCell>
               <TableCell sx={{ width: "150px"}}>Maksupvm</TableCell>
               <TableCell>Luovittaja (Myyjä)</TableCell>
               <TableCell>Saaja (Ostaja)</TableCell>
               <TableCell>Varainsiirtovero</TableCell>
-              <TableCell sx={{display: "flex", justifyContent: "right"}}>Kpl</TableCell>
-              <TableCell sx={{ width: "100px", justifyContent: "center"}}>Hinta per 1</TableCell>
-              <TableCell sx={{display: "flex", justifyContent: "right"}}>EUR</TableCell>
+              <TableCell>Kpl</TableCell>
+              <TableCell>Hinta per 1</TableCell>
+              <TableCell>EUR</TableCell>
               <TableCell>Huom</TableCell>
             </TableRow>
           </TableHead>

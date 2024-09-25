@@ -3,7 +3,7 @@ import { Typography, Card, CardContent } from "@mui/joy";
 import { ShareholdersContext } from "./ShareholdersProvider";
 
 const ShareNumbersCard = ({ value }) => {
-  const shareholdersList = useContext(ShareholdersContext);
+  const { shareholdersList } = useContext(ShareholdersContext);
 
   const shareholder = shareholdersList
     ? shareholdersList.find((s) => s.id === value.shareholderId)

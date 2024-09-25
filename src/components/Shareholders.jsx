@@ -1,12 +1,6 @@
-import { useContext } from "react";
-// import { getShareholders } from "../services/shareholdersService";
 import ShareholdersTable from "./ShareholdersTable";
-import { ShareholdersContext } from "./ShareholdersProvider";
 
-
-const Shareholders = () => {
-  const shareholdersList = useContext(ShareholdersContext)
-
+const Shareholders = ({shareholdersList}) => {
   return (
     <div>
       <ShareholdersTable shareholders={shareholdersList} />

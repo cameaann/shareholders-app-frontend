@@ -10,17 +10,19 @@ import {
   Checkbox,
   Textarea,
 } from "@mui/joy";
-// import { useFormInput } from "../hooks/useFormInput";
-import { useState, useEffect } from "react";
+import { useState, useContext } from "react";
 import { getShareholders } from "../services/shareholdersService";
 import { FormGroup } from "@mui/material";
 import { useFormInput } from "../hooks/useFormInput";
-import { makeTransfer } from "../services/sharesService";
+import { getTotalSharesQuantity, makeTransfer } from "../services/sharesService";
 import { useMediaQuery } from "@mui/material";
+import { ShareholdersContext } from "./ShareholdersProvider";
+import { SharesQuantityContext } from "./SharesQuantityProvider";
 
 const ShareTransferForm = () => {
   const isSmallScreen = useMediaQuery("(max-width: 660px)");
-  const [shareholdersList, setShareholders] = useState();
+  const { shareholdersList, setShareholders } = useContext(ShareholdersContext);
+  const { setSharesTotalQuantity } = useContext(SharesQuantityContext);
   const [checked, setChecked] = useState(false);
   const sellerProps = useFormInput(null);
   const buyerProps = useFormInput(null);
@@ -29,17 +31,6 @@ const ShareTransferForm = () => {
   const saantoDayProps = useFormInput("");
   const notesProps = useFormInput("");
 
-  useEffect(() => {
-    getShareholders()
-      .then((res) => {
-        if (Array.isArray(res)) {
-          setShareholders(res);
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []);
 
   const renderShareholders = () => {
     return shareholdersList.map((person) => (
@@ -61,7 +52,7 @@ const ShareTransferForm = () => {
     }
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     const formData = {
@@ -74,8 +65,12 @@ const ShareTransferForm = () => {
       transferTax: checked,
     };
 
-    const isSuccess = makeTransfer(formData);
+    const isSuccess = await makeTransfer(formData);
     if (isSuccess) {
+      const shareholders = await getShareholders();
+      const totalShares = await getTotalSharesQuantity();
+      setSharesTotalQuantity(totalShares.totalShares);
+      setShareholders(shareholders);
       resetForm();
     }
   };
