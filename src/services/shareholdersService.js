@@ -16,7 +16,8 @@ const getShareholders = async () => {
 const getShareholderById = async (personId) => {
   const res = await axios.get(`${shareHoldersUrl}/${personId}`);
   return res.data;
-// TODO: add error handling
+};
+
 const addShares = async (person) => {
   const res = await axios.put(`${shareHoldersUrl}/${person.id}`, person, {
     headers: { "Content-Type": "application/json" },
@@ -64,4 +65,35 @@ const saveShareholder = async (formData) => {
   }
 };
 
-export { getShareholders, getStatus, saveShareholder, updateShareholder };
+const updateShareholder = async (formData, personId) => {
+  const payload = {
+      name: formData.name,
+      personalIdOrCompanyId: formData.personalId,
+      placeOfResidenceOrHeadquarters: formData.city,
+      address: formData.address,
+      emailAddress: formData.email,
+      phoneNumber: formData.phoneNumber,
+      bankAccountNumber: formData.bankAccountNumber,
+  };
+  console.log(JSON.stringify(payload));
+  
+  try {
+    const response = await axios.put(`${shareHoldersUrl}/${personId}`, payload, {
+      headers: { "Content-Type": "application/json" },
+    });
+
+    if (response.status === 200) {
+      alert("Shareholder saved successfully!");
+      return response.data.id;
+    } else {
+      alert("Failed to save shareholder");
+    }
+  } catch (error) {
+    console.error("Error saving shareholder:", error);
+    alert("An error occurred while saving the shareholder");
+    return false;
+  }
+};
+
+export { getShareholders, getShareholderById, getStatus, saveShareholder, updateShareholder, addShares };
+
