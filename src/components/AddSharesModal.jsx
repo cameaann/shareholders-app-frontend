@@ -9,6 +9,7 @@ import {
   Stack,
 } from "@mui/joy";
 import React, { useState } from "react";
+import { updateShareholder } from "../services/shareholdersService";
 
 const AddSharesModal = ({ isOpen, onClose, person }) => {
   const [inputValue, setInputValue] = useState(null);
@@ -16,9 +17,8 @@ const AddSharesModal = ({ isOpen, onClose, person }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    // api calls
-
-    console.log(inputValue)
+    person.totalShares = person.totalShares + parseInt(inputValue)
+    updateShareholder(person)
 
     onClose(); // this closes the modal
     setInputValue(null); // reset value

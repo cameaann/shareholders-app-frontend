@@ -13,6 +13,15 @@ const getShareholders = async () => {
   return res.data;
 };
 
+// TODO: add error handling
+const updateShareholder = async (person) => {
+  const res = await axios.put(`${shareHoldersUrl}/${person.id}`, person, {
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(person),
+  });
+  return res.status;
+};
+
 const saveShareholder = async (formData) => {
 
   const payload = {
@@ -53,4 +62,4 @@ const saveShareholder = async (formData) => {
   }
 };
 
-export { getShareholders, getStatus, saveShareholder };
+export { getShareholders, getStatus, saveShareholder, updateShareholder };
