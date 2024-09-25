@@ -9,28 +9,41 @@ import {
 } from "@mui/joy";
 import { useFormInput } from "../hooks/useFormInput";
 import { TextMaskAdapter } from "./TextMaskAdapter";
-import { saveShareholder } from "../services/shareholdersService";
-import { useEffect, useState } from "react";
+import { getShareholderById, saveShareholder } from "../services/shareholdersService";
+import { useEffect, useState, useContext } from "react";
 import { validateField } from "../functions/validateForm";
+import { updateShareholder } from "../services/shareholdersService";
 import { useMediaQuery } from "@mui/material";
+import { ShareholdersContext } from "./ShareholdersProvider";
 
 const CreateOrEditShareholderForm = ({
   sharesTotalQuantity,
   onAddingMainShareholder,
+  person,
+  isPersonEditing
 }) => {
   const isSmallScreen = useMediaQuery("(max-width: 660px)");
-  const nameProps = useFormInput();
-  const emailProps = useFormInput();
-  const phoneNumberProps = useFormInput("(100) 000-0000");
-  const personalIdProps = useFormInput();
-  const bankAccountNumberProps = useFormInput();
-  const cityProps = useFormInput();
-  const addressProps = useFormInput();
+  const nameProps = useFormInput(person ? person.name : "");
+  const emailProps = useFormInput(person ? person.emailAddress : "");
+  const phoneNumberProps = useFormInput(
+    person ? person.phoneNumber : "(100) 000-0000"
+  );
+  const personalIdProps = useFormInput(
+    person ? person.personalIdOrCompanyId : ""
+  );
+  const bankAccountNumberProps = useFormInput(
+    person ? person.bankAccountNumber : ""
+  );
+  const cityProps = useFormInput(
+    person ? person.placeOfResidenceOrHeadquarters : ""
+  );
+  const addressProps = useFormInput(person ? person.address : "");
   const shareQuantity = useFormInput(0);
 
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
+  const { addShareholder, editShareholder } = useContext(ShareholdersContext);
 
   useEffect(() => {
     const formHasErrors = Object.values(errors).some((error) => error);
@@ -76,7 +89,8 @@ const CreateOrEditShareholderForm = ({
     handleValidation(field, event.target.value);
   };
 
-  const handleSubmit = (event) => {
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = {
       name: nameProps.value,
@@ -88,14 +102,26 @@ const CreateOrEditShareholderForm = ({
       address: addressProps.value,
       quantity: shareQuantity.value,
     };
-    saveShareholder(formData).then((res) => {
+    if (isPersonEditing) {
+      console.log(person.id);
+      const res = await updateShareholder(formData, person.id)
+        if (res) {
+          const shareholder = await getShareholderById(res);
+          editShareholder(shareholder)
+        } else {
+          console.log("Failed");
+        }
+    } else {
+      const res = await saveShareholder(formData)
       if (res) {
         resetForm();
-        onAddingMainShareholder(res);
+        if(res === 1) {onAddingMainShareholder(res)}
+        const shareholder = await getShareholderById(res);
+        addShareholder(shareholder)
       } else {
         console.log("Failed");
       }
-    });
+    }
   };
 
   function resetForm() {
@@ -115,15 +141,26 @@ const CreateOrEditShareholderForm = ({
     <Stack
       justifyContent="center"
       alignContent="center"
-      sx={{ margin: isSmallScreen? "40px auto" : "70px auto", width: "100%" }}
+      sx={{ margin: isSmallScreen ? "40px auto" : "70px auto", width: "100%" }}
     >
       {!isSmallScreen ? (
-        <Typography
-          sx={{ fontSize: 22, fontWeight: "bold" }}
-          alignSelf="center"
-        >
-          Lisää uusi omistaja
-        </Typography>
+        <Stack justifyContent="center">
+          {isPersonEditing ? (
+            <Typography
+              sx={{ fontSize: 22, fontWeight: "bold" }}
+              alignSelf="center"
+            >
+              Muokata {person.name}
+            </Typography>
+          ) : (
+            <Typography
+              sx={{ fontSize: 22, fontWeight: "bold" }}
+              alignSelf="center"
+            >
+              Lisää uusi omistaja
+            </Typography>
+          )}
+        </Stack>
       ) : (
         ""
       )}
@@ -134,7 +171,13 @@ const CreateOrEditShareholderForm = ({
         justifyContent="center"
         alignItems="center"
       >
-        <FormControl sx={{ mt: isSmallScreen? 1 : 4, width: isSmallScreen ? "290px" : "300px" }} error={!!errors.name} >
+        <FormControl
+          sx={{
+            mt: isSmallScreen ? 1 : 4,
+            width: isSmallScreen ? "290px" : "300px",
+          }}
+          error={!!errors.name}
+        >
           <FormLabel>Nimi</FormLabel>
           <Input
             sx={{ width: isSmallScreen ? "290px" : "300px" }}
@@ -145,7 +188,13 @@ const CreateOrEditShareholderForm = ({
           />
           {!!errors.name && <FormHelperText>{errors.name}</FormHelperText>}
         </FormControl>
-        <FormControl sx={{ mt: isSmallScreen? 3 : 4, width: isSmallScreen ? "290px" : "300px" }} error={!!errors.personalId}>
+        <FormControl
+          sx={{
+            mt: isSmallScreen ? 3 : 4,
+            width: isSmallScreen ? "290px" : "300px",
+          }}
+          error={!!errors.personalId}
+        >
           <FormLabel>Hetu/Y-tunnus</FormLabel>
           <Input
             sx={{ width: isSmallScreen ? "290px" : "300px" }}
@@ -165,7 +214,10 @@ const CreateOrEditShareholderForm = ({
         justifyContent="center"
         alignItems="center"
       >
-        <FormControl sx={{ mt: 3, width: isSmallScreen ? "290px" : "300px" }} error={!!errors.phoneNumber}>
+        <FormControl
+          sx={{ mt: 3, width: isSmallScreen ? "290px" : "300px" }}
+          error={!!errors.phoneNumber}
+        >
           <FormLabel>Puhelin numero</FormLabel>
           <Input
             value={phoneNumberProps.value}
@@ -184,7 +236,10 @@ const CreateOrEditShareholderForm = ({
             <FormHelperText>{errors.phoneNumber}</FormHelperText>
           )}
         </FormControl>
-        <FormControl sx={{  mt: 3, width: isSmallScreen ? "290px" : "300px" }} error={!!errors.email}>
+        <FormControl
+          sx={{ mt: 3, width: isSmallScreen ? "290px" : "300px" }}
+          error={!!errors.email}
+        >
           <FormLabel>Sähköposti osoite</FormLabel>
           <Input
             sx={{ width: isSmallScreen ? "290px" : "300px" }}
@@ -202,7 +257,10 @@ const CreateOrEditShareholderForm = ({
         justifyContent="center"
         alignItems="center"
       >
-        <FormControl sx={{  mt: 3, width: isSmallScreen ? "290px" : "300px" }} error={!!errors.city}>
+        <FormControl
+          sx={{ mt: 3, width: isSmallScreen ? "290px" : "300px" }}
+          error={!!errors.city}
+        >
           <FormLabel>Kotipaikka</FormLabel>
           <Input
             sx={{ width: isSmallScreen ? "290px" : "300px" }}
@@ -213,7 +271,10 @@ const CreateOrEditShareholderForm = ({
           />
           {!!errors.city && <FormHelperText>{errors.city}</FormHelperText>}
         </FormControl>
-        <FormControl sx={{  mt: 3, width: isSmallScreen ? "290px" : "300px" }} error={!!errors.address}>
+        <FormControl
+          sx={{ mt: 3, width: isSmallScreen ? "290px" : "300px" }}
+          error={!!errors.address}
+        >
           <FormLabel>Postiosoite</FormLabel>
           <Input
             value={addressProps.value}
@@ -233,7 +294,10 @@ const CreateOrEditShareholderForm = ({
         justifyContent="center"
         alignItems="center"
       >
-        <FormControl sx={{  mt: 3, width: isSmallScreen ? "290px" : "300px" }} error={!!errors.bankAccountNumber}>
+        <FormControl
+          sx={{ mt: 3, width: isSmallScreen ? "290px" : "300px" }}
+          error={!!errors.bankAccountNumber}
+        >
           <FormLabel>Tili numero</FormLabel>
           <Input
             value={bankAccountNumberProps.value}
@@ -263,7 +327,7 @@ const CreateOrEditShareholderForm = ({
         )}
       </Stack>
 
-      <Stack sx={{ mt: isSmallScreen? 4 : 7 }}>
+      <Stack sx={{ mt: isSmallScreen ? 4 : 7 }}>
         <Stack flexDirection="row" sx={{ gap: 2 }} justifyContent="center">
           <Button
             sx={{

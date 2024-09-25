@@ -5,6 +5,7 @@ import { Box } from "@mui/joy";
 import MobileContent from "./components/MobileContent";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import MobileNavbar from "./components/MobileNavbar";
+import { SharesQuantityProvider } from "./components/SharesQuantityProvider";
 import ShareholdersProvider from "./components/ShareholdersProvider";
 
 const App = () => {
@@ -23,19 +24,21 @@ const App = () => {
         overflowY: "auto",
       }}
     >
-      <ShareholdersProvider>
-        {!isSmallScreen ? (
-          <>
+      <SharesQuantityProvider>
+        <ShareholdersProvider>
+          {!isSmallScreen ? (
+            <>
             <Header />
             <CustomTabs />
           </>
-        ) : (
-          <>
-            <MobileNavbar onMenuSelect={handleMenuSelect} />
-            <MobileContent selectedContent={selectedContent} />
-          </>
-        )}
-      </ShareholdersProvider>
+          ) : (
+            <>
+              <MobileNavbar onMenuSelect={handleMenuSelect} />
+              <MobileContent selectedContent={selectedContent} />
+            </>
+          )}
+        </ShareholdersProvider>
+      </SharesQuantityProvider>
     </Box>
   );
 };

@@ -18,7 +18,7 @@ const ShareholdersCard = ({ shareholder, ownship }) => {
           <strong>Määrä:</strong> {shareholder.totalShares ?? "Määrä"}
         </Typography>
         <Typography mb={1}>
-          <strong>Omistus %: </strong>
+          <strong>Omistus: </strong>
           {ownship ?? "Omistus %"}
         </Typography>
         <Typography mb={1}>

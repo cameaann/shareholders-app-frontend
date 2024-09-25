@@ -13,10 +13,15 @@ const getShareholders = async () => {
   return res.data;
 };
 
-const saveShareholder = async (formData) => {
+const getShareholderById = async (personId) => {
+  const res = await axios.get(`${shareHoldersUrl}/${personId}`);
+  return res.data;
+};
 
+
+const saveShareholder = async (formData) => {
   const payload = {
-    shareholder : {
+    shareholder: {
       name: formData.name,
       personalIdOrCompanyId: formData.personalId,
       placeOfResidenceOrHeadquarters: formData.city,
@@ -25,10 +30,10 @@ const saveShareholder = async (formData) => {
       phoneNumber: formData.phoneNumber,
       bankAccountNumber: formData.bankAccountNumber,
     },
-    shares: formData.quantity
+    shares: formData.quantity,
   };
 
-  if(formData.quantity > 0){
+  if (formData.quantity > 0) {
     console.log(formData.quantity);
     payload.shares = parseInt(formData.quantity);
   }
@@ -40,8 +45,8 @@ const saveShareholder = async (formData) => {
     });
 
     if (response.status === 200) {
-      // alert("Shareholder saved successfully!");
-      return true;
+      alert("Shareholder saved successfully!");
+      return response.data.id;
 
     } else {
       alert("Failed to save shareholder");
@@ -53,4 +58,34 @@ const saveShareholder = async (formData) => {
   }
 };
 
-export { getShareholders, getStatus, saveShareholder };
+const updateShareholder = async (formData, personId) => {
+  const payload = {
+      name: formData.name,
+      personalIdOrCompanyId: formData.personalId,
+      placeOfResidenceOrHeadquarters: formData.city,
+      address: formData.address,
+      emailAddress: formData.email,
+      phoneNumber: formData.phoneNumber,
+      bankAccountNumber: formData.bankAccountNumber,
+  };
+  console.log(JSON.stringify(payload));
+  
+  try {
+    const response = await axios.put(`${shareHoldersUrl}/${personId}`, payload, {
+      headers: { "Content-Type": "application/json" },
+    });
+
+    if (response.status === 200) {
+      alert("Shareholder saved successfully!");
+      return response.data.id;
+    } else {
+      alert("Failed to save shareholder");
+    }
+  } catch (error) {
+    console.error("Error saving shareholder:", error);
+    alert("An error occurred while saving the shareholder");
+    return false;
+  }
+};
+
+export { getShareholders, getShareholderById, getStatus, saveShareholder, updateShareholder };
