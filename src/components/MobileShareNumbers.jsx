@@ -31,10 +31,6 @@ const MobileShareNumbers = ({ sharesTotalQuantity}) => {
     return total;
   };
 
-  if(sharesTotalQuantity>0){
-    sharesTotalQuantity = sharesTotalQuantity - getTotalAmount();
-  }
-
   useEffect(() => {
     getShares()
       .then((res) => {
@@ -59,9 +55,6 @@ const MobileShareNumbers = ({ sharesTotalQuantity}) => {
         <Typography fontWeight={"bold"}>
           Yhteensä:{" "}
           <Typography fontWeight={"normal"}>{getTotalAmount()}</Typography>
-        </Typography>
-        <Typography fontWeight={"bold"}>
-          Tarkistussumma: <Typography fontWeight={"normal"}>{sharesTotalQuantity}</Typography>
         </Typography>
       </Box>
       {shareNumbersList.map((value, index) => (

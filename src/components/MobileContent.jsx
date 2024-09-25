@@ -1,34 +1,21 @@
 import { Box, Typography } from "@mui/joy";
 import MobileShareholders from "./MobileShareholders";
 import MobileShareNumbers from "./MobileShareNumbers";
-import { useState, useEffect } from "react";
-import { getTotalSharesQuantity } from "../services/sharesService";
+import { useContext } from "react";
+import { SharesQuantityContext } from "./SharesQuantityProvider";
 import CreateOrEditShareholderForm from "./CreateOrEditShareholderForm";
 import ShareTransferForm from "./ShareTransferForm";
+import { ShareholdersContext } from "./ShareholdersProvider";
 import MobileHistory from "./MobileHistory";
 
-
 const MobileContent = ({ selectedContent }) => {
-  const [sharesTotalQuantity, setSharesTotalQuantity] = useState();
+  const { sharesTotalQuantity, setSharesTotalQuantity } = useContext(SharesQuantityContext);
+  const { shareholdersList } = useContext(ShareholdersContext);
 
-  useEffect(() => {
-    getTotalShares();
-  });
-
-  const handleAddingMainShareholder = (res) => {
-    if (res) {
-      getTotalShares();
+  const handleAddingMainShareholder = (res) =>{
+    if(res){
+      setSharesTotalQuantity(res)
     }
-  };
-
-  async function getTotalShares() {
-    getTotalSharesQuantity()
-      .then((res) => {
-        setSharesTotalQuantity(res.totalShares);
-      })
-      .catch(() => {
-        setSharesTotalQuantity(0);
-      });
   }
 
   let maskedTitle = selectedContent;
@@ -39,14 +26,13 @@ const MobileContent = ({ selectedContent }) => {
   }
 
   const content = {
-    Osakasluettelo: <MobileShareholders />,
+    Osakasluettelo: <MobileShareholders shareholdersList = {shareholdersList} />,
     Osakenumerot: (
       <MobileShareNumbers sharesTotalQuantity={sharesTotalQuantity} />
     ),
     AddShareholder: (
       <CreateOrEditShareholderForm
-        sharesTotalQuantity={sharesTotalQuantity}
-        onAddingMainShareholder={handleAddingMainShareholder}
+        sharesTotalQuantity = { sharesTotalQuantity} onAddingMainShareholder={handleAddingMainShareholder}
       />
     ),
     ShareTransfer: <ShareTransferForm />,

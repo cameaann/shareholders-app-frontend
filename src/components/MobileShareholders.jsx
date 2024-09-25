@@ -1,10 +1,9 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState} from "react";
 import ShareholdersCard from "./ShareholdersCard";
 import { Box } from "@mui/joy";
-import { ShareholdersContext } from "./ShareholdersProvider";
 
-const MobileShareholders = () => {
-const shareholdersList = useContext(ShareholdersContext);
+
+const MobileShareholders = ({shareholdersList}) => {
   const [totalShares, setTotalShares] = useState(0);
 
   useEffect(() => {

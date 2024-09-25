@@ -3,14 +3,14 @@ import { Card, CardContent, Typography } from "@mui/joy";
 import { ShareholdersContext } from "./ShareholdersProvider";
 
 const HistoryCard = ({ item }) => {
-  const shareholdersList = useContext(ShareholdersContext);
+  const { shareholdersList } = useContext(ShareholdersContext);
 
-  const fromShareholder = shareholdersList.find(
+  const fromShareholder = shareholdersList ? shareholdersList.find(
     (shareholder) => shareholder.id === item.fromShareholderId
-  );
-  const toShareholder = shareholdersList.find(
+  ) : { name:""};
+  const toShareholder = shareholdersList ? shareholdersList.find(
     (shareholder) => shareholder.id === item.toShareholderId
-  );
+  ) : { name:""};
 
   return (
     <Card>

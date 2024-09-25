@@ -5,7 +5,7 @@ import { useContext } from "react";
 import { ShareholdersContext } from "./ShareholdersProvider";
 
 const ShareNumbersTable = ({ sharenumbers, sharesTotalQuantity }) => {
-  const shareholdersList = useContext(ShareholdersContext);
+  const { shareholdersList } = useContext(ShareholdersContext);
 
   const getTotalAmount = () => {
     let total = 0;
@@ -16,10 +16,6 @@ const ShareNumbersTable = ({ sharenumbers, sharesTotalQuantity }) => {
 
     return total;
   };
-
-  if (sharesTotalQuantity > 0) {
-    sharesTotalQuantity = sharesTotalQuantity - getTotalAmount();
-  }
 
   return (
     <Box>
@@ -32,22 +28,25 @@ const ShareNumbersTable = ({ sharenumbers, sharesTotalQuantity }) => {
           sx={{ mt: 4 }}
         >
           <TableHead>
-            <TableRow>
-              <TableCell>
-                <span>Osakenumerot</span>
-                <br />
+            <TableRow
+              sx={{
+                "& th": {
+                  color: "rgba(96, 96, 96)",
+                  // textAlign:"center"
+                },
+              }}
+            >
+              <TableCell align="center">
+                Osakenumerot
                 <Typography fontSize="smaller">Alkaen</Typography>
               </TableCell>
-              <TableCell>
-                <span>Osakenumerot</span>
-                <br />
+              <TableCell align="center">
                 <Typography fontSize="smaller">Päättyen</Typography>
               </TableCell>
-              <TableCell>Kpl</TableCell>
-              <TableCell>Omistaja</TableCell>
+              <TableCell align="center">Kpl</TableCell>
+              <TableCell align="center">Omistaja</TableCell>
               <TableCell>
-                <span>Tarkistuslaskenta</span>
-                <br />
+                Tarkistuslaskenta
                 <Typography fontSize="smaller">Osakaiden määrä</Typography>
               </TableCell>
             </TableRow>
@@ -59,11 +58,13 @@ const ShareNumbersTable = ({ sharenumbers, sharesTotalQuantity }) => {
                 : { name: "" };
               return (
                 <TableRow key={i}>
-                  <TableCell>{share.startNumber}</TableCell>
-                  <TableCell>{share.endNumber}</TableCell>
-                  <TableCell>{share.quantity}</TableCell>
-                  <TableCell>{shareholder ? shareholder.name : share.id}</TableCell>
-                  <TableCell>
+                  <TableCell align="right">{share.startNumber}</TableCell>
+                  <TableCell align="right">{share.endNumber}</TableCell>
+                  <TableCell align="right">{share.quantity}</TableCell>
+                  <TableCell align="center">
+                    {shareholder ? shareholder.name : share.id}
+                  </TableCell>
+                  <TableCell align="right">
                     {share.endNumber - share.startNumber + 1}
                   </TableCell>
                 </TableRow>
@@ -80,17 +81,11 @@ const ShareNumbersTable = ({ sharenumbers, sharesTotalQuantity }) => {
             marginTop: 2,
           }}
         >
-          <Typography sx={{ gridColumn: "1 / 3", fontWeight: "bold" }}>
+          <Typography sx={{ fontWeight: "bold" }}>
             Yhteensä
           </Typography>
-          <Typography sx={{ gridColumn: "3 / 4" }}>
+          <Typography>
             {getTotalAmount()}
-          </Typography>
-          <Typography sx={{ gridColumn: "1 / 3", fontWeight: "bold" }}>
-            Tarkistussumma
-          </Typography>
-          <Typography sx={{ gridColumn: "3 / 4" }}>
-            {sharesTotalQuantity}
           </Typography>
         </Box>
       </Box>
