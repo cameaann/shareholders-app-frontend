@@ -19,8 +19,9 @@ const initialData = [
   },
 ];
 
-const MobileHistory = () => {
+const MobileHistory = ({ filterId }) => {
   const [historyList, setHistoryList] = useState(initialData);
+  const [filteredHistoryList, setFilteredHistoryList] = useState([]);
 
   useEffect(() => {
     getHistoryTransferNotes()
@@ -34,6 +35,19 @@ const MobileHistory = () => {
       });
   }, []);
 
+  useEffect(() => {
+    if (filterId !== undefined) {
+      const filteredList = historyList.filter(
+        (item) =>
+          item.fromShareholderId === parseInt(filterId) ||
+          item.toShareholderId == parseInt(filterId)
+      );
+      setFilteredHistoryList(filteredList);
+    } else {
+      setFilteredHistoryList(historyList);
+    }
+  }, [filterId, historyList]);
+
   return (
     <Box
       sx={{
@@ -42,7 +56,7 @@ const MobileHistory = () => {
         gap: 2,
       }}
     >
-      {historyList.map((item) => (
+      {filteredHistoryList.map((item) => (
         <HistoryCard key={item.id} item={item} />
       ))}
     </Box>

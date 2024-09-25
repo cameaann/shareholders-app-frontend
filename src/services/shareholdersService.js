@@ -18,6 +18,13 @@ const getShareholderById = async (personId) => {
   return res.data;
 };
 
+const addShares = async (person) => {
+  const res = await axios.put(`${shareHoldersUrl}/${person.id}`, person, {
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(person),
+  });
+  return res.status;
+};
 
 const saveShareholder = async (formData) => {
   const payload = {
@@ -88,4 +95,5 @@ const updateShareholder = async (formData, personId) => {
   }
 };
 
-export { getShareholders, getShareholderById, getStatus, saveShareholder, updateShareholder };
+export { getShareholders, getShareholderById, getStatus, saveShareholder, updateShareholder, addShares };
+
