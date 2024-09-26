@@ -3,14 +3,25 @@ import CreateOrEditShareholderForm from "./CreateOrEditShareholderForm";
 import { useContext } from "react";
 import { SharesQuantityContext } from "./SharesQuantityProvider";
 
-const EditModal = ({ isOpen, onClose, person }) => {
-  const { sharesTotalQuantity} = useContext(SharesQuantityContext);
+const EditModal = ({ isOpen, onClose, isMobile, person }) => {
+  const { sharesTotalQuantity } = useContext(SharesQuantityContext);
 
   return (
     <Modal open={isOpen} onClose={onClose}>
-      <ModalDialog sx={{ border: "solid #ED6930 2px", borderRadius: "10px" }}>
+      <ModalDialog
+        sx={{
+          border: isMobile ? "none" : "solid #ED6930 2px",
+          borderRadius: isMobile ? 0 : "10px",
+          overflow: "scroll"
+        }}
+        layout={isMobile ? "fullscreen" : "center"}
+      >
         <ModalClose />
-        <CreateOrEditShareholderForm sharesTotalQuantity = { sharesTotalQuantity } person = {person} isPersonEditing = {isOpen}/>
+        <CreateOrEditShareholderForm
+          sharesTotalQuantity={sharesTotalQuantity}
+          person={person}
+          isPersonEditing={isOpen}
+        />
       </ModalDialog>
     </Modal>
   );
