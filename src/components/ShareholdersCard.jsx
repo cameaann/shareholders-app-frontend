@@ -116,6 +116,7 @@ const ShareholdersCard = ({ shareholder, ownship }) => {
           <EditModal
             isOpen={isEditModalOpen}
             onClose={() => setEditModalOpen(false)}
+            isMobile={true}
             person={selectedPerson}
           />
           <AddSharesModal
