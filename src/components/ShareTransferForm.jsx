@@ -18,11 +18,13 @@ import { getTotalSharesQuantity, makeTransfer } from "../services/sharesService"
 import { useMediaQuery } from "@mui/material";
 import { ShareholdersContext } from "./ShareholdersProvider";
 import { SharesQuantityContext } from "./SharesQuantityProvider";
+import { TransferHistoryContext } from "./TransferHistoryProvider";
 
 const ShareTransferForm = () => {
   const isSmallScreen = useMediaQuery("(max-width: 660px)");
   const { shareholdersList, setShareholders } = useContext(ShareholdersContext);
   const { setSharesTotalQuantity } = useContext(SharesQuantityContext);
+  const { setHistoryList} = useContext(TransferHistoryContext);
   const [checked, setChecked] = useState(false);
   const sellerProps = useFormInput(null);
   const buyerProps = useFormInput(null);
@@ -65,12 +67,13 @@ const ShareTransferForm = () => {
       transferTax: checked,
     };
 
-    const isSuccess = await makeTransfer(formData);
-    if (isSuccess) {
+    const transferHistory = await makeTransfer(formData);
+    if (transferHistory) {
       const shareholders = await getShareholders();
       const totalShares = await getTotalSharesQuantity();
       setSharesTotalQuantity(totalShares.totalShares);
       setShareholders(shareholders);
+      setHistoryList(transferHistory)
       resetForm();
     }
   };

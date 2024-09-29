@@ -8,7 +8,6 @@ const MobileShareholders = ({shareholdersList}) => {
 
   useEffect(() => {
     let sum = shareholdersList.reduce((acc, person) => {
-      console.log("Person's total shares", person.totalShares);
       return acc + person.totalShares;
     }, 0);
     setTotalShares(sum);

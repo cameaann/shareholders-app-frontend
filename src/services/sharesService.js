@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const sharesUrl = "http://localhost:8080/api/shares";
-const transfeUrl = "http://localhost:8080/api/shares/transfer";
+const transferUrl = "http://localhost:8080/api/shares/transfer";
 const metaUrl = "http://localhost:8080/api/metadata";
 
 const getShares = async () => {
@@ -26,15 +26,15 @@ const makeTransfer = async (formData) => {
   };
 
   try {
-    const response = await axios.post(transfeUrl, payload, {
+    const response = await axios.post(transferUrl, payload, {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),
     });
 
     if (response.status === 200) {
       alert("Transfer made successfully!");
-      return true;
-      // Optionally, clear form here
+      return response.data;
+
     } else {
       alert("Failed to make transfer");
     }

@@ -7,6 +7,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import MobileNavbar from "./components/MobileNavbar";
 import { SharesQuantityProvider } from "./components/SharesQuantityProvider";
 import ShareholdersProvider from "./components/ShareholdersProvider";
+import { TransferHistoryProvider } from "./components/TransferHistoryProvider";
 
 const App = () => {
   const isSmallScreen = useMediaQuery("(max-width: 870px)");
@@ -24,21 +25,23 @@ const App = () => {
         overflowY: "auto",
       }}
     >
-      <SharesQuantityProvider>
-        <ShareholdersProvider>
-          {!isSmallScreen ? (
-            <>
-            <Header />
-            <CustomTabs />
-          </>
-          ) : (
-            <>
-              <MobileNavbar onMenuSelect={handleMenuSelect} />
-              <MobileContent selectedContent={selectedContent} />
-            </>
-          )}
-        </ShareholdersProvider>
-      </SharesQuantityProvider>
+      <TransferHistoryProvider>
+        <SharesQuantityProvider>
+          <ShareholdersProvider>
+            {!isSmallScreen ? (
+              <>
+                <Header />
+                <CustomTabs />
+              </>
+            ) : (
+              <>
+                <MobileNavbar onMenuSelect={handleMenuSelect} />
+                <MobileContent selectedContent={selectedContent} />
+              </>
+            )}
+          </ShareholdersProvider>
+        </SharesQuantityProvider>
+      </TransferHistoryProvider>
     </Box>
   );
 };

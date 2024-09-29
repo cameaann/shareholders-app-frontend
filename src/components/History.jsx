@@ -1,38 +1,14 @@
 import { Box } from "@mui/joy";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import HistoryTable from "./HistoryTable";
-import { getHistoryTransferNotes } from "../services/historyTransferService";
+import { TransferHistoryContext } from "./TransferHistoryProvider";
 
-const initialData = [
-  {
-    id: 1,
-    fromShareholderId: 1,
-    toShareholderId: 2,
-    quantity: 122,
-    transferDate: "2024-09-19",
-    paymentDate: null,
-    transferTax: false,
-    pricePerShare: 1,
-    additionalNotes: "",
-    totalAmount: 122,
-  },
-];
+
 
 const History = ({ filterId }) => {
-  const [historyList, setHistoryList] = useState(initialData);
+  const { historyList } = useContext(TransferHistoryContext);
   const [filteredHistoryList, setFilteredHistoryList] = useState([]);
 
-  useEffect(() => {
-    getHistoryTransferNotes()
-      .then((res) => {
-        if (Array.isArray(res)) {
-          setHistoryList(res);
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []);
 
   useEffect(() => {
     if (filterId !== undefined) {
