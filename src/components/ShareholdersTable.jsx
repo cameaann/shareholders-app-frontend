@@ -18,6 +18,7 @@ import AddSharesModal from "./AddSharesModal";
 const ShareholdersTable = ({ shareholders }) => {
   const [totalShares, setTotalShares] = useState(0);
   const [selectedPerson, setSelectedPerson] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const [isHistoryModalOpen, setHistoryModalOpen] = useState(false);
   const [isEditModalOpen, setEditModalOpen] = useState(false);
@@ -45,10 +46,24 @@ const ShareholdersTable = ({ shareholders }) => {
     setAddSharesModalOpen(true);
   };
 
-  const rows = shareholders.map((person, index) => {
-    let ownship = 0;
+  const handleSearchChange = (value) => {
+    setSearchQuery(value);
+  };
+
+  const filteredShareholders = shareholders.filter((person) => {
+    return (
+      person.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      person.personalIdOrCompanyId.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      person.placeOfResidenceOrHeadquarters.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      person.emailAddress.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      person.phoneNumber.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  });
+
+  const rows = filteredShareholders.map((person, index) => {
+    let ownership = 0;
     if (totalShares) {
-      ownship = `${((person.totalShares / totalShares) * 100).toFixed(4)}%`;
+      ownership = `${((person.totalShares / totalShares) * 100).toFixed(4)}%`;
     }
 
     return (
@@ -56,7 +71,7 @@ const ShareholdersTable = ({ shareholders }) => {
         <TableCell>{index + 1}</TableCell>
         <TableCell>{person.totalShares}</TableCell>
         <TableCell>{person.name}</TableCell>
-        <TableCell>{ownship}</TableCell>
+        <TableCell>{ownership}</TableCell>
         <TableCell>{person.personalIdOrCompanyId}</TableCell>
         <TableCell>{person.placeOfResidenceOrHeadquarters}</TableCell>
         <TableCell>{person.address}</TableCell>
@@ -86,7 +101,7 @@ const ShareholdersTable = ({ shareholders }) => {
 
   return (
     <Box>
-      <TableHeader />
+      <TableHeader onSearchChange={handleSearchChange} />
       <Box>
         <Table
           aria-label="shares table"
@@ -108,7 +123,7 @@ const ShareholdersTable = ({ shareholders }) => {
               <TableCell sx={{ width: "50px" }}>Toiminnot</TableCell>
             </TableRow>
           </TableHead>
-          <tbody>{shareholders.length > 0 ? rows : <div></div>}</tbody>
+          <tbody>{filteredShareholders.length > 0 ? rows : <div></div>}</tbody>
         </Table>
       </Box>
       {selectedPerson && (

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, Input, IconButton } from "@mui/joy";
 import {
   FaGear,
@@ -10,7 +10,15 @@ import {
 } from "react-icons/fa6";
 import { FaExpandAlt, FaFilter } from "react-icons/fa";
 
-const TableHeader = () => {
+const TableHeader = ({ onSearchChange }) => {
+  const [searchValue, setSearchValue] = useState("");
+
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setSearchValue(value);
+    onSearchChange(value);
+  };
+
   return (
     <Box
       sx={{
@@ -41,20 +49,18 @@ const TableHeader = () => {
         <Box
           sx={{
             marginLeft: "20px",
-            // commented out coz selected text is removed for now
-            // paddingRight: "20px",
-            // borderRight: "solid #d9d9dc 1px",
           }}
         >
           <Input
             placeholder="search"
             startDecorator={<FaMagnifyingGlass />}
             size="sm"
-          ></Input>
+            value={searchValue}
+            onChange={handleSearchChange}
+          />
         </Box>
-
-        {/* <span style={{ color: "#175ae4", marginLeft: "20px" }}>0 Selected</span> COMMENTED OUT FOR NOW*/}
       </Box>
+
       <Box
         sx={{
           display: "flex",
