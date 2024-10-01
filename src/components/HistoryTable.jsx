@@ -1,16 +1,29 @@
 import { Box, Table, FormControl, Input, Typography } from "@mui/joy";
 import TableHeader from "./TableHeader";
-import { TableHead, TableRow, TableCell } from "@mui/material";
+import { TableHead, TableRow, TableCell, TableBody } from "@mui/material";
 import { useState, useContext } from "react";
 import { ShareholdersContext } from "./ShareholdersProvider";
 import { setPaymentDate } from "../services/historyTransferService";
 import { TransferHistoryContext } from "./TransferHistoryProvider";
 
-
 const HistoryTable = ({ historyList }) => {
   const [paymentDates] = useState({});
   const { shareholdersList } = useContext(ShareholdersContext);
   const { updateHistoryList } = useContext(TransferHistoryContext);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+
+  // Handle page change
+  const handleChangePage = (event, newPage) => {
+    console.log("New Page: ", newPage); // Log to check if the function is triggered
+    setPage(newPage);
+  };
+
+  // Handle rows per page change
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0); // Reset to first page when rows per page change
+  };
 
   const handleDateChange = async (index, id, event) => {
     const updatedNote = await setPaymentDate(id, event.target.value);
@@ -61,9 +74,21 @@ const HistoryTable = ({ historyList }) => {
       </TableRow>
     );
   });
+
+  // Paginated rows to display
+  const paginatedRows = rows.slice(
+    page * rowsPerPage,
+    page * rowsPerPage + rowsPerPage
+  );
   return (
     <Box>
-      <TableHeader />
+      <TableHeader
+        rows={rows}
+        page={page}
+        rowsPerPage={rowsPerPage}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
       <Box>
         <Table
           aria-label="share history table"
@@ -92,7 +117,9 @@ const HistoryTable = ({ historyList }) => {
               <TableCell>Huom</TableCell>
             </TableRow>
           </TableHead>
-          <tbody>{rows}</tbody>
+          <TableBody>
+            {historyList.length > 0 ? paginatedRows : null}
+          </TableBody>
         </Table>
       </Box>
     </Box>
