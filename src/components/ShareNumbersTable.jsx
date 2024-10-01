@@ -11,7 +11,6 @@ const ShareNumbersTable = ({ sharenumbers, sharesTotalQuantity }) => {
 
   // Handle page change
   const handleChangePage = (event, newPage) => {
-    console.log("New Page: ", newPage); // Log to check if the function is triggered
     setPage(newPage);
   };
 
