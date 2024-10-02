@@ -6,6 +6,10 @@ import { SharesQuantityContext } from "./SharesQuantityProvider";
 const EditModal = ({ isOpen, onClose, isMobile, person }) => {
   const { sharesTotalQuantity } = useContext(SharesQuantityContext);
 
+  const handleClose = () => {
+    onClose()
+  }
+
   return (
     <Modal open={isOpen} onClose={onClose}>
       <ModalDialog
@@ -21,6 +25,7 @@ const EditModal = ({ isOpen, onClose, isMobile, person }) => {
           sharesTotalQuantity={sharesTotalQuantity}
           person={person}
           isPersonEditing={isOpen}
+          onClose={handleClose}
         />
       </ModalDialog>
     </Modal>
