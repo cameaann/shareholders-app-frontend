@@ -98,7 +98,6 @@ const HistoryTable = ({ historyList }) => {
     );
   });
 
-  // Paginated rows to display
   const paginatedRows = rows.slice(
     page * rowsPerPage,
     page * rowsPerPage + rowsPerPage

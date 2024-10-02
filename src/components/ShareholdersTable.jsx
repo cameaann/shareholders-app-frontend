@@ -17,14 +17,14 @@ import EditModal from "./EditModal";
 import AddSharesModal from "./AddSharesModal";
 
 const ShareholdersTable = ({ shareholders }) => {
-  const [totalShares, setTotalShares] = useState(0);
-  const [selectedPerson, setSelectedPerson] = useState(null);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isHistoryModalOpen, setHistoryModalOpen] = useState(false);
-  const [isEditModalOpen, setEditModalOpen] = useState(false);
-  const [isAddSharesModalOpen, setAddSharesModalOpen] = useState(false);
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+const [totalShares, setTotalShares] = useState(0);
+const [selectedPerson, setSelectedPerson] = useState(null);
+const [searchQuery, setSearchQuery] = useState("");
+const [isHistoryModalOpen, setHistoryModalOpen] = useState(false);
+const [isEditModalOpen, setEditModalOpen] = useState(false);
+const [isAddSharesModalOpen, setAddSharesModalOpen] = useState(false);
+const [page, setPage] = useState(0);
+const [rowsPerPage, setRowsPerPage] = useState(10);
 
   // Handle page change
   const handleChangePage = (event, newPage) => {
@@ -125,7 +125,7 @@ const ShareholdersTable = ({ shareholders }) => {
   return (
     <Box>
       <TableHeader
-        onSearchChange={handleSearchChange}
+        onSearchChange={handleSearchChange} 
         rows={rows}
         page={page}
         rowsPerPage={rowsPerPage}
@@ -154,11 +154,7 @@ const ShareholdersTable = ({ shareholders }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredShareholders.length > 0 ? (
-              paginatedRows
-            ) : (
-              <Typography></Typography>
-            )}
+            {filteredShareholders.length > 0 ? paginatedRows : <Typography></Typography>}
           </TableBody>
         </Table>
       </Box>

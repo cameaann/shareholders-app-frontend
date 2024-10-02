@@ -28,7 +28,7 @@ const ShareNumbersTable = ({ sharenumbers, sharesTotalQuantity }) => {
     });
     return total;
   };
-
+  
   const handleSearchChange = (searchValue) => {
     setSearchTerm(searchValue);
   };
@@ -49,6 +49,7 @@ const ShareNumbersTable = ({ sharenumbers, sharesTotalQuantity }) => {
     const shareholder = shareholdersList
       ? shareholdersList.find((s) => s.id === share.shareholderId)
       : { name: "" };
+    
     return (
       <TableRow key={i}>
         <TableCell align="right">{share.startNumber}</TableCell>
@@ -104,14 +105,8 @@ const ShareNumbersTable = ({ sharenumbers, sharesTotalQuantity }) => {
             )}
           </TableBody>
         </Table>
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: "repeat(5, 1fr)",
-            alignItems: "center",
-            marginTop: 2,
-          }}
-        >
+
+        <Box sx={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", alignItems: "center", marginTop: 2 }}>
           <Typography sx={{ fontWeight: "bold" }}>Yhteensä</Typography>
           <Typography>{getTotalAmount()}</Typography>
         </Box>

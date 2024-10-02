@@ -9,14 +9,7 @@ import {
 } from "react-icons/fa6";
 import { FaExpandAlt, FaFilter } from "react-icons/fa";
 
-const TableHeader = ({
-  onSearchChange,
-  rows,
-  page,
-  rowsPerPage,
-  onPageChange,
-  onRowsPerPageChange,
-}) => {
+const TableHeader = ({ onSearchChange, rows, page, rowsPerPage, onPageChange, onRowsPerPageChange }) => {
   const [searchValue, setSearchValue] = useState("");
 
   const handleSearchChange = (e) => {
