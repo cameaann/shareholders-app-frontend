@@ -28,7 +28,7 @@ const ShareNumbersTable = ({ sharenumbers, sharesTotalQuantity }) => {
     });
     return total;
   };
-  
+
   const handleSearchChange = (searchValue) => {
     setSearchTerm(searchValue);
   };
@@ -49,7 +49,7 @@ const ShareNumbersTable = ({ sharenumbers, sharesTotalQuantity }) => {
     const shareholder = shareholdersList
       ? shareholdersList.find((s) => s.id === share.shareholderId)
       : { name: "" };
-    
+
     return (
       <TableRow key={i}>
         <TableCell align="right">{share.startNumber}</TableCell>
@@ -71,47 +71,61 @@ const ShareNumbersTable = ({ sharenumbers, sharesTotalQuantity }) => {
   );
 
   return (
-    <Box>
-      <TableHeader
-        onSearchChange={handleSearchChange}
-        rows={rows}
-        page={page}
-        rowsPerPage={rowsPerPage}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-      <Box>
-        <Table
-          aria-label="share numbers table"
-          hoverRow
-          variant="plain"
-          sx={{ mt: 4 }}
-        >
-          <TableHead>
-            <TableRow sx={{ "& th": { color: "rgba(96, 96, 96)" } }}>
-              <TableCell align="center">Osakenumerot</TableCell>
-              <TableCell align="center">Alkaen</TableCell>
-              <TableCell align="center">Päättyen</TableCell>
-              <TableCell align="center">Kpl</TableCell>
-              <TableCell align="center">Omistaja</TableCell>
-              <TableCell>Tarkistuslaskenta</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {filteredShares.length > 0 ? (
-              paginatedRows
-            ) : (
-              <Typography></Typography>
-            )}
-          </TableBody>
-        </Table>
+      <Box >
+        <TableHeader
+          onSearchChange={handleSearchChange}
+          rows={rows}
+          page={page}
+          rowsPerPage={rowsPerPage}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+        <Box sx={{ display: "flex", flexDirection:"column"}}>
+          <Table
+            aria-label="share numbers table"
+            hoverRow
+            variant="plain"
+            sx={{  width: "85%", margin: "0px auto", mt: 4,  }}
+          >
+            <TableHead>
+              <TableRow sx={{ "& th": { color: "rgba(96, 96, 96)" } }}>
+                <TableCell sx={{ width: "150px" }} align="center">
+                  <Typography>Osakenumerot</Typography>
+                  Alkaen
+                </TableCell>
+                <TableCell sx={{ width: "150px" }} align="center">
+                  Päättyen
+                </TableCell>
+                <TableCell align="center">Kpl</TableCell>
+                <TableCell align="center">Omistaja</TableCell>
+                <TableCell>Tarkistuslaskenta</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {filteredShares.length > 0 ? (
+                paginatedRows
+              ) : (
+                <Typography></Typography>
+              )}
+            </TableBody>
+          </Table>
 
-        <Box sx={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", alignItems: "center", marginTop: 2 }}>
-          <Typography sx={{ fontWeight: "bold" }}>Yhteensä</Typography>
-          <Typography>{getTotalAmount()}</Typography>
+          <Box
+            sx={{
+              width: "85%", 
+              margin: "0px auto",
+              display: "grid",
+              gridTemplateColumns: "repeat(5, 1fr)",
+              alignItems: "center",
+              marginTop: 2,
+            }}
+          >
+            <Typography sx={{ fontWeight: "bold" }}>Yhteensä</Typography>
+            <Typography>{getTotalAmount()}</Typography>
+          </Box>
         </Box>
       </Box>
-    </Box>
+
   );
 };
 
