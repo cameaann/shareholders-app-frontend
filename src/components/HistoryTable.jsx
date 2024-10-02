@@ -32,20 +32,20 @@ const HistoryTable = ({ historyList }) => {
     }
   };
 
-
   const handleSearchChange = (value) => {
     setSearchQuery(value);
   };
 
-
   const filteredHistoryList = historyList.filter((note) => {
-    const seller = shareholdersList?.find(
-      (s) => s.id === note.fromShareholderId
-    )?.name.toLowerCase() || "";
-    const buyer = shareholdersList?.find(
-      (s) => s.id === note.toShareholderId
-    )?.name.toLowerCase() || "";
-    
+    const seller =
+      shareholdersList
+        ?.find((s) => s.id === note.fromShareholderId)
+        ?.name.toLowerCase() || "";
+    const buyer =
+      shareholdersList
+        ?.find((s) => s.id === note.toShareholderId)
+        ?.name.toLowerCase() || "";
+
     return (
       seller.includes(searchQuery.toLowerCase()) ||
       buyer.includes(searchQuery.toLowerCase()) ||
@@ -106,7 +106,7 @@ const HistoryTable = ({ historyList }) => {
   return (
     <Box>
       <TableHeader
-      onSearchChange={handleSearchChange}
+        onSearchChange={handleSearchChange}
         rows={rows}
         page={page}
         rowsPerPage={rowsPerPage}

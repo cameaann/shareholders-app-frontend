@@ -37,7 +37,6 @@ const ShareholdersTable = ({ shareholders }) => {
     setPage(0); // Reset to first page when rows per page change
   };
 
-
   useEffect(() => {
     let sum = shareholders.reduce((acc, person) => {
       return acc + person.totalShares;
@@ -67,8 +66,12 @@ const ShareholdersTable = ({ shareholders }) => {
   const filteredShareholders = shareholders.filter((person) => {
     return (
       person.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      person.personalIdOrCompanyId.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      person.placeOfResidenceOrHeadquarters.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      person.personalIdOrCompanyId
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase()) ||
+      person.placeOfResidenceOrHeadquarters
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase()) ||
       person.emailAddress.toLowerCase().includes(searchQuery.toLowerCase()) ||
       person.phoneNumber.toLowerCase().includes(searchQuery.toLowerCase())
     );
@@ -79,7 +82,6 @@ const ShareholdersTable = ({ shareholders }) => {
     if (totalShares) {
       ownership = `${((person.totalShares / totalShares) * 100).toFixed(4)}%`;
     }
-
 
     return (
       <TableRow key={index}>
@@ -114,9 +116,11 @@ const ShareholdersTable = ({ shareholders }) => {
     );
   });
 
-    // Paginated rows to display
-  const paginatedRows = rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
-
+  // Paginated rows to display
+  const paginatedRows = rows.slice(
+    page * rowsPerPage,
+    page * rowsPerPage + rowsPerPage
+  );
 
   return (
     <Box>
@@ -150,7 +154,11 @@ const ShareholdersTable = ({ shareholders }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredShareholders.length > 0 ? paginatedRows : <Typography></Typography>}
+            {filteredShareholders.length > 0 ? (
+              paginatedRows
+            ) : (
+              <Typography></Typography>
+            )}
           </TableBody>
         </Table>
       </Box>

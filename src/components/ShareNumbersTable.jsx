@@ -72,7 +72,7 @@ const ShareNumbersTable = ({ sharenumbers, sharesTotalQuantity }) => {
   return (
     <Box>
       <TableHeader
-      onSearchChange={handleSearchChange}
+        onSearchChange={handleSearchChange}
         rows={rows}
         page={page}
         rowsPerPage={rowsPerPage}
@@ -80,7 +80,12 @@ const ShareNumbersTable = ({ sharenumbers, sharesTotalQuantity }) => {
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
       <Box>
-        <Table aria-label="share numbers table" hoverRow variant="plain" sx={{ mt: 4 }}>
+        <Table
+          aria-label="share numbers table"
+          hoverRow
+          variant="plain"
+          sx={{ mt: 4 }}
+        >
           <TableHead>
             <TableRow sx={{ "& th": { color: "rgba(96, 96, 96)" } }}>
               <TableCell align="center">Osakenumerot</TableCell>
@@ -99,7 +104,14 @@ const ShareNumbersTable = ({ sharenumbers, sharesTotalQuantity }) => {
             )}
           </TableBody>
         </Table>
-        <Box sx={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", alignItems: "center", marginTop: 2 }}>
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: "repeat(5, 1fr)",
+            alignItems: "center",
+            marginTop: 2,
+          }}
+        >
           <Typography sx={{ fontWeight: "bold" }}>Yhteensä</Typography>
           <Typography>{getTotalAmount()}</Typography>
         </Box>
