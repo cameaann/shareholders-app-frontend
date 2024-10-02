@@ -20,7 +20,8 @@ const CreateOrEditShareholderForm = ({
   sharesTotalQuantity,
   onAddingMainShareholder,
   person,
-  isPersonEditing
+  isPersonEditing,
+  onClose
 }) => {
   const isSmallScreen = useMediaQuery("(max-width: 660px)");
   const nameProps = useFormInput(person ? person.name : "");
@@ -108,6 +109,7 @@ const CreateOrEditShareholderForm = ({
         if (res) {
           const shareholder = await getShareholderById(res);
           editShareholder(shareholder)
+          onClose();
         } else {
           console.log("Failed");
         }
