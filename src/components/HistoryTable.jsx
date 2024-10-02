@@ -1,3 +1,4 @@
+import React, { useState, useContext } from "react";
 import { Box, Table, FormControl, Input, Typography } from "@mui/joy";
 import TableHeader from "./TableHeader";
 import { TableHead, TableRow, TableCell, TableBody } from "@mui/material";
@@ -7,6 +8,7 @@ import { setPaymentDate } from "../services/historyTransferService";
 import { TransferHistoryContext } from "./TransferHistoryProvider";
 
 const HistoryTable = ({ historyList }) => {
+  const [searchQuery, setSearchQuery] = useState("");
   const [paymentDates] = useState({});
   const { shareholdersList } = useContext(ShareholdersContext);
   const { updateHistoryList } = useContext(TransferHistoryContext);
@@ -30,7 +32,30 @@ const HistoryTable = ({ historyList }) => {
       updateHistoryList(updatedNote);
     }
   };
-  const rows = historyList.map((note, index) => {
+
+
+  const handleSearchChange = (value) => {
+    setSearchQuery(value);
+  };
+
+
+  const filteredHistoryList = historyList.filter((note) => {
+    const seller = shareholdersList?.find(
+      (s) => s.id === note.fromShareholderId
+    )?.name.toLowerCase() || "";
+    const buyer = shareholdersList?.find(
+      (s) => s.id === note.toShareholderId
+    )?.name.toLowerCase() || "";
+    
+    return (
+      seller.includes(searchQuery.toLowerCase()) ||
+      buyer.includes(searchQuery.toLowerCase()) ||
+      note.transferDate.includes(searchQuery) ||
+      note.pricePerShare.toString().includes(searchQuery)
+    );
+  });
+
+  const rows = filteredHistoryList.map((note, index) => {
     const totalPrice = `${(note.pricePerShare * note.quantity).toFixed(2)}`;
     const seller = shareholdersList
       ? shareholdersList.find((s) => s.id === note.fromShareholderId)
@@ -74,7 +99,6 @@ const HistoryTable = ({ historyList }) => {
     );
   });
 
-  // Paginated rows to display
   const paginatedRows = rows.slice(
     page * rowsPerPage,
     page * rowsPerPage + rowsPerPage
@@ -82,6 +106,7 @@ const HistoryTable = ({ historyList }) => {
   return (
     <Box>
       <TableHeader
+        onSearchChange={handleSearchChange}
         rows={rows}
         page={page}
         rowsPerPage={rowsPerPage}

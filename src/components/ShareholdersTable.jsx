@@ -17,13 +17,14 @@ import EditModal from "./EditModal";
 import AddSharesModal from "./AddSharesModal";
 
 const ShareholdersTable = ({ shareholders }) => {
-  const [totalShares, setTotalShares] = useState(0);
-  const [selectedPerson, setSelectedPerson] = useState(null);
-  const [isHistoryModalOpen, setHistoryModalOpen] = useState(false);
-  const [isEditModalOpen, setEditModalOpen] = useState(false);
-  const [isAddSharesModalOpen, setAddSharesModalOpen] = useState(false);
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+const [totalShares, setTotalShares] = useState(0);
+const [selectedPerson, setSelectedPerson] = useState(null);
+const [searchQuery, setSearchQuery] = useState("");
+const [isHistoryModalOpen, setHistoryModalOpen] = useState(false);
+const [isEditModalOpen, setEditModalOpen] = useState(false);
+const [isAddSharesModalOpen, setAddSharesModalOpen] = useState(false);
+const [page, setPage] = useState(0);
+const [rowsPerPage, setRowsPerPage] = useState(10);
 
   // Handle page change
   const handleChangePage = (event, newPage) => {
@@ -59,10 +60,24 @@ const ShareholdersTable = ({ shareholders }) => {
     setAddSharesModalOpen(true);
   };
 
-  const rows = shareholders.map((person, index) => {
-    let ownship = 0;
+  const handleSearchChange = (value) => {
+    setSearchQuery(value);
+  };
+
+  const filteredShareholders = shareholders.filter((person) => {
+    return (
+      person.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      person.personalIdOrCompanyId.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      person.placeOfResidenceOrHeadquarters.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      person.emailAddress.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      person.phoneNumber.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  });
+
+  const rows = filteredShareholders.map((person, index) => {
+    let ownership = 0;
     if (totalShares) {
-      ownship = `${((person.totalShares / totalShares) * 100).toFixed(4)}%`;
+      ownership = `${((person.totalShares / totalShares) * 100).toFixed(4)}%`;
     }
 
 
@@ -71,7 +86,7 @@ const ShareholdersTable = ({ shareholders }) => {
         <TableCell>{index + 1}</TableCell>
         <TableCell>{person.totalShares}</TableCell>
         <TableCell>{person.name}</TableCell>
-        <TableCell>{ownship}</TableCell>
+        <TableCell>{ownership}</TableCell>
         <TableCell>{person.personalIdOrCompanyId}</TableCell>
         <TableCell>{person.placeOfResidenceOrHeadquarters}</TableCell>
         <TableCell>{person.address}</TableCell>
@@ -106,6 +121,7 @@ const ShareholdersTable = ({ shareholders }) => {
   return (
     <Box>
       <TableHeader
+        onSearchChange={handleSearchChange} 
         rows={rows}
         page={page}
         rowsPerPage={rowsPerPage}
@@ -134,7 +150,7 @@ const ShareholdersTable = ({ shareholders }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {shareholders.length > 0 ? paginatedRows : <Typography></Typography>}
+            {filteredShareholders.length > 0 ? paginatedRows : <Typography></Typography>}
           </TableBody>
         </Table>
       </Box>

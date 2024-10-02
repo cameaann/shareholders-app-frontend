@@ -8,6 +8,7 @@ const ShareNumbersTable = ({ sharenumbers, sharesTotalQuantity }) => {
   const { shareholdersList } = useContext(ShareholdersContext);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [searchTerm, setSearchTerm] = useState("");
 
   // Handle page change
   const handleChangePage = (event, newPage) => {
@@ -22,18 +23,33 @@ const ShareNumbersTable = ({ sharenumbers, sharesTotalQuantity }) => {
 
   const getTotalAmount = () => {
     let total = 0;
-
-    sharenumbers.forEach((e) => {
+    filteredShares.forEach((e) => {
       total += e.endNumber - e.startNumber + 1;
     });
-
     return total;
   };
+  
+  const handleSearchChange = (searchValue) => {
+    setSearchTerm(searchValue);
+  };
 
-  const rows = sharenumbers.map((share, i) => {
+  const filteredShares = sharenumbers.filter((share) => {
+    const shareholder = shareholdersList?.find(
+      (s) => s.id === share.shareholderId
+    ) || { name: "" };
+
+    return (
+      shareholder.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      share.startNumber.toString().includes(searchTerm) ||
+      share.endNumber.toString().includes(searchTerm)
+    );
+  });
+
+  const rows = filteredShares.map((share, i) => {
     const shareholder = shareholdersList
       ? shareholdersList.find((s) => s.id === share.shareholderId)
       : { name: "" };
+    
     return (
       <TableRow key={i}>
         <TableCell align="right">{share.startNumber}</TableCell>
@@ -57,45 +73,29 @@ const ShareNumbersTable = ({ sharenumbers, sharesTotalQuantity }) => {
   return (
     <Box>
       <TableHeader
+        onSearchChange={handleSearchChange}
         rows={rows}
         page={page}
         rowsPerPage={rowsPerPage}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
+
       <Box>
-        <Table
-          aria-label="share numbers table"
-          hoverRow
-          variant="plain"
-          sx={{ mt: 4 }}
-        >
+        <Table aria-label="share numbers table" hoverRow variant="plain" sx={{ mt: 4 }}>
           <TableHead>
-            <TableRow
-              sx={{
-                "& th": {
-                  color: "rgba(96, 96, 96)",
-                  // textAlign:"center"
-                },
-              }}
-            >
-              <TableCell align="center">
-                Osakenumerot
-                <Typography fontSize="smaller">Alkaen</Typography>
-              </TableCell>
-              <TableCell align="center">
-                <Typography fontSize="smaller">Päättyen</Typography>
-              </TableCell>
+            <TableRow sx={{ "& th": { color: "rgba(96, 96, 96)" } }}>
+              <TableCell align="center">Osakenumerot</TableCell>
+              <TableCell align="center">Alkaen</TableCell>
+              <TableCell align="center">Päättyen</TableCell>
               <TableCell align="center">Kpl</TableCell>
               <TableCell align="center">Omistaja</TableCell>
-              <TableCell>
-                Tarkistuslaskenta
-                <Typography fontSize="smaller">Osakaiden määrä</Typography>
-              </TableCell>
+              <TableCell>Tarkistuslaskenta</TableCell>
             </TableRow>
           </TableHead>
+
           <TableBody>
-            {sharenumbers.length > 0 ? (
+            {filteredShares.length > 0 ? (
               paginatedRows
             ) : (
               <Typography></Typography>
@@ -103,14 +103,7 @@ const ShareNumbersTable = ({ sharenumbers, sharesTotalQuantity }) => {
           </TableBody>
         </Table>
 
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: "repeat(5, 1fr)",
-            alignItems: "center",
-            marginTop: 2,
-          }}
-        >
+        <Box sx={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", alignItems: "center", marginTop: 2 }}>
           <Typography sx={{ fontWeight: "bold" }}>Yhteensä</Typography>
           <Typography>{getTotalAmount()}</Typography>
         </Box>
