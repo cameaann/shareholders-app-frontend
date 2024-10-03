@@ -15,16 +15,17 @@ import { HiDotsVertical } from "react-icons/hi";
 import HistoryModal from "./HistoryModal";
 import EditModal from "./EditModal";
 import AddSharesModal from "./AddSharesModal";
+import * as XLSX from "xlsx";
 
 const ShareholdersTable = ({ shareholders }) => {
-const [totalShares, setTotalShares] = useState(0);
-const [selectedPerson, setSelectedPerson] = useState(null);
-const [searchQuery, setSearchQuery] = useState("");
-const [isHistoryModalOpen, setHistoryModalOpen] = useState(false);
-const [isEditModalOpen, setEditModalOpen] = useState(false);
-const [isAddSharesModalOpen, setAddSharesModalOpen] = useState(false);
-const [page, setPage] = useState(0);
-const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [totalShares, setTotalShares] = useState(0);
+  const [selectedPerson, setSelectedPerson] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isHistoryModalOpen, setHistoryModalOpen] = useState(false);
+  const [isEditModalOpen, setEditModalOpen] = useState(false);
+  const [isAddSharesModalOpen, setAddSharesModalOpen] = useState(false);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   // Handle page change
   const handleChangePage = (event, newPage) => {
@@ -122,15 +123,38 @@ const [rowsPerPage, setRowsPerPage] = useState(10);
     page * rowsPerPage + rowsPerPage
   );
 
+  const handleDownload = () => {
+    const data = filteredShareholders.map((person) => ({
+      "Nimi": person.name,
+      "Määrä": person.totalShares,
+      "Omistus %": totalShares
+        ? ((person.totalShares / totalShares) * 100).toFixed(4)
+        : "0.0000",
+      "Hetu / Y-tunn.": person.personalIdOrCompanyId,
+      "Kotipaikka":
+        person.placeOfResidenceOrHeadquarters,
+      "Postiosoite": person.address,
+      "Sähköposti": person.emailAddress,
+      "Puhelinnumero": person.phoneNumber,
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(data)
+    const workbook = XLSX.utils.book_new()
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Osakasluettelo")
+
+    XLSX.writeFile(workbook, "osakasluettelo.xlsx")
+  };
+
   return (
     <Box>
       <TableHeader
-        onSearchChange={handleSearchChange} 
+        onSearchChange={handleSearchChange}
         rows={rows}
         page={page}
         rowsPerPage={rowsPerPage}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
+        onDownload={handleDownload}
       />
       <Box>
         <Table
@@ -154,7 +178,11 @@ const [rowsPerPage, setRowsPerPage] = useState(10);
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredShareholders.length > 0 ? paginatedRows : <Typography></Typography>}
+            {filteredShareholders.length > 0 ? (
+              paginatedRows
+            ) : (
+              <Typography></Typography>
+            )}
           </TableBody>
         </Table>
       </Box>

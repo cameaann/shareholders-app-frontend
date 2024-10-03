@@ -9,7 +9,7 @@ import {
 } from "react-icons/fa6";
 import { FaExpandAlt, FaFilter } from "react-icons/fa";
 
-const TableHeader = ({ onSearchChange, rows, page, rowsPerPage, onPageChange, onRowsPerPageChange }) => {
+const TableHeader = ({ onSearchChange, rows, page, rowsPerPage, onPageChange, onRowsPerPageChange, onDownload  }) => {
   const [searchValue, setSearchValue] = useState("");
 
   const handleSearchChange = (e) => {
@@ -91,7 +91,7 @@ const TableHeader = ({ onSearchChange, rows, page, rowsPerPage, onPageChange, on
           <IconButton>
             <FaPrint size={20} />
           </IconButton>
-          <IconButton>
+          <IconButton onClick={onDownload}>
             <FaDownload size={20} />
           </IconButton>
         </Box>
