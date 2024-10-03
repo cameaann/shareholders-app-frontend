@@ -3,6 +3,7 @@ import TableHeader from "./TableHeader";
 import { Table, Box, Typography } from "@mui/joy";
 import { useState, useContext } from "react";
 import { ShareholdersContext } from "./ShareholdersProvider";
+import * as XLSX from "xlsx";
 
 const ShareNumbersTable = ({ sharenumbers, sharesTotalQuantity }) => {
   const { shareholdersList } = useContext(ShareholdersContext);
@@ -70,6 +71,22 @@ const ShareNumbersTable = ({ sharenumbers, sharesTotalQuantity }) => {
     page * rowsPerPage + rowsPerPage
   );
 
+  const handleDownload = () => {
+    const data = filteredShares.map((share) => ({
+      "Osakenumerot (Alkaen)": share.startNumber,
+      "Osakenumerot (Päättyen)": share.endNumber,
+      "Kpl": share.quantity,
+      "Omistaja": share.shareholderId,
+      "Tarkistuslaskenta": share.endNumber - share.startNumber + 1
+    }))
+
+    const worksheet = XLSX.utils.json_to_sheet(data)
+    const workbook = XLSX.utils.book_new()
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Osakenumerot")
+
+    XLSX.writeFile(workbook, "osakenumerot.xlsx")
+  }
+
   return (
       <Box >
         <TableHeader
@@ -79,6 +96,7 @@ const ShareNumbersTable = ({ sharenumbers, sharesTotalQuantity }) => {
           rowsPerPage={rowsPerPage}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
+          onDownload={handleDownload}
         />
         <Box sx={{ display: "flex", flexDirection:"column"}}>
           <Table

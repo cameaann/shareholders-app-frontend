@@ -5,6 +5,7 @@ import { TableHead, TableRow, TableCell, TableBody } from "@mui/material";
 import { ShareholdersContext } from "./ShareholdersProvider";
 import { setPaymentDate } from "../services/historyTransferService";
 import { TransferHistoryContext } from "./TransferHistoryProvider";
+import * as XLSX from "xlsx";
 
 const HistoryTable = ({ historyList }) => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -102,6 +103,36 @@ const HistoryTable = ({ historyList }) => {
     page * rowsPerPage,
     page * rowsPerPage + rowsPerPage
   );
+
+  const handleDownload = () => {
+    const data = filteredHistoryList.map((note) => {
+      const seller = shareholdersList
+        ? shareholdersList.find((s) => s.id === note.fromShareholderId)
+        : { name: "" };
+      const buyer = shareholdersList
+        ? shareholdersList.find((s) => s.id === note.toShareholderId)
+        : { name: "" };
+
+      return {
+        Sääntöpäivä: note.paymentDate,
+        Maksupvm: note.transferDate,
+        "Luovittaja (Myyjä)": seller.name,
+        "Saaja (Ostaja)": buyer.name,
+        "Varainsiirtovero": note.transferTax,
+        "Kpl": note.quantity,
+        "Hinta per osake": note.pricePerShare,
+        "EUR": note.totalAmount,
+        "Huom": note.additionalNotes
+      };
+    });
+
+    const worksheet = XLSX.utils.json_to_sheet(data)
+    const workbook = XLSX.utils.book_new()
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Historia")
+
+    XLSX.writeFile(workbook, "historia.xlsx")
+  };
+
   return (
     <Box>
       <TableHeader
@@ -111,6 +142,7 @@ const HistoryTable = ({ historyList }) => {
         rowsPerPage={rowsPerPage}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
+        onDownload={handleDownload}
       />
       <Box>
         <Table
