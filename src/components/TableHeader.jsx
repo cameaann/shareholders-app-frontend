@@ -1,16 +1,15 @@
 import React, { useState } from "react";
 import { Box, Input, IconButton } from "@mui/joy";
+import { TablePagination } from "@mui/material";
 import {
   FaGear,
   FaMagnifyingGlass,
-  FaChevronRight,
-  FaChevronLeft,
   FaPrint,
   FaDownload,
 } from "react-icons/fa6";
 import { FaExpandAlt, FaFilter } from "react-icons/fa";
 
-const TableHeader = ({ onSearchChange }) => {
+const TableHeader = ({ onSearchChange, rows, page, rowsPerPage, onPageChange, onRowsPerPageChange }) => {
   const [searchValue, setSearchValue] = useState("");
 
   const handleSearchChange = (e) => {
@@ -67,25 +66,15 @@ const TableHeader = ({ onSearchChange }) => {
           alignItems: "center",
         }}
       >
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            paddingRight: "10px",
-            borderRight: "solid #d9d9dc 1px",
-          }}
-        >
-          <span style={{ color: "#6e6e71", marginRight: "10px" }}>
-            1 - 10 of 52
-          </span>
-          <IconButton>
-            <FaChevronLeft size={15} />
-          </IconButton>
-
-          <IconButton>
-            <FaChevronRight size={15} />
-          </IconButton>
-        </Box>
+        <TablePagination
+          component="div"
+          count={rows ? rows.length : 10} // Total number of rows
+          page={page} // Current page
+          onPageChange={onPageChange} // Trigger function to change page
+          rowsPerPage={rowsPerPage} // Current rows per page
+          onRowsPerPageChange={onRowsPerPageChange} // Handle rows per page change
+          rowsPerPageOptions={[5, 10, 25]} // Rows per page options
+        />
 
         <Box
           sx={{

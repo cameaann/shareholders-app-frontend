@@ -7,8 +7,9 @@ import {
   MenuButton,
   MenuItem,
   Menu,
+  Typography,
 } from "@mui/joy";
-import { TableCell, TableRow, TableHead } from "@mui/material";
+import { TableCell, TableRow, TableHead, TableBody } from "@mui/material";
 import { useState, useEffect } from "react";
 import { HiDotsVertical } from "react-icons/hi";
 import HistoryModal from "./HistoryModal";
@@ -16,13 +17,25 @@ import EditModal from "./EditModal";
 import AddSharesModal from "./AddSharesModal";
 
 const ShareholdersTable = ({ shareholders }) => {
-  const [totalShares, setTotalShares] = useState(0);
-  const [selectedPerson, setSelectedPerson] = useState(null);
-  const [searchQuery, setSearchQuery] = useState("");
+const [totalShares, setTotalShares] = useState(0);
+const [selectedPerson, setSelectedPerson] = useState(null);
+const [searchQuery, setSearchQuery] = useState("");
+const [isHistoryModalOpen, setHistoryModalOpen] = useState(false);
+const [isEditModalOpen, setEditModalOpen] = useState(false);
+const [isAddSharesModalOpen, setAddSharesModalOpen] = useState(false);
+const [page, setPage] = useState(0);
+const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  const [isHistoryModalOpen, setHistoryModalOpen] = useState(false);
-  const [isEditModalOpen, setEditModalOpen] = useState(false);
-  const [isAddSharesModalOpen, setAddSharesModalOpen] = useState(false);
+  // Handle page change
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  // Handle rows per page change
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0); // Reset to first page when rows per page change
+  };
 
   useEffect(() => {
     let sum = shareholders.reduce((acc, person) => {
@@ -53,8 +66,12 @@ const ShareholdersTable = ({ shareholders }) => {
   const filteredShareholders = shareholders.filter((person) => {
     return (
       person.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      person.personalIdOrCompanyId.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      person.placeOfResidenceOrHeadquarters.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      person.personalIdOrCompanyId
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase()) ||
+      person.placeOfResidenceOrHeadquarters
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase()) ||
       person.emailAddress.toLowerCase().includes(searchQuery.toLowerCase()) ||
       person.phoneNumber.toLowerCase().includes(searchQuery.toLowerCase())
     );
@@ -99,9 +116,22 @@ const ShareholdersTable = ({ shareholders }) => {
     );
   });
 
+  // Paginated rows to display
+  const paginatedRows = rows.slice(
+    page * rowsPerPage,
+    page * rowsPerPage + rowsPerPage
+  );
+
   return (
     <Box>
-      <TableHeader onSearchChange={handleSearchChange} />
+      <TableHeader
+        onSearchChange={handleSearchChange} 
+        rows={rows}
+        page={page}
+        rowsPerPage={rowsPerPage}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
       <Box>
         <Table
           aria-label="shares table"
@@ -123,7 +153,9 @@ const ShareholdersTable = ({ shareholders }) => {
               <TableCell sx={{ width: "50px" }}>Toiminnot</TableCell>
             </TableRow>
           </TableHead>
-          <tbody>{filteredShareholders.length > 0 ? rows : <div></div>}</tbody>
+          <TableBody>
+            {filteredShareholders.length > 0 ? paginatedRows : <Typography></Typography>}
+          </TableBody>
         </Table>
       </Box>
       {selectedPerson && (

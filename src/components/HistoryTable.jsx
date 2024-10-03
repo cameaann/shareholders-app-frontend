@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { Box, Table, FormControl, Input, Typography } from "@mui/joy";
 import TableHeader from "./TableHeader";
-import { TableHead, TableRow, TableCell } from "@mui/material";
+import { TableHead, TableRow, TableCell, TableBody } from "@mui/material";
 import { ShareholdersContext } from "./ShareholdersProvider";
 import { setPaymentDate } from "../services/historyTransferService";
 import { TransferHistoryContext } from "./TransferHistoryProvider";
@@ -11,6 +11,19 @@ const HistoryTable = ({ historyList }) => {
   const [paymentDates] = useState({});
   const { shareholdersList } = useContext(ShareholdersContext);
   const { updateHistoryList } = useContext(TransferHistoryContext);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+
+  // Handle page change
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  // Handle rows per page change
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0); // Reset to first page when rows per page change
+  };
 
   const handleDateChange = async (index, id, event) => {
     const updatedNote = await setPaymentDate(id, event.target.value);
@@ -19,20 +32,20 @@ const HistoryTable = ({ historyList }) => {
     }
   };
 
-
   const handleSearchChange = (value) => {
     setSearchQuery(value);
   };
 
-
   const filteredHistoryList = historyList.filter((note) => {
-    const seller = shareholdersList?.find(
-      (s) => s.id === note.fromShareholderId
-    )?.name.toLowerCase() || "";
-    const buyer = shareholdersList?.find(
-      (s) => s.id === note.toShareholderId
-    )?.name.toLowerCase() || "";
-    
+    const seller =
+      shareholdersList
+        ?.find((s) => s.id === note.fromShareholderId)
+        ?.name.toLowerCase() || "";
+    const buyer =
+      shareholdersList
+        ?.find((s) => s.id === note.toShareholderId)
+        ?.name.toLowerCase() || "";
+
     return (
       seller.includes(searchQuery.toLowerCase()) ||
       buyer.includes(searchQuery.toLowerCase()) ||
@@ -85,9 +98,20 @@ const HistoryTable = ({ historyList }) => {
     );
   });
 
+  const paginatedRows = rows.slice(
+    page * rowsPerPage,
+    page * rowsPerPage + rowsPerPage
+  );
   return (
     <Box>
-      <TableHeader onSearchChange={handleSearchChange} />
+      <TableHeader
+        onSearchChange={handleSearchChange}
+        rows={rows}
+        page={page}
+        rowsPerPage={rowsPerPage}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
       <Box>
         <Table
           aria-label="share history table"
@@ -116,7 +140,9 @@ const HistoryTable = ({ historyList }) => {
               <TableCell>Huom</TableCell>
             </TableRow>
           </TableHead>
-          <tbody>{rows}</tbody>
+          <TableBody>
+            {filteredHistoryList.length > 0 ? paginatedRows : null}
+          </TableBody>
         </Table>
       </Box>
     </Box>
