@@ -66,11 +66,19 @@ const HistoryTable = ({ historyList }) => {
 
     return (
       <TableRow key={index}>
-        <TableCell>{index + 1}</TableCell>
-        <TableCell>{note.transferDate}</TableCell>
+        <TableCell>
+          <Typography sx={{ textAlign: "center" }}> {index + 1}</Typography>
+        </TableCell>
+        <TableCell>
+          <Typography sx={{ textAlign: "center" }}>
+            {note.transferDate}
+          </Typography>
+        </TableCell>
         <TableCell>
           {note.paymentDate ? (
-            note.paymentDate
+            <Typography sx={{ textAlign: "center" }}>
+              {note.paymentDate}
+            </Typography>
           ) : note.pricePerShare > 0 ? (
             <FormControl>
               <Input
@@ -126,11 +134,11 @@ const HistoryTable = ({ historyList }) => {
       };
     });
 
-    const worksheet = XLSX.utils.json_to_sheet(data)
-    const workbook = XLSX.utils.book_new()
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Historia")
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Historia");
 
-    XLSX.writeFile(workbook, "historia.xlsx")
+    XLSX.writeFile(workbook, "historia.xlsx");
   };
 
   return (
@@ -166,9 +174,13 @@ const HistoryTable = ({ historyList }) => {
               <TableCell>Luovittaja (Myyjä)</TableCell>
               <TableCell>Saaja (Ostaja)</TableCell>
               <TableCell>Varainsiirtovero</TableCell>
-              <TableCell>Kpl</TableCell>
+              <TableCell>
+                <Typography sx={{ textAlign: "right" }}>Kpl</Typography>
+              </TableCell>
               <TableCell>Hinta per 1</TableCell>
-              <TableCell>EUR</TableCell>
+              <TableCell>
+                <Typography sx={{ textAlign: "right" }}>EUR</Typography>
+              </TableCell>
               <TableCell>Huom</TableCell>
             </TableRow>
           </TableHead>
