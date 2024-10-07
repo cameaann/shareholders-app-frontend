@@ -42,7 +42,6 @@ const saveShareholder = async (formData) => {
   };
 
   if (formData.quantity > 0) {
-    console.log(formData.quantity);
     payload.shares = parseInt(formData.quantity);
   }
   console.log(JSON.stringify(payload));
@@ -69,14 +68,15 @@ const saveShareholder = async (formData) => {
 const updateShareholder = async (formData, personId) => {
   const payload = {
       name: formData.name,
-      personalIdOrCompanyId: formData.personalId,
       placeOfResidenceOrHeadquarters: formData.city,
       address: formData.address,
       emailAddress: formData.email,
       phoneNumber: formData.phoneNumber,
       bankAccountNumber: formData.bankAccountNumber,
   };
-  console.log(JSON.stringify(payload));
+  if(formData.personalId){
+    payload.personalIdOrCompanyId = formData.personalId;
+  }
   
   try {
     const response = await axios.put(`${shareHoldersUrl}/${personId}`, payload, {

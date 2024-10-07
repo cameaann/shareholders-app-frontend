@@ -98,7 +98,6 @@ const CreateOrEditShareholderForm = ({
     const formData = {
       name: nameProps.value,
       phoneNumber: phoneNumberProps.value,
-      personalId: personalIdProps.value,
       email: emailProps.value,
       bankAccountNumber: bankAccountNumberProps.value,
       city: cityProps.value,
@@ -106,6 +105,9 @@ const CreateOrEditShareholderForm = ({
       quantity: shareQuantity.value,
     };
     if (isPersonEditing) {
+      if(personalIdProps.isDirty){
+        formData.personalId = personalIdProps.value;
+      }
       const res = await updateShareholder(formData, person.id)
         if (res) {
           const shareholder = await getShareholderById(res);
@@ -115,6 +117,7 @@ const CreateOrEditShareholderForm = ({
           console.log("Failed");
         }
     } else {
+      formData.personalId = personalIdProps.value;
       const res = await saveShareholder(formData)
       if (res) {
         resetForm();
