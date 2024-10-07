@@ -1,7 +1,8 @@
 import { Box, Typography } from "@mui/joy";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import ShareNumbersCard from "./ShareNumbersCard";
 import { getShares } from "../services/sharesService";
+import { ShareholdersContext } from "./ShareholdersProvider";
 
 const initialData = [
   {
@@ -20,8 +21,9 @@ const initialData = [
   },
 ];
 
-const MobileShareNumbers = ({ sharesTotalQuantity}) => {
+const MobileShareNumbers = ({ sharesTotalQuantity, searchValue }) => {
   const [shareNumbersList, setShareNumbersList] = useState(initialData);
+  const { shareholdersList } = useContext(ShareholdersContext);
 
   const getTotalAmount = () => {
     let total = 0;
@@ -43,6 +45,18 @@ const MobileShareNumbers = ({ sharesTotalQuantity}) => {
       });
   }, []);
 
+  const filteredShares = shareNumbersList.filter((share) => {
+    const shareholder = shareholdersList?.find(
+      (s) => s.id === share.shareholderId
+    ) || { name: "" };
+
+    return (
+      shareholder.name.toLowerCase().includes(searchValue.toLowerCase()) ||
+      share.startNumber.toString().includes(searchValue) ||
+      share.endNumber.toString().includes(searchValue)
+    );
+  });
+
   return (
     <Box
       sx={{
@@ -57,7 +71,7 @@ const MobileShareNumbers = ({ sharesTotalQuantity}) => {
           <Typography fontWeight={"normal"}>{getTotalAmount()}</Typography>
         </Typography>
       </Box>
-      {shareNumbersList.map((value, index) => (
+      {filteredShares.map((value, index) => (
         <ShareNumbersCard key={index} value={value} />
       ))}
     </Box>

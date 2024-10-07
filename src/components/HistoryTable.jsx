@@ -149,6 +149,7 @@ const HistoryTable = ({ historyList }) => {
           aria-label="share history table"
           hoverRow
           variant="plain"
+          borderAxis="bothBetween"
           sx={{ mt: 4 }}
         >
           <TableHead>
