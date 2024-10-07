@@ -64,7 +64,7 @@ const ShareholdersTable = ({ shareholders }) => {
     setSearchQuery(value);
   };
 
-  const filteredShareholders = shareholders.filter((person) => {
+  const filteredShareholders = shareholders ? shareholders.filter((person) => {
     return (
       person.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       person.personalIdOrCompanyId
@@ -76,7 +76,7 @@ const ShareholdersTable = ({ shareholders }) => {
       person.emailAddress.toLowerCase().includes(searchQuery.toLowerCase()) ||
       person.phoneNumber.toLowerCase().includes(searchQuery.toLowerCase())
     );
-  });
+  }) : "";
 
   const rows = filteredShareholders.map((person, index) => {
     let ownership = 0;
@@ -86,15 +86,45 @@ const ShareholdersTable = ({ shareholders }) => {
 
     return (
       <TableRow key={index}>
-        <TableCell>{index + 1}</TableCell>
-        <TableCell>{person.totalShares}</TableCell>
-        <TableCell>{person.name}</TableCell>
-        <TableCell>{ownership}</TableCell>
-        <TableCell>{person.personalIdOrCompanyId}</TableCell>
-        <TableCell>{person.placeOfResidenceOrHeadquarters}</TableCell>
-        <TableCell>{person.address}</TableCell>
-        <TableCell>{person.emailAddress}</TableCell>
-        <TableCell>{person.phoneNumber}</TableCell>
+        <TableCell>
+          <Typography sx={{ textAlign: "center" }}> {index + 1}</Typography>
+        </TableCell>
+        <TableCell>
+          <Typography sx={{ textAlign: "right" }}>
+            {person.totalShares}
+          </Typography>
+        </TableCell>
+        <TableCell>
+          <Typography sx={{ textAlign: "center" }}>{person.name}</Typography>
+        </TableCell>
+        <TableCell>
+          <Typography sx={{ textAlign: "center" }}>{ownership}</Typography>
+        </TableCell>
+        <TableCell>
+          <Typography sx={{ textAlign: "center" }}>
+            {person.personalIdOrCompanyId}
+          </Typography>
+        </TableCell>
+        <TableCell>
+          <Typography sx={{ textAlign: "center" }}>
+            {person.placeOfResidenceOrHeadquarters}
+          </Typography>
+        </TableCell>
+        <TableCell>
+          <Typography sx={{ textAlign: "center" }}>
+            {person.address}
+          </Typography>
+        </TableCell>
+        <TableCell>
+          <Typography sx={{ textAlign: "center" }}>
+            {person.emailAddress}
+          </Typography>
+        </TableCell>
+        <TableCell>
+          <Typography sx={{ textAlign: "center" }}>
+            {person.phoneNumber}
+          </Typography>
+        </TableCell>
         <TableCell>
           <Dropdown>
             <MenuButton slots={{ root: IconButton }}>
@@ -125,24 +155,23 @@ const ShareholdersTable = ({ shareholders }) => {
 
   const handleDownload = () => {
     const data = filteredShareholders.map((person) => ({
-      "Nimi": person.name,
-      "Määrä": person.totalShares,
+      Nimi: person.name,
+      Määrä: person.totalShares,
       "Omistus %": totalShares
         ? ((person.totalShares / totalShares) * 100).toFixed(4)
         : "0.0000",
       "Hetu / Y-tunn.": person.personalIdOrCompanyId,
-      "Kotipaikka":
-        person.placeOfResidenceOrHeadquarters,
-      "Postiosoite": person.address,
-      "Sähköposti": person.emailAddress,
-      "Puhelinnumero": person.phoneNumber,
+      Kotipaikka: person.placeOfResidenceOrHeadquarters,
+      Postiosoite: person.address,
+      Sähköposti: person.emailAddress,
+      Puhelinnumero: person.phoneNumber,
     }));
 
-    const worksheet = XLSX.utils.json_to_sheet(data)
-    const workbook = XLSX.utils.book_new()
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Osakasluettelo")
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Osakasluettelo");
 
-    XLSX.writeFile(workbook, "osakasluettelo.xlsx")
+    XLSX.writeFile(workbook, "osakasluettelo.xlsx");
   };
 
   return (
@@ -166,16 +195,38 @@ const ShareholdersTable = ({ shareholders }) => {
         >
           <TableHead>
             <TableRow>
-              <TableCell sx={{ width: "60px" }}>Osakas</TableCell>
-              <TableCell>Määrä</TableCell>
-              <TableCell>Nimi</TableCell>
-              <TableCell>Omistus %</TableCell>
-              <TableCell>Hetu / Y-tunn.</TableCell>
-              <TableCell>Kotipaikka</TableCell>
-              <TableCell>Postiosoite</TableCell>
-              <TableCell sx={{ width: "200px" }}>Sähköposti</TableCell>
-              <TableCell sx={{ width: "150px" }}>Puhelinnumero</TableCell>
-              <TableCell sx={{ width: "50px" }}>Toiminnot</TableCell>
+              <TableCell sx={{ width: "50px" }}>Nro</TableCell>
+              <TableCell>
+                <Typography sx={{ textAlign: "right" }}> Määrä</Typography>
+              </TableCell>
+              <TableCell>
+                <Typography sx={{ textAlign: "center" }}> Nimi</Typography>
+              </TableCell>
+              <TableCell>
+                <Typography sx={{ textAlign: "center" }}> Omistus %</Typography>
+              </TableCell>
+              <TableCell>
+                <Typography sx={{ textAlign: "center" }}>
+                  Hetu / Y-tunn.
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography sx={{ textAlign: "center" }}>Kotipaikka</Typography>
+              </TableCell>
+              <TableCell>
+                <Typography sx={{ textAlign: "center" }}>
+                  Postiosoite
+                </Typography>
+              </TableCell>
+              <TableCell sx={{ width: "200px" }}>
+                <Typography sx={{ textAlign: "center" }}>Sähköposti</Typography>
+              </TableCell>
+              <TableCell sx={{ width: "150px" }}>
+                <Typography sx={{ textAlign: "center" }}>
+                  Puhelinnumero
+                </Typography>
+              </TableCell>
+              <TableCell sx={{ width: "50px" }}></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

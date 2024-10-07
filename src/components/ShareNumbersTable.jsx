@@ -75,76 +75,98 @@ const ShareNumbersTable = ({ sharenumbers, sharesTotalQuantity }) => {
     const data = filteredShares.map((share) => ({
       "Osakenumerot (Alkaen)": share.startNumber,
       "Osakenumerot (Päättyen)": share.endNumber,
-      "Kpl": share.quantity,
-      "Omistaja": share.shareholderId,
-      "Tarkistuslaskenta": share.endNumber - share.startNumber + 1
-    }))
+      Kpl: share.quantity,
+      Omistaja: share.shareholderId,
+      Tarkistuslaskenta: share.endNumber - share.startNumber + 1,
+    }));
 
-    const worksheet = XLSX.utils.json_to_sheet(data)
-    const workbook = XLSX.utils.book_new()
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Osakenumerot")
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Osakenumerot");
 
-    XLSX.writeFile(workbook, "osakenumerot.xlsx")
-  }
+    XLSX.writeFile(workbook, "osakenumerot.xlsx");
+  };
 
   return (
-      <Box >
-        <TableHeader
-          onSearchChange={handleSearchChange}
-          rows={rows}
-          page={page}
-          rowsPerPage={rowsPerPage}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-          onDownload={handleDownload}
-        />
-        <Box sx={{ display: "flex", flexDirection:"column"}}>
-          <Table
-            aria-label="share numbers table"
-            hoverRow
-            variant="plain"
-            borderAxis="bothBetween"
-            sx={{  width: "85%", margin: "0px auto", mt: 4,  }}
-          >
-            <TableHead>
-              <TableRow sx={{ "& th": { color: "rgba(96, 96, 96)" } }}>
-                <TableCell sx={{ width: "150px" }} align="center">
-                  <Typography>Osakenumerot</Typography>
+    <Box>
+      <TableHeader
+        onSearchChange={handleSearchChange}
+        rows={rows}
+        page={page}
+        rowsPerPage={rowsPerPage}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+        onDownload={handleDownload}
+      />
+      <Box sx={{ display: "flex", flexDirection: "column" }}>
+        <Table
+          aria-label="share numbers table"
+          hoverRow
+          variant="plain"
+          borderAxis="bothBetween"
+          sx={{ width: "85%", margin: "0px auto", mt: 4 }}
+        >
+          <TableHead>
+            <TableRow sx={{ "& th": { color: "rgba(96, 96, 96)" } }}>
+              <TableCell sx={{ width: "150px" }} align="center">
+                <Typography
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "flex-end",
+                  }}
+                >
                   Alkaen
-                </TableCell>
-                <TableCell sx={{ width: "150px" }} align="center">
+                </Typography>
+              </TableCell>
+              <TableCell sx={{ width: "150px" }} align="center">
+                <Typography
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "flex-end",
+                  }}
+                >
                   Päättyen
-                </TableCell>
-                <TableCell align="center">Kpl</TableCell>
-                <TableCell align="center">Omistaja</TableCell>
-                <TableCell>Tarkistuslaskenta</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {filteredShares.length > 0 ? (
-                paginatedRows
-              ) : (
-                <Typography></Typography>
-              )}
-            </TableBody>
-          </Table>
+                </Typography>
+              </TableCell>
+              <TableCell align="center">
+                <Typography sx={{ textAlign: "right" }}>Kpl</Typography>
+              </TableCell>
+              <TableCell>
+                <Typography sx={{ textAlign: "center" }}>Omistaja</Typography>
+              </TableCell>
+              <TableCell>
+                <Typography sx={{ textAlign: "right" }}>
+                  Tarkistuslaskenta
+                </Typography>
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {filteredShares.length > 0 ? (
+              paginatedRows
+            ) : (
+              <Typography></Typography>
+            )}
+          </TableBody>
+        </Table>
 
-          <Box
-            sx={{
-              width: "85%", 
-              margin: "0px auto",
-              display: "grid",
-              gridTemplateColumns: "repeat(5, 1fr)",
-              alignItems: "center",
-              marginTop: 2,
-            }}
-          >
-            <Typography sx={{ fontWeight: "bold" }}>Yhteensä</Typography>
-            <Typography>{getTotalAmount()}</Typography>
-          </Box>
+        <Box
+          sx={{
+            width: "85%",
+            margin: "0px auto",
+            display: "grid",
+            gridTemplateColumns: "repeat(5, 1fr)",
+            alignItems: "center",
+            marginTop: 2,
+          }}
+        >
+          <Typography sx={{ fontWeight: "bold" }}>Yhteensä</Typography>
+          <Typography>{getTotalAmount()}</Typography>
         </Box>
       </Box>
-
+    </Box>
   );
 };
 
