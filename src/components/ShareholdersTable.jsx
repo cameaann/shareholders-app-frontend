@@ -162,6 +162,7 @@ const ShareholdersTable = ({ shareholders }) => {
           aria-label="shares table"
           hoverRow
           variant="plain"
+          borderAxis="bothBetween"
           sx={{ mt: 4 }}
         >
           <TableHead>
