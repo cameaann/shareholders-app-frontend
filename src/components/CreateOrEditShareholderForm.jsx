@@ -15,6 +15,8 @@ import { validateField } from "../functions/validateForm";
 import { updateShareholder } from "../services/shareholdersService";
 import { useMediaQuery } from "@mui/material";
 import { ShareholdersContext } from "./ShareholdersProvider";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const CreateOrEditShareholderForm = ({
   sharesTotalQuantity,
@@ -104,7 +106,6 @@ const CreateOrEditShareholderForm = ({
       quantity: shareQuantity.value,
     };
     if (isPersonEditing) {
-      console.log(person.id);
       const res = await updateShareholder(formData, person.id)
         if (res) {
           const shareholder = await getShareholderById(res);
@@ -349,6 +350,7 @@ const CreateOrEditShareholderForm = ({
           )}
         </Stack>
       </Stack>
+      <ToastContainer/>
     </Stack>
   );
 };

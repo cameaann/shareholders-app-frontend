@@ -1,4 +1,5 @@
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const devUrl = "http://localhost:8080/health";
 const shareHoldersUrl = "http://localhost:8080/api/shareholders";
@@ -52,15 +53,15 @@ const saveShareholder = async (formData) => {
     });
 
     if (response.status === 200) {
-      alert("Shareholder saved successfully!");
+      toast("Shareholder saved successfully!");
       return response.data.id;
 
     } else {
-      alert("Failed to save shareholder");
+      toast.error("Failed to save shareholder");
     }
   } catch (error) {
     console.error("Error saving shareholder:", error);
-    alert("An error occurred while saving the shareholder");
+    toast.error(error.data.response);
     return false;
   }
 };
@@ -83,14 +84,14 @@ const updateShareholder = async (formData, personId) => {
     });
 
     if (response.status === 200) {
-      alert("Shareholder saved successfully!");
+      toast("Shareholder saved successfully!");
       return response.data.id;
     } else {
-      alert("Failed to save shareholder");
+      toast.error("Failed to save shareholder");
     }
   } catch (error) {
     console.error("Error saving shareholder:", error);
-    alert("An error occurred while saving the shareholder");
+    toast.error(error);
     return false;
   }
 };

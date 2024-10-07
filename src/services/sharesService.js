@@ -1,4 +1,5 @@
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const sharesUrl = "http://localhost:8080/api/shares";
 const transferUrl = "http://localhost:8080/api/shares/transfer";
@@ -32,15 +33,17 @@ const makeTransfer = async (formData) => {
     });
 
     if (response.status === 200) {
-      alert("Transfer made successfully!");
+      toast("Transfer made successfully!");
       return response.data;
 
     } else {
-      alert("Failed to make transfer");
+      toast.error(response.data);
     }
   } catch (error) {
-    console.error("Error making the transfer:", error);
-    alert("An error occurred while making transfer");
+    if (error.status === 400) {
+      toast.error("Error making the transfer: " + error.response.data);
+    }
+
     return false;
   }
 
