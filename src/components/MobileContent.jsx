@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/joy";
+import { Box, Typography, Input } from "@mui/joy";
 import MobileShareholders from "./MobileShareholders";
 import MobileShareNumbers from "./MobileShareNumbers";
 import { useContext } from "react";
@@ -7,16 +7,41 @@ import CreateOrEditShareholderForm from "./CreateOrEditShareholderForm";
 import ShareTransferForm from "./ShareTransferForm";
 import { ShareholdersContext } from "./ShareholdersProvider";
 import MobileHistory from "./MobileHistory";
+import { FaMagnifyingGlass } from "react-icons/fa6";
+import { useState } from "react";
 
 const MobileContent = ({ selectedContent }) => {
-  const { sharesTotalQuantity, setSharesTotalQuantity } = useContext(SharesQuantityContext);
+  const [searchValue, setSearchValue] = useState("");
+
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setSearchValue(value);
+  };
+
+  const { sharesTotalQuantity, setSharesTotalQuantity } = useContext(
+    SharesQuantityContext
+  );
   const { shareholdersList } = useContext(ShareholdersContext);
 
-  const handleAddingMainShareholder = (res) =>{
-    if(res){
-      setSharesTotalQuantity(res)
+  const handleAddingMainShareholder = (res) => {
+    if (res) {
+      setSharesTotalQuantity(res);
     }
-  }
+  };
+
+  const filteredShareholders = shareholdersList.filter((person) => {
+    return (
+      person.name.toLowerCase().includes(searchValue.toLowerCase()) ||
+      person.personalIdOrCompanyId
+        .toLowerCase()
+        .includes(searchValue.toLowerCase()) ||
+      person.placeOfResidenceOrHeadquarters
+        .toLowerCase()
+        .includes(searchValue.toLowerCase()) ||
+      person.emailAddress.toLowerCase().includes(searchValue.toLowerCase()) ||
+      person.phoneNumber.toLowerCase().includes(searchValue.toLowerCase())
+    );
+  });
 
   let maskedTitle = selectedContent;
   if (selectedContent === "Lisää uusi omistaja") {
@@ -26,17 +51,23 @@ const MobileContent = ({ selectedContent }) => {
   }
 
   const content = {
-    Osakasluettelo: <MobileShareholders shareholdersList = {shareholdersList} />,
+    Osakasluettelo: (
+      <MobileShareholders shareholdersList={filteredShareholders} />
+    ),
     Osakenumerot: (
-      <MobileShareNumbers sharesTotalQuantity={sharesTotalQuantity} />
+      <MobileShareNumbers
+        sharesTotalQuantity={sharesTotalQuantity}
+        searchValue={searchValue}
+      />
     ),
     AddShareholder: (
       <CreateOrEditShareholderForm
-        sharesTotalQuantity = { sharesTotalQuantity} onAddingMainShareholder={handleAddingMainShareholder}
+        sharesTotalQuantity={sharesTotalQuantity}
+        onAddingMainShareholder={handleAddingMainShareholder}
       />
     ),
     ShareTransfer: <ShareTransferForm />,
-    Historia: <MobileHistory />,
+    Historia: <MobileHistory searchValue={searchValue} />,
   };
 
   return (
@@ -56,7 +87,18 @@ const MobileContent = ({ selectedContent }) => {
           {selectedContent}
         </Typography>
       </Box>
-      <Box sx={{ padding: 2, pt: 10, mt: 10, }}>
+      <Box sx={{ padding: 2, pt: 10, mt: 10 }}>
+        {maskedTitle !== "AddShareholder" &&
+          maskedTitle !== "ShareTransfer" && (
+            <Input
+              placeholder="search"
+              startDecorator={<FaMagnifyingGlass />}
+              size="sm"
+              value={searchValue}
+              onChange={handleSearchChange}
+              sx={{ mb: 2 }}
+            />
+          )}
         {content[maskedTitle] || (
           <Typography>{selectedContent} content</Typography>
         )}

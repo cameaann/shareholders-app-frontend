@@ -3,24 +3,45 @@ import { Box } from "@mui/joy";
 import HistoryCard from "./HistoryCard";
 import { useEffect, useState, useContext } from "react";
 import { TransferHistoryContext } from "./TransferHistoryProvider";
+import { ShareholdersContext } from "./ShareholdersProvider";
 
-
-const MobileHistory = ({ filterId }) => {
+const MobileHistory = ({ filterId, searchValue }) => {
   const { historyList } = useContext(TransferHistoryContext);
   const [filteredHistoryList, setFilteredHistoryList] = useState([]);
-
+  const { shareholdersList } = useContext(ShareholdersContext);
   useEffect(() => {
+    let filteredList = historyList;
+
     if (filterId !== undefined) {
-      const filteredList = historyList.filter(
+      filteredList = historyList.filter(
         (item) =>
           item.fromShareholderId === parseInt(filterId) ||
-          item.toShareholderId == parseInt(filterId)
+          item.toShareholderId === parseInt(filterId)
       );
-      setFilteredHistoryList(filteredList);
-    } else {
-      setFilteredHistoryList(historyList);
     }
-  }, [filterId, historyList]);
+
+    if (searchValue) {
+      filteredList = filteredList.filter((note) => {
+        const seller =
+          shareholdersList
+            ?.find((s) => s.id === note.fromShareholderId)
+            ?.name.toLowerCase() || "";
+        const buyer =
+          shareholdersList
+            ?.find((s) => s.id === note.toShareholderId)
+            ?.name.toLowerCase() || "";
+
+        return (
+          seller.includes(searchValue.toLowerCase()) ||
+          buyer.includes(searchValue.toLowerCase()) ||
+          note.transferDate.includes(searchValue) ||
+          note.pricePerShare.toString().includes(searchValue)
+        );
+      });
+    }
+
+    setFilteredHistoryList(filteredList);
+  }, [filterId, historyList, searchValue]);
 
   return (
     <Box

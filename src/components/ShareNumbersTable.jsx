@@ -103,6 +103,7 @@ const ShareNumbersTable = ({ sharenumbers, sharesTotalQuantity }) => {
             aria-label="share numbers table"
             hoverRow
             variant="plain"
+            borderAxis="bothBetween"
             sx={{  width: "85%", margin: "0px auto", mt: 4,  }}
           >
             <TableHead>
