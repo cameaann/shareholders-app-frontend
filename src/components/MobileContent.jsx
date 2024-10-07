@@ -55,8 +55,10 @@ const MobileContent = ({ selectedContent }) => {
       <MobileShareholders shareholdersList={filteredShareholders} />
     ),
     Osakenumerot: (
-      <MobileShareNumbers sharesTotalQuantity={sharesTotalQuantity}
-      searchValue={searchValue} />
+      <MobileShareNumbers
+        sharesTotalQuantity={sharesTotalQuantity}
+        searchValue={searchValue}
+      />
     ),
     AddShareholder: (
       <CreateOrEditShareholderForm
@@ -65,7 +67,7 @@ const MobileContent = ({ selectedContent }) => {
       />
     ),
     ShareTransfer: <ShareTransferForm />,
-    Historia: <MobileHistory searchValue={searchValue}/>,
+    Historia: <MobileHistory searchValue={searchValue} />,
   };
 
   return (
@@ -86,14 +88,17 @@ const MobileContent = ({ selectedContent }) => {
         </Typography>
       </Box>
       <Box sx={{ padding: 2, pt: 10, mt: 10 }}>
-        <Input
-          placeholder="search"
-          startDecorator={<FaMagnifyingGlass />}
-          size="sm"
-          value={searchValue}
-          onChange={handleSearchChange}
-          sx={{ mb: 2 }}
-        />
+        {maskedTitle !== "AddShareholder" &&
+          maskedTitle !== "ShareTransfer" && (
+            <Input
+              placeholder="search"
+              startDecorator={<FaMagnifyingGlass />}
+              size="sm"
+              value={searchValue}
+              onChange={handleSearchChange}
+              sx={{ mb: 2 }}
+            />
+          )}
         {content[maskedTitle] || (
           <Typography>{selectedContent} content</Typography>
         )}
