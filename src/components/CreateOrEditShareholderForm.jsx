@@ -29,7 +29,7 @@ const CreateOrEditShareholderForm = ({
   const nameProps = useFormInput(person ? person.name : "");
   const emailProps = useFormInput(person ? person.emailAddress : "");
   const phoneNumberProps = useFormInput(
-    person ? person.phoneNumber : "(100) 000-0000"
+    person ? person.phoneNumber : ""
   );
   const personalIdProps = useFormInput(
     person ? person.personalIdOrCompanyId : ""
@@ -91,7 +91,6 @@ const CreateOrEditShareholderForm = ({
     }));
     handleValidation(field, event.target.value);
   };
-
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -232,7 +231,7 @@ const CreateOrEditShareholderForm = ({
               handleChange("phoneNumber", event.target.value);
             }}
             name="phoneNumber"
-            placeholder="Placeholder"
+            placeholder="(+100) 000-0000"
             sx={{ width: isSmallScreen ? "290px" : "300px" }}
             slotProps={{ input: { component: TextMaskAdapter } }}
             onBlur={handleBlur(phoneNumberProps, "phoneNumber")}

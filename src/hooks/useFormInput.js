@@ -10,9 +10,23 @@ export function useFormInput(initialValue='') {
     setDirty(true)
   }
 
+  function handleFocus() {
+    if (value === initialValue) {
+      setValue(''); // Clear the value on focus if it matches the initial predefined value
+    }
+  }
+
+  function handleBlur() {
+    if (value === '') {
+      setValue(initialValue); // Reset to initial value if input is empty on blur
+    }
+  }
+
   const inputProps = {
     value: value,
     onChange: handleChange,
+    onFocus: handleFocus,
+    onBlur: handleBlur,
     isDirty,
     reset
   };
