@@ -15,6 +15,8 @@ import { validateField } from "../functions/validateForm";
 import { updateShareholder } from "../services/shareholdersService";
 import { useMediaQuery } from "@mui/material";
 import { ShareholdersContext } from "./ShareholdersProvider";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const CreateOrEditShareholderForm = ({
   sharesTotalQuantity,
@@ -96,7 +98,6 @@ const CreateOrEditShareholderForm = ({
     const formData = {
       name: nameProps.value,
       phoneNumber: phoneNumberProps.value,
-      personalId: personalIdProps.value,
       email: emailProps.value,
       bankAccountNumber: bankAccountNumberProps.value,
       city: cityProps.value,
@@ -104,7 +105,9 @@ const CreateOrEditShareholderForm = ({
       quantity: shareQuantity.value,
     };
     if (isPersonEditing) {
-      console.log(person.id);
+      if(personalIdProps.isDirty){
+        formData.personalId = personalIdProps.value;
+      }
       const res = await updateShareholder(formData, person.id)
         if (res) {
           const shareholder = await getShareholderById(res);
@@ -114,6 +117,7 @@ const CreateOrEditShareholderForm = ({
           console.log("Failed");
         }
     } else {
+      formData.personalId = personalIdProps.value;
       const res = await saveShareholder(formData)
       if (res) {
         resetForm();
@@ -349,6 +353,7 @@ const CreateOrEditShareholderForm = ({
           )}
         </Stack>
       </Stack>
+      <ToastContainer/>
     </Stack>
   );
 };

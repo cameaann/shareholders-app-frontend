@@ -1,4 +1,5 @@
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const devUrl = "http://localhost:8080/health";
 const shareHoldersUrl = "http://localhost:8080/api/shareholders";
@@ -41,7 +42,6 @@ const saveShareholder = async (formData) => {
   };
 
   if (formData.quantity > 0) {
-    console.log(formData.quantity);
     payload.shares = parseInt(formData.quantity);
   }
   console.log(JSON.stringify(payload));
@@ -52,15 +52,15 @@ const saveShareholder = async (formData) => {
     });
 
     if (response.status === 200) {
-      alert("Shareholder saved successfully!");
+      toast("Shareholder saved successfully!");
       return response.data.id;
 
     } else {
-      alert("Failed to save shareholder");
+      toast.error("Failed to save shareholder");
     }
   } catch (error) {
     console.error("Error saving shareholder:", error);
-    alert("An error occurred while saving the shareholder");
+    toast.error(error.data.response);
     return false;
   }
 };
@@ -68,14 +68,15 @@ const saveShareholder = async (formData) => {
 const updateShareholder = async (formData, personId) => {
   const payload = {
       name: formData.name,
-      personalIdOrCompanyId: formData.personalId,
       placeOfResidenceOrHeadquarters: formData.city,
       address: formData.address,
       emailAddress: formData.email,
       phoneNumber: formData.phoneNumber,
       bankAccountNumber: formData.bankAccountNumber,
   };
-  console.log(JSON.stringify(payload));
+  if(formData.personalId){
+    payload.personalIdOrCompanyId = formData.personalId;
+  }
   
   try {
     const response = await axios.put(`${shareHoldersUrl}/${personId}`, payload, {
@@ -83,14 +84,14 @@ const updateShareholder = async (formData, personId) => {
     });
 
     if (response.status === 200) {
-      alert("Shareholder saved successfully!");
+      toast("Shareholder saved successfully!");
       return response.data.id;
     } else {
-      alert("Failed to save shareholder");
+      toast.error("Failed to save shareholder");
     }
   } catch (error) {
     console.error("Error saving shareholder:", error);
-    alert("An error occurred while saving the shareholder");
+    toast.error(error);
     return false;
   }
 };
