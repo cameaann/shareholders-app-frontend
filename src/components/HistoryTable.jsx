@@ -6,6 +6,8 @@ import { ShareholdersContext } from "./ShareholdersProvider";
 import { setPaymentDate } from "../services/historyTransferService";
 import { TransferHistoryContext } from "./TransferHistoryProvider";
 import * as XLSX from "xlsx";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const HistoryTable = ({ historyList }) => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -189,6 +191,7 @@ const HistoryTable = ({ historyList }) => {
             {filteredHistoryList.length > 0 ? paginatedRows : null}
           </TableBody>
         </Table>
+        <ToastContainer/>
       </Box>
     </Box>
   );

@@ -20,11 +20,16 @@ const getShareholderById = async (personId) => {
 };
 
 const addShares = async (person) => {
-  const res = await axios.put(`${shareHoldersUrl}/${person.id}`, person, {
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(person),
-  });
-  return res.status;
+  try {
+    const res = await axios.put(`${shareHoldersUrl}/${person.id}`, person, {
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(person),
+    });
+    return res.status;
+  } catch (error) {
+    console.log(error);
+  }
+ 
 };
 
 const saveShareholder = async (formData) => {
