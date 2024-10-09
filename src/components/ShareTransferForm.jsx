@@ -19,8 +19,6 @@ import { useMediaQuery } from "@mui/material";
 import { ShareholdersContext } from "./ShareholdersProvider";
 import { SharesQuantityContext } from "./SharesQuantityProvider";
 import { TransferHistoryContext } from "./TransferHistoryProvider";
-import { ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
 
 const ShareTransferForm = () => {
   const isSmallScreen = useMediaQuery("(max-width: 660px)");
@@ -247,7 +245,6 @@ const ShareTransferForm = () => {
             Submit
           </Button>
         </Stack>
-        <ToastContainer/>
       </Stack>
     </Stack>
   );

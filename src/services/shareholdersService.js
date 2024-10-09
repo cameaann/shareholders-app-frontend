@@ -52,7 +52,7 @@ const saveShareholder = async (formData) => {
     });
 
     if (response.status === 200) {
-      toast("Shareholder saved successfully!");
+      toast.success("Shareholder saved successfully!");
       return response.data.id;
 
     } else {
@@ -84,7 +84,7 @@ const updateShareholder = async (formData, personId) => {
     });
 
     if (response.status === 200) {
-      toast("Shareholder saved successfully!");
+      toast.success("Shareholder saved successfully!");
       return response.data.id;
     } else {
       toast.error("Failed to save shareholder");
