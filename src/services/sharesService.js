@@ -33,7 +33,7 @@ const makeTransfer = async (formData) => {
     });
 
     if (response.status === 200) {
-      toast("Transfer made successfully!");
+      toast.success("Transfer made successfully!");
       return response.data;
 
     } else {

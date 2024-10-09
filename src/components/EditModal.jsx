@@ -2,8 +2,6 @@ import { Modal, ModalClose, ModalDialog } from "@mui/joy";
 import CreateOrEditShareholderForm from "./CreateOrEditShareholderForm";
 import { useContext } from "react";
 import { SharesQuantityContext } from "./SharesQuantityProvider";
-import { ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
 
 const EditModal = ({ isOpen, onClose, isMobile, person }) => {
   const { sharesTotalQuantity } = useContext(SharesQuantityContext);
@@ -29,7 +27,6 @@ const EditModal = ({ isOpen, onClose, isMobile, person }) => {
           isPersonEditing={isOpen}
           onClose={handleClose}
         />
-        <ToastContainer/>
       </ModalDialog>
     </Modal>
   );

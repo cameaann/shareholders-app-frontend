@@ -74,7 +74,8 @@ const ShareholdersTable = ({ shareholders }) => {
         .toLowerCase()
         .includes(searchQuery.toLowerCase()) ||
       person.emailAddress.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      person.phoneNumber.toLowerCase().includes(searchQuery.toLowerCase())
+      person.phoneNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      person.address.toLowerCase().includes(searchQuery.toLowerCase())
     );
   }) : "";
 

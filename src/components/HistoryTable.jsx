@@ -122,15 +122,15 @@ const HistoryTable = ({ historyList }) => {
         : { name: "" };
 
       return {
-        Sääntöpäivä: note.paymentDate,
-        Maksupvm: note.transferDate,
+        Sääntöpäivä: note.transferDate,
+        Maksupvm: note.paymentDate,
         "Luovittaja (Myyjä)": seller.name,
         "Saaja (Ostaja)": buyer.name,
-        "Varainsiirtovero": note.transferTax,
-        "Kpl": note.quantity,
+        Varainsiirtovero: note.transferTax ? "+" : "",
+        Kpl: note.quantity,
         "Hinta per osake": note.pricePerShare,
-        "EUR": note.totalAmount,
-        "Huom": note.additionalNotes
+        EUR: note.totalAmount,
+        Huom: note.additionalNotes,
       };
     });
 
