@@ -167,15 +167,19 @@ const ShareTransferForm = () => {
             onChange={kplProps.onChange}
             placeholder=""
             sx={{ width: isSmallScreen ? "290px" : "300px" }}
+            onFocus={kplProps.onFocus}
+            onBlur={kplProps.onBlur}
           />
         </FormControl>
         <FormControl sx={{ mt: 3, width: isSmallScreen ? "290px" : "300px" }}>
           <FormLabel>Hinta per osake</FormLabel>
           <Input
             sx={{ width: isSmallScreen ? "290px" : "300px" }}
-            placeholder="Hinta per osake"
+            placeholder=""
             value={priceProps.value}
             onChange={priceProps.onChange}
+            onFocus={priceProps.onFocus}
+            onBlur={priceProps.onBlur}
           />
         </FormControl>
       </Stack>
