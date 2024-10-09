@@ -173,7 +173,7 @@ const CreateOrEditShareholderForm = ({
         flexDirection={isSmallScreen ? "column" : "row"}
         sx={{ gap: isSmallScreen ? 0 : 2 }}
         justifyContent="center"
-        alignItems="center"
+        alignItems="baseline"
       >
         <FormControl
           sx={{
@@ -190,7 +190,7 @@ const CreateOrEditShareholderForm = ({
             onChange={handleChange(nameProps, "name")}
             onBlur={handleBlur(nameProps, "name")}
           />
-          {!!errors.name && <FormHelperText>{errors.name}</FormHelperText>}
+          {(!!errors.name && <FormHelperText sx={{fontSize:10}}>{errors.name}</FormHelperText>) }
         </FormControl>
         <FormControl
           sx={{
@@ -208,7 +208,7 @@ const CreateOrEditShareholderForm = ({
             onBlur={handleBlur(personalIdProps, "personalId")}
           />
           {!!errors.personalId && (
-            <FormHelperText>{errors.personalId}</FormHelperText>
+            <FormHelperText sx={{fontSize:10}}>{errors.personalId}</FormHelperText>
           )}
         </FormControl>
       </Stack>
@@ -216,7 +216,7 @@ const CreateOrEditShareholderForm = ({
         flexDirection={isSmallScreen ? "column" : "row"}
         sx={{ gap: isSmallScreen ? 0 : 2 }}
         justifyContent="center"
-        alignItems="center"
+        alignItems="baseline"
       >
         <FormControl
           sx={{ mt: 3, width: isSmallScreen ? "290px" : "300px" }}
@@ -237,7 +237,7 @@ const CreateOrEditShareholderForm = ({
           />
 
           {!!errors.phoneNumber && typeof errors.phoneNumber === "string" && (
-            <FormHelperText>{errors.phoneNumber}</FormHelperText>
+            <FormHelperText sx={{fontSize:10}}>{errors.phoneNumber}</FormHelperText>
           )}
         </FormControl>
         <FormControl
@@ -252,14 +252,14 @@ const CreateOrEditShareholderForm = ({
             onChange={handleChange(emailProps, "email")}
             onBlur={handleBlur(emailProps, "email")}
           />
-          {!!errors.email && <FormHelperText>{errors.email}</FormHelperText>}
+          {!!errors.email && <FormHelperText sx={{fontSize:10}}>{errors.email}</FormHelperText>}
         </FormControl>
       </Stack>
       <Stack
         flexDirection={isSmallScreen ? "column" : "row"}
         sx={{ gap: isSmallScreen ? 0 : 2 }}
         justifyContent="center"
-        alignItems="center"
+        alignItems="baseline"
       >
         <FormControl
           sx={{ mt: 3, width: isSmallScreen ? "290px" : "300px" }}
@@ -273,7 +273,7 @@ const CreateOrEditShareholderForm = ({
             onChange={handleChange(cityProps, "city")}
             onBlur={handleBlur(cityProps, "city")}
           />
-          {!!errors.city && <FormHelperText>{errors.city}</FormHelperText>}
+          {!!errors.city && <FormHelperText sx={{fontSize:10}}>{errors.city}</FormHelperText>}
         </FormControl>
         <FormControl
           sx={{ mt: 3, width: isSmallScreen ? "290px" : "300px" }}
@@ -288,7 +288,7 @@ const CreateOrEditShareholderForm = ({
             onBlur={handleBlur(addressProps, "address")}
           />
           {!!errors.address && (
-            <FormHelperText>{errors.address}</FormHelperText>
+            <FormHelperText sx={{fontSize:10}}>{errors.address}</FormHelperText>
           )}
         </FormControl>
       </Stack>
@@ -296,7 +296,7 @@ const CreateOrEditShareholderForm = ({
         flexDirection={isSmallScreen ? "column" : "row"}
         sx={{ gap: isSmallScreen ? 0 : 2 }}
         justifyContent="center"
-        alignItems="center"
+        alignItems="baseline"
       >
         <FormControl
           sx={{ mt: 3, width: isSmallScreen ? "290px" : "300px" }}
@@ -311,7 +311,7 @@ const CreateOrEditShareholderForm = ({
             onBlur={handleBlur(bankAccountNumberProps, "bankAccountNumber")}
           />
           {!!errors.bankAccountNumber && (
-            <FormHelperText>{errors.bankAccountNumber}</FormHelperText>
+            <FormHelperText sx={{fontSize:10}}>{errors.bankAccountNumber}</FormHelperText>
           )}
         </FormControl>
         {sharesTotalQuantity > 0 ? (

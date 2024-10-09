@@ -1,4 +1,5 @@
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const historyTransferUrl = "http://localhost:8080/api/transfer-history";
 const paymentDateUrl = "http://localhost:8080/api/transfer-history/";
@@ -20,14 +21,14 @@ const setPaymentDate = async (id, paymentDate) => {
     });
 
     if (res.status === 200) {
-      alert("Payment date saved!");
+      toast("Payment date saved!");
       return res.data;
     } else {
-      alert("Failed to save payment date");
+      toast("Failed to save payment date");
     }
   } catch (error) {
     console.error("Error saving shareholder:", error);
-    alert("An error occurred while saving the payment date");
+    toast("An error occurred while saving the payment date");
     return false;
   }
 };
