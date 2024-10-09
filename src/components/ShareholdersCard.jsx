@@ -79,7 +79,8 @@ const ShareholdersCard = ({ shareholder, ownship }) => {
               <HiDotsVertical />
             </MenuButton>
             <Menu>
-              {shareholder.id === 1 && (
+              {/* removed for now */}
+              {/* {shareholder.id === 1 && (
                 <MenuItem
                   onClick={() => {
                     openAddSharesModal(shareholder);
@@ -87,7 +88,7 @@ const ShareholdersCard = ({ shareholder, ownship }) => {
                 >
                   Add Shares
                 </MenuItem>
-              )}
+              )} */}
               <MenuItem
                 onClick={() => {
                   openEditModal(shareholder);
