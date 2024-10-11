@@ -10,6 +10,32 @@ const getShares = async () => {
   return res.data;
 };
 
+const addShares = async (person, shares) => {
+  const payload = {
+    shareholder: {
+      id: person.id,
+      name: person.name,
+      placeOfResidenceOrHeadquarters: person.city,
+      address: person.address,
+      emailAddress: person.email,
+      phoneNumber: person.phoneNumber,
+      bankAccountNumber: person.bankAccountNumber,
+    },
+    shares: shares,
+  };
+  try {
+    const res = await axios.post(`${sharesUrl}`, payload, {
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(person),
+    });
+    console.log(res.data);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
 const getTotalSharesQuantity = async () => {
   const res = await axios.get(metaUrl);
   return res.data;
@@ -49,4 +75,4 @@ const makeTransfer = async (formData) => {
 
 };
 
-export { getShares, makeTransfer, getTotalSharesQuantity };
+export { getShares, addShares, makeTransfer, getTotalSharesQuantity };
