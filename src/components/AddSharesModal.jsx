@@ -8,17 +8,23 @@ import {
   ModalDialog,
   Stack,
 } from "@mui/joy";
-import React, { useState } from "react";
-import { addShares } from "../services/shareholdersService";
+import React, { useContext, useState } from "react";
+import { addShares } from "../services/sharesService";
+import { getShareholderById } from "../services/shareholdersService";
+import { ShareholdersContext } from "./ShareholdersProvider";
 
 const AddSharesModal = ({ isOpen, onClose, person }) => {
   const [inputValue, setInputValue] = useState(null);
+  const { editShareholder } = useContext(ShareholdersContext);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async(event) => {
     event.preventDefault();
 
-    person.totalShares = person.totalShares + parseInt(inputValue)
-    addShares(person)
+    const shares = await addShares(person, parseInt(inputValue));
+    if(shares){
+      const shareholder = await getShareholderById(shares.shareholderId);
+      editShareholder(shareholder) 
+    }
 
     onClose(); // this closes the modal
     setInputValue(null); // reset value
