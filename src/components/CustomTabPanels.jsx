@@ -26,7 +26,7 @@ const CustomTabPanels = () => {
     <>
       <TabPanel value={0} sx={tabPanelStyle}>
         <Shareholders shareholdersList = {shareholdersList} />
-      </TabPanel>
+      </TabPanel> 
       <TabPanel value={1} sx={tabPanelStyle}>
         <Sharenumbers sharesTotalQuantity = { sharesTotalQuantity} />
       </TabPanel>
