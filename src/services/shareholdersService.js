@@ -19,18 +19,6 @@ const getShareholderById = async (personId) => {
   return res.data;
 };
 
-const addShares = async (person) => {
-  try {
-    const res = await axios.put(`${shareHoldersUrl}/${person.id}`, person, {
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(person),
-    });
-    return res.status;
-  } catch (error) {
-    console.log(error);
-  }
- 
-};
 
 const saveShareholder = async (formData) => {
   const payload = {
@@ -59,7 +47,6 @@ const saveShareholder = async (formData) => {
     if (response.status === 200) {
       toast.success("Shareholder saved successfully!");
       return response.data.id;
-
     } else {
       toast.error("Failed to save shareholder");
     }
@@ -79,14 +66,18 @@ const updateShareholder = async (formData, personId) => {
       phoneNumber: formData.phoneNumber,
       bankAccountNumber: formData.bankAccountNumber,
   };
-  if(formData.personalId){
+  if (formData.personalId) {
     payload.personalIdOrCompanyId = formData.personalId;
   }
-  
+
   try {
-    const response = await axios.put(`${shareHoldersUrl}/${personId}`, payload, {
-      headers: { "Content-Type": "application/json" },
-    });
+    const response = await axios.put(
+      `${shareHoldersUrl}/${personId}`,
+      payload,
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
 
     if (response.status === 200) {
       toast.success("Shareholder saved successfully!");
@@ -101,5 +92,10 @@ const updateShareholder = async (formData, personId) => {
   }
 };
 
-export { getShareholders, getShareholderById, getStatus, saveShareholder, updateShareholder, addShares };
-
+export {
+  getShareholders,
+  getShareholderById,
+  getStatus,
+  saveShareholder,
+  updateShareholder
+};

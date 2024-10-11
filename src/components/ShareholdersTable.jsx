@@ -132,12 +132,11 @@ const ShareholdersTable = ({ shareholders }) => {
               <HiDotsVertical />
             </MenuButton>
             <Menu>
-              {/* removed for now */}
-              {/* {index === 0 && (
+              {index === 0 && (
                 <MenuItem onClick={() => openAddSharesModal(person)}>
                   Add Shares
                 </MenuItem>
-              )} */}
+              )}
               <MenuItem onClick={() => openEditModal(person)}>Edit</MenuItem>
               <MenuItem onClick={() => openHistoryModal(person)}>
                 History

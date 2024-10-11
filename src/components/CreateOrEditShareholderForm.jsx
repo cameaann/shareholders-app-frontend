@@ -103,7 +103,7 @@ const CreateOrEditShareholderForm = ({
       quantity: shareQuantity.value,
     };
     if (isPersonEditing) {
-      if(personalIdProps.isDirty){
+      if(person.personalIdOrCompanyId !== personalIdProps.value){
         formData.personalId = personalIdProps.value;
       }
       const res = await updateShareholder(formData, person.id)
